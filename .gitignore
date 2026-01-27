@@ -1,0 +1,67 @@
+# Arquivos de ambiente e credenciais
+.env
+.env.local
+.env.*.local
+
+# Dependências do Composer
+/vendor/
+
+# Logs
+/logs/*.log
+/logs/*.txt
+!/logs/.gitkeep
+
+# Storage
+/storage/uploads/*
+!/storage/uploads/.gitkeep
+/storage/emails/*
+!/storage/emails/.gitkeep
+
+# Cache
+/cache/*
+!/cache/.gitkeep
+
+# Sessões
+/sessions/*
+!/sessions/.gitkeep
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# Composer
+composer.phar
+composer.lock
+
+# PHPUnit
+.phpunit.result.cache
+/phpunit.xml
+
+# Node (se usar)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build
+/build/
+/dist/
+
+# Backup
+*.sql.gz
+*.sql.bak
+*.backup
