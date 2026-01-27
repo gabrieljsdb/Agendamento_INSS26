@@ -1,0 +1,257 @@
+/**
+ * Serviço de Validações de Agendamento
+ * 
+ * Centraliza todas as regras de negócio para validação de agendamentos
+ */
+
+import {
+  getAppointmentsByDate,
+  getBlockedSlotsForDate,
+  getOrCreateAppointmentLimit,
+  getUserAppointments,
+  getSystemSettings,
+} from "../db";
+
+export interface ValidationError {
+  valid: false;
+  message: string;
+  code: string;
+}
+
+export interface ValidationSuccess {
+  valid: true;
+  availableSlots: string[];
+}
+
+export type ValidationResult = ValidationError | ValidationSuccess;
+
+export class AppointmentValidationService {
+  /**
+   * Valida se uma data/hora é válida para agendamento
+   */
+  async validateDateTime(
+    appointmentDate: Date,
+    startTime: string,
+    userId: number
+  ): Promise<ValidationError | null> {
+    // Validação 1: Não permite agendamento no dia atual
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const appointmentDateOnly = new Date(appointmentDate);
+    appointmentDateOnly.setHours(0, 0, 0, 0);
+
+    if (appointmentDateOnly.getTime() <= today.getTime()) {
+      return {
+        valid: false,
+        message: "Não é permitido agendar para o dia atual ou datas passadas",
+        code: "PAST_DATE",
+      };
+    }
+
+    // Validação 2: Não permite fins de semana
+    const dayOfWeek = appointmentDate.getDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+      return {
+        valid: false,
+        message: "Agendamentos não são permitidos nos fins de semana",
+        code: "WEEKEND",
+      };
+    }
+
+    // Validação 3: Valida horário de expediente
+    const settings = await getSystemSettings();
+    const workStart = settings?.workingHoursStart || "08:00:00";
+    const workEnd = settings?.workingHoursEnd || "12:00:00";
+
+    if (startTime < workStart || startTime >= workEnd) {
+      return {
+        valid: false,
+        message: `Horários disponíveis: ${workStart} às ${workEnd}`,
+        code: "OUTSIDE_WORKING_HOURS",
+      };
+    }
+
+    // Validação 4: Não permite agendamento após 19h para o dia seguinte
+    const blockingTime = settings?.blockingTimeAfterHours || "19:00:00";
+    const now = new Date();
+    const currentTime = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}:${String(now.getSeconds()).padStart(2, "0")}`;
+
+    if (currentTime >= blockingTime) {
+      const tomorrowOnly = new Date();
+      tomorrowOnly.setDate(tomorrowOnly.getDate() + 1);
+      tomorrowOnly.setHours(0, 0, 0, 0);
+
+      if (appointmentDateOnly.getTime() === tomorrowOnly.getTime()) {
+        return {
+          valid: false,
+          message: "Agendamentos para o dia seguinte não são permitidos após 19h",
+          code: "AFTER_HOURS_NEXT_DAY",
+        };
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Valida limite mensal de agendamentos
+   */
+  async validateMonthlyLimit(userId: number): Promise<ValidationError | null> {
+    const limit = await getOrCreateAppointmentLimit(userId);
+    const settings = await getSystemSettings();
+    const monthlyLimit = settings?.monthlyLimitPerUser || 2;
+
+    if (limit.appointmentsThisMonth >= monthlyLimit) {
+      return {
+        valid: false,
+        message: `Você atingiu o limite de ${monthlyLimit} agendamentos este mês`,
+        code: "MONTHLY_LIMIT_EXCEEDED",
+      };
+    }
+
+    return null;
+  }
+
+  /**
+   * Valida bloqueio de 2 horas após cancelamento
+   */
+  async validateCancellationBlock(userId: number): Promise<ValidationError | null> {
+    const limit = await getOrCreateAppointmentLimit(userId);
+    const settings = await getSystemSettings();
+    const blockingHours = settings?.cancellationBlockingHours || 2;
+
+    if (limit.lastCancellationAt) {
+      const now = new Date();
+      const timeSinceCancellation = (now.getTime() - limit.lastCancellationAt.getTime()) / (1000 * 60 * 60);
+
+      if (timeSinceCancellation < blockingHours) {
+        const remainingMinutes = Math.ceil((blockingHours - timeSinceCancellation) * 60);
+        return {
+          valid: false,
+          message: `Você precisa aguardar ${remainingMinutes} minutos antes de fazer um novo agendamento`,
+          code: "CANCELLATION_BLOCK",
+        };
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Obtém horários disponíveis para uma data específica
+   */
+  async getAvailableSlots(appointmentDate: Date): Promise<string[]> {
+    const settings = await getSystemSettings();
+    const workStart = settings?.workingHoursStart || "08:00:00";
+    const workEnd = settings?.workingHoursEnd || "12:00:00";
+    const durationMinutes = settings?.appointmentDurationMinutes || 30;
+
+    // Converte horas em minutos
+    const [startHour, startMin] = workStart.split(":").map(Number);
+    const [endHour, endMin] = workEnd.split(":").map(Number);
+
+    const startTotalMinutes = startHour * 60 + startMin;
+    const endTotalMinutes = endHour * 60 + endMin;
+
+    // Gera slots disponíveis
+    const slots: string[] = [];
+    for (let i = startTotalMinutes; i + durationMinutes <= endTotalMinutes; i += durationMinutes) {
+      const hour = Math.floor(i / 60);
+      const min = i % 60;
+      slots.push(`${String(hour).padStart(2, "0")}:${String(min).padStart(2, "0")}:00`);
+    }
+
+    // Remove slots bloqueados
+    const blockedSlots = await getBlockedSlotsForDate(appointmentDate);
+    const bookedAppointments = await getAppointmentsByDate(appointmentDate);
+
+    const availableSlots = slots.filter((slot) => {
+      // Verifica bloqueios
+      const isBlocked = blockedSlots.some((blocked) => {
+        if (blocked.blockType === "full_day") {
+          return true;
+        }
+        return slot >= blocked.startTime && slot < blocked.endTime;
+      });
+
+      if (isBlocked) return false;
+
+      // Verifica agendamentos já existentes
+      const isBooked = bookedAppointments.some(
+        (apt) => apt.startTime === slot
+      );
+
+      return !isBooked;
+    });
+
+    return availableSlots;
+  }
+
+  /**
+   * Valida se um slot está disponível
+   */
+  async isSlotAvailable(appointmentDate: Date, startTime: string): Promise<boolean> {
+    const availableSlots = await this.getAvailableSlots(appointmentDate);
+    return availableSlots.includes(startTime);
+  }
+
+  /**
+   * Realiza validação completa de um agendamento
+   */
+  async validateAppointment(
+    appointmentDate: Date,
+    startTime: string,
+    userId: number
+  ): Promise<ValidationResult> {
+    // Validação de data/hora
+    const dateTimeError = await this.validateDateTime(appointmentDate, startTime, userId);
+    if (dateTimeError) {
+      return dateTimeError;
+    }
+
+    // Validação de limite mensal
+    const monthlyError = await this.validateMonthlyLimit(userId);
+    if (monthlyError) {
+      return monthlyError;
+    }
+
+    // Validação de bloqueio de cancelamento
+    const cancellationError = await this.validateCancellationBlock(userId);
+    if (cancellationError) {
+      return cancellationError;
+    }
+
+    // Validação de disponibilidade do slot
+    const isAvailable = await this.isSlotAvailable(appointmentDate, startTime);
+    if (!isAvailable) {
+      return {
+        valid: false,
+        message: "Este horário não está mais disponível",
+        code: "SLOT_NOT_AVAILABLE",
+      };
+    }
+
+    // Obtém slots disponíveis para retorno
+    const availableSlots = await this.getAvailableSlots(appointmentDate);
+
+    return {
+      valid: true,
+      availableSlots,
+    };
+  }
+
+  /**
+   * Calcula hora de término do agendamento
+   */
+  calculateEndTime(startTime: string, durationMinutes: number = 30): string {
+    const [hour, min, sec] = startTime.split(":").map(Number);
+    const totalMinutes = hour * 60 + min + durationMinutes;
+    const endHour = Math.floor(totalMinutes / 60);
+    const endMin = totalMinutes % 60;
+
+    return `${String(endHour).padStart(2, "0")}:${String(endMin).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+  }
+}
+
+// Exporta instância singleton
+export const appointmentValidationService = new AppointmentValidationService();
