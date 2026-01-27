@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste JS</title>
+</head>
+<body>
+    <h1>Teste de Carregamento de JavaScript</h1>
+    
+    <script src="../vendor/jquery-3.2.1.min.js"></script>
+    <script>
+        console.log('jQuery carregado:', typeof jQuery);
+        if (typeof jQuery !== 'undefined') {
+            document.write('<p style="color: green;">✓ jQuery carregado com sucesso</p>');
+        } else {
+            document.write('<p style="color: red;">✗ jQuery NÃO carregado</p>');
+        }
+    </script>
+</body>
+</html>

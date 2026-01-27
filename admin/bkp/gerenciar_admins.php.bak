@@ -1,0 +1,166 @@
+<?php
+// FINAL COM TEMPLATE COOLADMIN: Gerenciamento de Administradores
+session_start();
+require '../conexao.php';
+
+if (!isset($_SESSION['admin_logado']) || $_SESSION['admin_logado'] !== true) {
+    header('Location: login.php');
+    exit;
+}
+
+$mensagem = '';
+$tipo_mensagem = '';
+
+// Lógica para criar novo administrador
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['criar_usuario'])) {
+    $novo_usuario = trim($_POST['novo_usuario']);
+    $senha = $_POST['senha'];
+    $confirmar_senha = $_POST['confirmar_senha'];
+    if (empty($novo_usuario) || empty($senha)) { $mensagem = 'Nome de usuário e senha são obrigatórios.'; $tipo_mensagem = 'danger'; }
+    elseif ($senha !== $confirmar_senha) { $mensagem = 'As senhas não coincidem.'; $tipo_mensagem = 'danger'; }
+    else {
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM administradores WHERE usuario = ?");
+        $stmt->execute([$novo_usuario]);
+        if ($stmt->fetchColumn() > 0) { $mensagem = 'Este nome de usuário já está em uso.'; $tipo_mensagem = 'danger'; }
+        else {
+            $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
+            $stmt_insert = $pdo->prepare("INSERT INTO administradores (usuario, senha) VALUES (?, ?)");
+            if ($stmt_insert->execute([$novo_usuario, $senha_hash])) { $mensagem = 'Administrador criado com sucesso!'; $tipo_mensagem = 'success'; }
+        }
+    }
+}
+
+// Lógica para alterar senha
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['alterar_senha'])) {
+    $admin_id = $_POST['admin_id'];
+    $nova_senha = $_POST['nova_senha'];
+    $confirmar_nova_senha = $_POST['confirmar_nova_senha'];
+    if (empty($nova_senha) || empty($admin_id)) { $mensagem = 'Selecione um usuário e digite a nova senha.'; $tipo_mensagem = 'danger'; }
+    elseif ($nova_senha !== $confirmar_nova_senha) { $mensagem = 'As senhas não coincidem.'; $tipo_mensagem = 'danger'; }
+    else {
+        $nova_senha_hash = password_hash($nova_senha, PASSWORD_DEFAULT);
+        $stmt_update = $pdo->prepare("UPDATE administradores SET senha = ? WHERE id = ?");
+        if ($stmt_update->execute([$nova_senha_hash, $admin_id])) { $mensagem = 'Senha alterada com sucesso!'; $tipo_mensagem = 'success'; }
+    }
+}
+
+$admins = $pdo->query("SELECT id, usuario FROM administradores ORDER BY usuario ASC")->fetchAll(PDO::FETCH_ASSOC);
+?>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Gerenciar Administradores</title>
+    
+    <link href="../css/font-face.css" rel="stylesheet" media="all">
+    <link href="../vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="../vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+    <link href="../vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+    <link href="../vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="../css/theme.css" rel="stylesheet" media="all">
+</head>
+
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- MENU LATERAL -->
+        <aside class="menu-sidebar d-none d-lg-block">
+            <div class="logo">
+                <a href="dashboard.php"><img src="../images/icon/logo.png" alt="CoolAdmin" /></a>
+            </div>
+            <div class="menu-sidebar__content js-scrollbar1">
+                <nav class="navbar-sidebar">
+                    <ul class="list-unstyled navbar__list">
+                        <li><a href="dashboard.php"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
+                        <li><a href="bloqueios.php"><i class="fas fa-ban"></i>Gerenciar Bloqueios</a></li>
+                        <li class="active"><a href="gerenciar_admins.php"><i class="fas fa-users-cog"></i>Gerenciar Admins</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <div class="page-container">
+            <!-- HEADER -->
+            <header class="header-desktop">
+                <div class="section__content section__content--p30"><div class="container-fluid"><div class="header-wrap"><form class="form-header"></form><div class="header-button"><div class="account-wrap"><div class="account-item clearfix js-item-menu"><div class="content"><a class="js-acc-btn" href="#"><?php echo htmlspecialchars($_SESSION['admin_usuario']); ?></a></div><div class="account-dropdown js-dropdown"><div class="account-dropdown__footer"><a href="logout.php"><i class="zmdi zmdi-power"></i>Sair</a></div></div></div></div></div></div></div></div>
+            </header>
+
+            <!-- CONTEÚDO PRINCIPAL -->
+            <div class="main-content">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <?php if ($mensagem): ?>
+                                    <div class="alert alert-<?php echo $tipo_mensagem; ?>" role="alert"><?php echo $mensagem; ?></div>
+                                <?php endif; ?>
+                                
+                                <!-- FORMULÁRIO "CRIAR NOVO" ESTILIZADO -->
+                                <div class="card">
+                                    <div class="card-header"><strong>Criar Novo Administrador</strong></div>
+                                    <div class="card-body card-block">
+                                        <form method="POST" action="gerenciar_admins.php">
+                                            <input type="hidden" name="criar_usuario" value="1">
+                                            <div class="form-group">
+                                                <label for="novo_usuario" class="form-control-label">Nome de Usuário</label>
+                                                <input type="text" id="novo_usuario" name="novo_usuario" placeholder="Digite o nome de usuário" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="senha" class="form-control-label">Senha</label>
+                                                <input type="password" id="senha" name="senha" placeholder="Digite a senha" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="confirmar_senha" class="form-control-label">Confirmar Senha</label>
+                                                <input type="password" id="confirmar_senha" name="confirmar_senha" placeholder="Confirme a senha" class="form-control" required>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Criar Administrador</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- FORMULÁRIO "ALTERAR SENHA" ESTILIZADO -->
+                                <div class="card">
+                                    <div class="card-header"><strong>Alterar Senha de um Administrador</strong></div>
+                                    <div class="card-body card-block">
+                                        <form method="POST" action="gerenciar_admins.php">
+                                            <input type="hidden" name="alterar_senha" value="1">
+                                            <div class="form-group">
+                                                <label for="admin_id" class="form-control-label">Selecione o Administrador</label>
+                                                <select id="admin_id" name="admin_id" class="form-control" required>
+                                                    <option value="" selected disabled>-- Escolha um usuário --</option>
+                                                    <?php foreach ($admins as $admin): ?>
+                                                        <option value="<?php echo $admin['id']; ?>"><?php echo htmlspecialchars($admin['usuario']); ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="nova_senha" class="form-control-label">Nova Senha</label>
+                                                <input type="password" id="nova_senha" name="nova_senha" placeholder="Digite a nova senha" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="confirmar_nova_senha" class="form-control-label">Confirmar Nova Senha</label>
+                                                <input type="password" id="confirmar_nova_senha" name="confirmar_nova_senha" placeholder="Confirme a nova senha" class="form-control" required>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-key"></i> Alterar Senha</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../vendor/jquery-3.2.1.min.js"></script>
+    <script src="../vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="../vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <script src="../vendor/animsition/animsition.min.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<?php
+session_start();
+require '../conexao.php';
+
+if (!isset($_SESSION['admin_logado']) || $_SESSION['admin_logado'] !== true) {
+    header('Location: login.php');
+    exit;
+}
+
+// --- LÓGICA DE PAGINAÇÃO ---
+$registros_por_pagina = 25; // Defina quantos registros quer por página
+$pagina_atual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+if ($pagina_atual < 1) {
+    $pagina_atual = 1;
+}
+$offset = ($pagina_atual - 1) * $registros_por_pagina;
+
+// --- LÓGICA DE FILTROS ---
+$data_inicio = $_GET['data_inicio'] ?? '';
+$data_fim = $_GET['data_fim'] ?? '';
+$status_filtro = $_GET['status'] ?? 'Todos';
+
+// --- CONSTRUÇÃO DA QUERY ---
+$where_clauses = [];
+$params = [];
+
+if ($data_inicio && $data_fim) {
+    $where_clauses[] = "a.data_agendamento BETWEEN ? AND ?";
+    $params[] = $data_inicio;
+    $params[] = $data_fim;
+}
+if ($status_filtro && $status_filtro !== 'Todos') {
+    $where_clauses[] = "a.status = ?";
+    $params[] = $status_filtro;
+}
+$where_sql = !empty($where_clauses) ? " WHERE " . implode(" AND ", $where_clauses) : "";
+
+// --- QUERY PARA CONTAR O TOTAL DE REGISTROS (PARA A PAGINAÇÃO) ---
+$sql_total = "SELECT COUNT(a.id) FROM agendamentos a" . $where_sql;
+$stmt_total = $pdo->prepare($sql_total);
+$stmt_total->execute($params);
+$total_registros = $stmt_total->fetchColumn();
+$total_paginas = ceil($total_registros / $registros_por_pagina);
+
+// --- QUERY PARA BUSCAR OS REGISTROS DA PÁGINA ATUAL ---
+$sql_pagina = "SELECT
+                    a.id, a.data_agendamento, a.hora_inicio, a.status, a.motivo,
+                    u.nome, u.email, u.oab, u.cpf_oab
+                FROM agendamentos a
+                JOIN usuarios u ON a.id_usuario = u.id"
+                . $where_sql .
+                " ORDER BY a.data_agendamento DESC, a.hora_inicio DESC
+                LIMIT :limit OFFSET :offset";
+
+$stmt_pagina = $pdo->prepare($sql_pagina);
+// Binds dos parâmetros do WHERE
+foreach ($params as $key => $value) {
+    $stmt_pagina->bindValue($key + 1, $value);
+}
+// Binds dos parâmetros do LIMIT e OFFSET
+$stmt_pagina->bindValue(':limit', $registros_por_pagina, PDO::PARAM_INT);
+$stmt_pagina->bindValue(':offset', $offset, PDO::PARAM_INT);
+$stmt_pagina->execute();
+$todos_agendamentos = $stmt_pagina->fetchAll(PDO::FETCH_ASSOC);
+
+// Inclui o cabeçalho do template
+require 'includes/header.php';
+?>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="title-5 m-b-35">Monitoramento de Agendamentos</h3>
+        
+        <div class="card">
+            <div class="card-header">Filtros e Ações</div>
+            <div class="card-body">
+                <form method="GET" action="dashboard.php" class="form-inline">
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="data_inicio" class="mr-2">De:</label>
+                        <input type="date" id="data_inicio" name="data_inicio" value="<?php echo htmlspecialchars($data_inicio); ?>" class="form-control">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="data_fim" class="mr-2">Até:</label>
+                        <input type="date" id="data_fim" name="data_fim" value="<?php echo htmlspecialchars($data_fim); ?>" class="form-control">
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2">
+                        <label for="status" class="mr-2">Status:</label>
+                        <select name="status" id="status" class="form-control">
+                            <option value="Todos" <?php if ($status_filtro === 'Todos') echo 'selected'; ?>>Todos</option>
+                            <option value="Confirmado" <?php if ($status_filtro === 'Confirmado') echo 'selected'; ?>>Confirmado</option>
+                            <option value="Cancelado" <?php if ($status_filtro === 'Cancelado') echo 'selected'; ?>>Cancelado</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+                    <button type="submit" form="form-export" class="btn btn-info mb-2 ml-2">Exportar para CSV</button>
+                </form>
+                
+                <form id="form-export" method="GET" action="exportar.php" target="_blank" class="d-none">
+                    <input type="hidden" name="data_inicio" value="<?php echo htmlspecialchars($data_inicio); ?>">
+                    <input type="hidden" name="data_fim" value="<?php echo htmlspecialchars($data_fim); ?>">
+                    <input type="hidden" name="status" value="<?php echo htmlspecialchars($status_filtro); ?>">
+                </form>
+            </div>
+        </div>
+
+        <div class="table-responsive table-responsive-data2 mt-4">
+            <table class="table table-data2">
+                <thead>
+                    <tr>
+                        <th>Data/Hora</th> <th>Nome</th> <th>CPF</th> <th>OAB</th> <th>Email</th> <th>Motivo</th> <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($todos_agendamentos as $ag): ?>
+                    <tr class="tr-shadow">
+                        <td><?php echo date('d/m/Y H:i', strtotime($ag['data_agendamento'] . ' ' . $ag['hora_inicio'])); ?></td>
+                        <td><?php echo htmlspecialchars($ag['nome']); ?></td>
+                        <td><?php echo htmlspecialchars($ag['cpf_oab']); ?></td>
+                        <td><?php echo htmlspecialchars($ag['oab']); ?></td>
+                        <td><?php echo htmlspecialchars($ag['email']); ?></td>
+                        <td><?php echo htmlspecialchars($ag['motivo']); ?></td>
+                        <td>
+                            <span class="<?php echo $ag['status'] === 'Confirmado' ? 'status--process' : 'status--denied'; ?>">
+                                <?php echo $ag['status']; ?>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr class="spacer"></tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- NAVEGAÇÃO DA PAGINAÇÃO -->
+        <div class="pagination-container mt-4">
+            <nav>
+                <ul class="pagination">
+                    <?php
+                        // Mantém os filtros nos links da paginação
+                        $query_string = http_build_query([
+                            'data_inicio' => $data_inicio,
+                            'data_fim' => $data_fim,
+                            'status' => $status_filtro
+                        ]);
+
+                        // Botão "Anterior"
+                        if ($pagina_atual > 1) {
+                            echo "<li class='page-item'><a class='page-link' href='?pagina=".($pagina_atual - 1)."&{$query_string}'>Anterior</a></li>";
+                        }
+
+                        // Links das páginas
+                        for ($i = 1; $i <= $total_paginas; $i++) {
+                            $active_class = ($i == $pagina_atual) ? 'active' : '';
+                            echo "<li class='page-item {$active_class}'><a class='page-link' href='?pagina={$i}&{$query_string}'>{$i}</a></li>";
+                        }
+
+                        // Botão "Próxima"
+                        if ($pagina_atual < $total_paginas) {
+                            echo "<li class='page-item'><a class='page-link' href='?pagina=".($pagina_atual + 1)."&{$query_string}'>Próxima</a></li>";
+                        }
+                    ?>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</div>
+
+<?php
+require 'includes/footer.php';
+?>

@@ -1,0 +1,4284 @@
+--------------------------------------------------------
+qui 16 out 2025 03:29:09 -03: [SHELL] Iniciando a execução de rotina_diaria.php
+[2025-10-16 03:29:09] =========================================
+[2025-10-16 03:29:09] INICIANDO ROTINA DIÁRIA
+[2025-10-16 03:29:09] =========================================
+[2025-10-16 03:29:09] ✅ Arquivos incluídos com sucesso
+[2025-10-16 03:29:09] 📅 Hoje: 16/10/2025 - Dia da semana: 4
+[2025-10-16 03:29:09] 🗓️ Dia útil normal - próximo dia útil: Amanhã
+[2025-10-16 03:29:09] 🎯 Data alvo: 2025-10-17 (amanhã)
+[2025-10-16 03:29:09] 🔍 Buscando agendamentos no banco de dados...
+[2025-10-16 03:29:09] 📊 Total de agendamentos encontrados: 3
+[2025-10-16 03:29:09]    👤 09:30 - MARLA SILVEIRA BARBOSA (013.820.880-86)
+[2025-10-16 03:29:09]    👤 10:00 - ROSELE KUHN BERNICK (005.958.110-78)
+[2025-10-16 03:29:09]    👤 11:30 - GABRIEL JEFFERSON SILVA DE BARCELLOS (gabrieldti)
+[2025-10-16 03:29:09] 📧 Enviando e-mail para os administradores...
+Tentando enviar e-mail para: grasibrasil.gb@gmail.com
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP 41be03b00d2f7-b6a22b9c315sm1611096a12.29 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK 41be03b00d2f7-b6a22b9c315sm1611096a12.29 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK 41be03b00d2f7-b6a22b9c315sm1611096a12.29 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead 41be03b00d2f7-b6a22b9c315sm1611096a12.29 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Thu, 16 Oct 2025 03:29:09 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_17/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <ikkpXbgkL4WFs2mZdw3pk8zQP3mKmGdEDcHDlVHyng@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_ikkpXbgkL4WFs2mZdw3pk8zQP3mKmGdEDcHDlVHyng"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_ikkpXbgkL4WFs2mZdw3pk8zQP3mKmGdEDcHDlVHyng
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (17/10/2025)Total de 3 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MARLA SILVEIRA BARBOSA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     013.820.880-86
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     76049
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Outros
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     ROSELE KUHN BERNICK
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     005.958.110-78
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     44676
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     11:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     GABRIEL JEFFERSON SILVA DE BARCELLOS
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     gabrieldti
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Problemas com Senha
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_ikkpXbgkL4WFs2mZdw3pk8zQP3mKmGdEDcHDlVHyng
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (17/10/2025)</h1><p>Total de <strong>3</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MARLA SILVEIRA BARBOSA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>013.820.880-86</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>76049</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Outros</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>ROSELE KUHN BERNICK</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>005.958.110-78</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>44676</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>11:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>GABRIEL JEFFERSON SILVA DE BARCELLOS</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>gabrieldti</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td></td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Problemas com Senha</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_ikkpXbgkL4WFs2mZdw3pk8zQP3mKmGdEDcHDlVHyng--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1760596154 41be03b00d2f7-b6a22b9c315sm1611096a12.29 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection 41be03b00d2f7-b6a22b9c315sm1611096a12.29 - gsmtp
+
+E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+[2025-10-16 03:29:14]    ✅ E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+Tentando enviar e-mail para: dtioab@oab-sc.org.br
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP d9443c01a7336-29099b0218dsm17244535ad.114 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK d9443c01a7336-29099b0218dsm17244535ad.114 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK d9443c01a7336-29099b0218dsm17244535ad.114 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead d9443c01a7336-29099b0218dsm17244535ad.114 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Thu, 16 Oct 2025 03:29:14 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_17/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <rFPE61NZxOPQHt3f7CVNoREk9l2c05Tp3vFmv8auJs4@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_rFPE61NZxOPQHt3f7CVNoREk9l2c05Tp3vFmv8auJs4"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_rFPE61NZxOPQHt3f7CVNoREk9l2c05Tp3vFmv8auJs4
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (17/10/2025)Total de 3 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MARLA SILVEIRA BARBOSA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     013.820.880-86
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     76049
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Outros
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     ROSELE KUHN BERNICK
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     005.958.110-78
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     44676
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     11:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     GABRIEL JEFFERSON SILVA DE BARCELLOS
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     gabrieldti
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Problemas com Senha
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_rFPE61NZxOPQHt3f7CVNoREk9l2c05Tp3vFmv8auJs4
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (17/10/2025)</h1><p>Total de <strong>3</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MARLA SILVEIRA BARBOSA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>013.820.880-86</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>76049</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Outros</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>ROSELE KUHN BERNICK</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>005.958.110-78</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>44676</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>11:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>GABRIEL JEFFERSON SILVA DE BARCELLOS</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>gabrieldti</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td></td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Problemas com Senha</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_rFPE61NZxOPQHt3f7CVNoREk9l2c05Tp3vFmv8auJs4--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1760596158 d9443c01a7336-29099b0218dsm17244535ad.114 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection d9443c01a7336-29099b0218dsm17244535ad.114 - gsmtp
+
+E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-16 03:29:18]    ✅ E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-16 03:29:18] 📨 Resumo: 2 enviados, 0 falhas
+[2025-10-16 03:29:18] =========================================
+[2025-10-16 03:29:18] ROTINA FINALIZADA COM SUCESSO
+[2025-10-16 03:29:18] =========================================
+qui 16 out 2025 03:29:18 -03: [SHELL] Execução finalizada.
+--------------------------------------------------------
+--------------------------------------------------------
+qui 16 out 2025 03:33:38 -03: [SHELL] Iniciando a execu��o de rotina_diaria.php
+[2025-10-16 03:33:38] =========================================
+[2025-10-16 03:33:38] INICIANDO ROTINA DIÁRIA
+[2025-10-16 03:33:38] =========================================
+[2025-10-16 03:33:38] ✅ Arquivos incluídos com sucesso
+[2025-10-16 03:33:38] 📅 Hoje: 16/10/2025 - Dia da semana: 4
+[2025-10-16 03:33:38] 🗓️ Dia útil normal - próximo dia útil: Amanhã
+[2025-10-16 03:33:38] 🎯 Data alvo: 2025-10-17 (amanhã)
+[2025-10-16 03:33:38] 🔍 Buscando agendamentos no banco de dados...
+[2025-10-16 03:33:38] 📊 Total de agendamentos encontrados: 3
+[2025-10-16 03:33:38]    👤 09:30 - MARLA SILVEIRA BARBOSA (013.820.880-86)
+[2025-10-16 03:33:38]    👤 10:00 - ROSELE KUHN BERNICK (005.958.110-78)
+[2025-10-16 03:33:38]    👤 11:30 - GABRIEL JEFFERSON SILVA DE BARCELLOS (gabrieldti)
+[2025-10-16 03:33:38] 📧 Enviando e-mail para os administradores...
+Tentando enviar e-mail para: grasibrasil.gb@gmail.com
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP d9443c01a7336-2909931093asm17825315ad.6 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK d9443c01a7336-2909931093asm17825315ad.6 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK d9443c01a7336-2909931093asm17825315ad.6 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead d9443c01a7336-2909931093asm17825315ad.6 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Thu, 16 Oct 2025 03:33:38 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_17/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <IpCG2Aoh3Muf1NFQvfCraZruPdV94v7ky0rakP6sM5k@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_IpCG2Aoh3Muf1NFQvfCraZruPdV94v7ky0rakP6sM5k"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_IpCG2Aoh3Muf1NFQvfCraZruPdV94v7ky0rakP6sM5k
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (17/10/2025)Total de 3 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MARLA SILVEIRA BARBOSA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     013.820.880-86
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     76049
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Outros
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     ROSELE KUHN BERNICK
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     005.958.110-78
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     44676
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     11:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     GABRIEL JEFFERSON SILVA DE BARCELLOS
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     gabrieldti
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Problemas com Senha
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_IpCG2Aoh3Muf1NFQvfCraZruPdV94v7ky0rakP6sM5k
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (17/10/2025)</h1><p>Total de <strong>3</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MARLA SILVEIRA BARBOSA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>013.820.880-86</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>76049</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Outros</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>ROSELE KUHN BERNICK</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>005.958.110-78</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>44676</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>11:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>GABRIEL JEFFERSON SILVA DE BARCELLOS</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>gabrieldti</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td></td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Problemas com Senha</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_IpCG2Aoh3Muf1NFQvfCraZruPdV94v7ky0rakP6sM5k--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1760596422 d9443c01a7336-2909931093asm17825315ad.6 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection d9443c01a7336-2909931093asm17825315ad.6 - gsmtp
+
+E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+[2025-10-16 03:33:42]    ✅ E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+Tentando enviar e-mail para: dtioab@oab-sc.org.br
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP 41be03b00d2f7-b6a2288bd55sm1636706a12.9 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK 41be03b00d2f7-b6a2288bd55sm1636706a12.9 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK 41be03b00d2f7-b6a2288bd55sm1636706a12.9 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead 41be03b00d2f7-b6a2288bd55sm1636706a12.9 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Thu, 16 Oct 2025 03:33:42 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_17/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <je4EsyJHGD8RDXwGqPs8cMI9mKvzsJWLsIcxD4hoWvo@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_je4EsyJHGD8RDXwGqPs8cMI9mKvzsJWLsIcxD4hoWvo"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_je4EsyJHGD8RDXwGqPs8cMI9mKvzsJWLsIcxD4hoWvo
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (17/10/2025)Total de 3 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MARLA SILVEIRA BARBOSA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     013.820.880-86
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     76049
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Outros
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     ROSELE KUHN BERNICK
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     005.958.110-78
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     44676
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     11:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     GABRIEL JEFFERSON SILVA DE BARCELLOS
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     gabrieldti
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Problemas com Senha
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_je4EsyJHGD8RDXwGqPs8cMI9mKvzsJWLsIcxD4hoWvo
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (17/10/2025)</h1><p>Total de <strong>3</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MARLA SILVEIRA BARBOSA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>013.820.880-86</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>76049</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Outros</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>ROSELE KUHN BERNICK</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>005.958.110-78</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>44676</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>11:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>GABRIEL JEFFERSON SILVA DE BARCELLOS</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>gabrieldti</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td></td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Problemas com Senha</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_je4EsyJHGD8RDXwGqPs8cMI9mKvzsJWLsIcxD4hoWvo--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1760596427 41be03b00d2f7-b6a2288bd55sm1636706a12.9 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection 41be03b00d2f7-b6a2288bd55sm1636706a12.9 - gsmtp
+
+E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-16 03:33:47]    ✅ E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-16 03:33:47] 📨 Resumo: 2 enviados, 0 falhas
+[2025-10-16 03:33:47] =========================================
+[2025-10-16 03:33:47] ROTINA FINALIZADA COM SUCESSO
+[2025-10-16 03:33:47] =========================================
+qui 16 out 2025 03:33:47 -03: [SHELL] Execu��o finalizada.
+--------------------------------------------------------
+--------------------------------------------------------
+qui 16 out 2025 03:37:54 -03: [SHELL] Iniciando a execu��o de rotina_diaria.php
+[2025-10-16 03:37:54] =========================================
+[2025-10-16 03:37:54] INICIANDO ROTINA DIÁRIA
+[2025-10-16 03:37:54] =========================================
+[2025-10-16 03:37:54] ✅ Arquivos incluídos com sucesso
+[2025-10-16 03:37:54] 📅 Hoje: 16/10/2025 - Dia da semana: 4
+[2025-10-16 03:37:54] 🗓️ Dia útil normal - próximo dia útil: Amanhã
+[2025-10-16 03:37:54] 🎯 Data alvo: 2025-10-17 (amanhã)
+[2025-10-16 03:37:54] 🔍 Buscando agendamentos no banco de dados...
+[2025-10-16 03:37:54] 📊 Total de agendamentos encontrados: 2
+[2025-10-16 03:37:54]    👤 09:30 - MARLA SILVEIRA BARBOSA (013.820.880-86)
+[2025-10-16 03:37:54]    👤 10:00 - ROSELE KUHN BERNICK (005.958.110-78)
+[2025-10-16 03:37:54] 📧 Enviando e-mail para os administradores...
+Tentando enviar e-mail para: grasibrasil.gb@gmail.com
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP 98e67ed59e1d1-33bb6522dd7sm562313a91.3 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK 98e67ed59e1d1-33bb6522dd7sm562313a91.3 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK 98e67ed59e1d1-33bb6522dd7sm562313a91.3 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead 98e67ed59e1d1-33bb6522dd7sm562313a91.3 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Thu, 16 Oct 2025 03:37:54 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_17/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <fCLWhhCLLFdCuK8NdNnURbGKUbQp34Tr85efsND701E@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_fCLWhhCLLFdCuK8NdNnURbGKUbQp34Tr85efsND701E"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_fCLWhhCLLFdCuK8NdNnURbGKUbQp34Tr85efsND701E
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (17/10/2025)Total de 2 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MARLA SILVEIRA BARBOSA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     013.820.880-86
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     76049
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Outros
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     ROSELE KUHN BERNICK
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     005.958.110-78
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     44676
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_fCLWhhCLLFdCuK8NdNnURbGKUbQp34Tr85efsND701E
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (17/10/2025)</h1><p>Total de <strong>2</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MARLA SILVEIRA BARBOSA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>013.820.880-86</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>76049</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Outros</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>ROSELE KUHN BERNICK</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>005.958.110-78</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>44676</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_fCLWhhCLLFdCuK8NdNnURbGKUbQp34Tr85efsND701E--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1760596678 98e67ed59e1d1-33bb6522dd7sm562313a91.3 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection 98e67ed59e1d1-33bb6522dd7sm562313a91.3 - gsmtp
+
+E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+[2025-10-16 03:37:58]    ✅ E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+Tentando enviar e-mail para: dtioab@oab-sc.org.br
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP d2e1a72fcca58-7992d5b8135sm20674795b3a.68 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK d2e1a72fcca58-7992d5b8135sm20674795b3a.68 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK d2e1a72fcca58-7992d5b8135sm20674795b3a.68 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead d2e1a72fcca58-7992d5b8135sm20674795b3a.68 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Thu, 16 Oct 2025 03:37:58 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_17/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <m7Amitc2JsyOrODrpc1vwULg0PZEwVehz8jeT2PRPOg@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_m7Amitc2JsyOrODrpc1vwULg0PZEwVehz8jeT2PRPOg"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_m7Amitc2JsyOrODrpc1vwULg0PZEwVehz8jeT2PRPOg
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (17/10/2025)Total de 2 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MARLA SILVEIRA BARBOSA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     013.820.880-86
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     76049
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Outros
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     ROSELE KUHN BERNICK
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     005.958.110-78
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     44676
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_m7Amitc2JsyOrODrpc1vwULg0PZEwVehz8jeT2PRPOg
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (17/10/2025)</h1><p>Total de <strong>2</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MARLA SILVEIRA BARBOSA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>013.820.880-86</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>76049</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Outros</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>ROSELE KUHN BERNICK</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>005.958.110-78</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>44676</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_m7Amitc2JsyOrODrpc1vwULg0PZEwVehz8jeT2PRPOg--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1760596682 d2e1a72fcca58-7992d5b8135sm20674795b3a.68 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection d2e1a72fcca58-7992d5b8135sm20674795b3a.68 - gsmtp
+
+E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-16 03:38:03]    ✅ E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-16 03:38:03] 📨 Resumo: 2 enviados, 0 falhas
+[2025-10-16 03:38:03] =========================================
+[2025-10-16 03:38:03] ROTINA FINALIZADA COM SUCESSO
+[2025-10-16 03:38:03] =========================================
+qui 16 out 2025 03:38:03 -03: [SHELL] Execu��o finalizada.
+--------------------------------------------------------
+--------------------------------------------------------
+qui 16 out 2025 19:00:01 -03: [SHELL] Iniciando a execu��o de rotina_diaria.php
+[2025-10-16 19:00:01] =========================================
+[2025-10-16 19:00:01] INICIANDO ROTINA DIÁRIA
+[2025-10-16 19:00:01] =========================================
+[2025-10-16 19:00:01] ✅ Arquivos incluídos com sucesso
+[2025-10-16 19:00:01] 📅 Hoje: 16/10/2025 - Dia da semana: 4
+[2025-10-16 19:00:01] 🗓️ Dia útil normal - próximo dia útil: Amanhã
+[2025-10-16 19:00:01] 🎯 Data alvo: 2025-10-17 (amanhã)
+[2025-10-16 19:00:01] 🔍 Buscando agendamentos no banco de dados...
+[2025-10-16 19:00:01] 📊 Total de agendamentos encontrados: 2
+[2025-10-16 19:00:01]    👤 09:30 - MARLA SILVEIRA BARBOSA (013.820.880-86)
+[2025-10-16 19:00:01]    👤 10:00 - ROSELE KUHN BERNICK (005.958.110-78)
+[2025-10-16 19:00:01] 📧 Enviando e-mail para os administradores...
+Tentando enviar e-mail para: grasibrasil.gb@gmail.com
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP d2e1a72fcca58-7992b921711sm23424725b3a.27 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK d2e1a72fcca58-7992b921711sm23424725b3a.27 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK d2e1a72fcca58-7992b921711sm23424725b3a.27 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead d2e1a72fcca58-7992b921711sm23424725b3a.27 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Thu, 16 Oct 2025 19:00:01 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_17/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <JfbhWrinX8sZjLS4KcBbl7WsEv0nLeestwijBKnYeE@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_JfbhWrinX8sZjLS4KcBbl7WsEv0nLeestwijBKnYeE"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_JfbhWrinX8sZjLS4KcBbl7WsEv0nLeestwijBKnYeE
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (17/10/2025)Total de 2 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MARLA SILVEIRA BARBOSA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     013.820.880-86
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     76049
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Outros
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     ROSELE KUHN BERNICK
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     005.958.110-78
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     44676
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_JfbhWrinX8sZjLS4KcBbl7WsEv0nLeestwijBKnYeE
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (17/10/2025)</h1><p>Total de <strong>2</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MARLA SILVEIRA BARBOSA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>013.820.880-86</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>76049</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Outros</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>ROSELE KUHN BERNICK</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>005.958.110-78</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>44676</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_JfbhWrinX8sZjLS4KcBbl7WsEv0nLeestwijBKnYeE--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1760652005 d2e1a72fcca58-7992b921711sm23424725b3a.27 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection d2e1a72fcca58-7992b921711sm23424725b3a.27 - gsmtp
+
+E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+[2025-10-16 19:00:06]    ✅ E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+Tentando enviar e-mail para: dtioab@oab-sc.org.br
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP d9443c01a7336-2909930a95fsm41445155ad.2 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK d9443c01a7336-2909930a95fsm41445155ad.2 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK d9443c01a7336-2909930a95fsm41445155ad.2 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead d9443c01a7336-2909930a95fsm41445155ad.2 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Thu, 16 Oct 2025 19:00:06 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_17/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <CUUUw4uCjbbzFJThrNinj4tMAQDAf1AMdXAxhjEe7E@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_CUUUw4uCjbbzFJThrNinj4tMAQDAf1AMdXAxhjEe7E"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_CUUUw4uCjbbzFJThrNinj4tMAQDAf1AMdXAxhjEe7E
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (17/10/2025)Total de 2 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MARLA SILVEIRA BARBOSA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     013.820.880-86
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     76049
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Outros
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     ROSELE KUHN BERNICK
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     005.958.110-78
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     44676
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_CUUUw4uCjbbzFJThrNinj4tMAQDAf1AMdXAxhjEe7E
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (17/10/2025)</h1><p>Total de <strong>2</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MARLA SILVEIRA BARBOSA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>013.820.880-86</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>76049</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Outros</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>ROSELE KUHN BERNICK</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>005.958.110-78</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>44676</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_CUUUw4uCjbbzFJThrNinj4tMAQDAf1AMdXAxhjEe7E--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1760652010 d9443c01a7336-2909930a95fsm41445155ad.2 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection d9443c01a7336-2909930a95fsm41445155ad.2 - gsmtp
+
+E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-16 19:00:10]    ✅ E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-16 19:00:10] 📨 Resumo: 2 enviados, 0 falhas
+[2025-10-16 19:00:10] =========================================
+[2025-10-16 19:00:10] ROTINA FINALIZADA COM SUCESSO
+[2025-10-16 19:00:10] =========================================
+qui 16 out 2025 19:00:10 -03: [SHELL] Execu��o finalizada.
+--------------------------------------------------------
+--------------------------------------------------------
+sex 17 out 2025 19:00:01 -03: [SHELL] Iniciando a execu��o de rotina_diaria.php
+[2025-10-17 19:00:01] =========================================
+[2025-10-17 19:00:01] INICIANDO ROTINA DIÁRIA
+[2025-10-17 19:00:01] =========================================
+[2025-10-17 19:00:01] ✅ Arquivos incluídos com sucesso
+[2025-10-17 19:00:01] 📅 Hoje: 17/10/2025 - Dia da semana: 5
+[2025-10-17 19:00:01] 🗓️ Sexta-feira detectada - próximo dia útil: Segunda-feira
+[2025-10-17 19:00:01] 🎯 Data alvo: 2025-10-20 (próxima Segunda-feira)
+[2025-10-17 19:00:01] 🔍 Buscando agendamentos no banco de dados...
+[2025-10-17 19:00:01] 📊 Total de agendamentos encontrados: 3
+[2025-10-17 19:00:01]    👤 09:00 - KELY CRISTINY DOS SANTOS (088.294.599-84)
+[2025-10-17 19:00:01]    👤 09:30 - ANGELLINA MAYER MENGUE MORALES (083.063.579-30)
+[2025-10-17 19:00:01]    👤 10:00 - FERNANDA MACHADO DA SILVA SANTOS (007.950.739-50)
+[2025-10-17 19:00:01] 📧 Enviando e-mail para os administradores...
+Tentando enviar e-mail para: grasibrasil.gb@gmail.com
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP d2e1a72fcca58-7a22ff5da24sm639356b3a.34 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK d2e1a72fcca58-7a22ff5da24sm639356b3a.34 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK d2e1a72fcca58-7a22ff5da24sm639356b3a.34 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead d2e1a72fcca58-7a22ff5da24sm639356b3a.34 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Fri, 17 Oct 2025 19:00:01 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_pr=C3=B3xima_Segunda-feira,_20/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <fPJBGXB9MgcXdBNAWEouEwj2BtqtOJ1FhSUixwFECA@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_fPJBGXB9MgcXdBNAWEouEwj2BtqtOJ1FhSUixwFECA"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_fPJBGXB9MgcXdBNAWEouEwj2BtqtOJ1FhSUixwFECA
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para próxima Segunda-feira (20/10/2025)Total de 3 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     KELY CRISTINY DOS SANTOS
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     088.294.599-84
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     53370
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     ANGELLINA MAYER MENGUE MORALES
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     083.063.579-30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     67418
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     FERNANDA MACHADO DA SILVA SANTOS
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     007.950.739-50
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     41691
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_fPJBGXB9MgcXdBNAWEouEwj2BtqtOJ1FhSUixwFECA
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para próxima Segunda-feira (20/10/2025)</h1><p>Total de <strong>3</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>KELY CRISTINY DOS SANTOS</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>088.294.599-84</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>53370</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>ANGELLINA MAYER MENGUE MORALES</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>083.063.579-30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>67418</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>FERNANDA MACHADO DA SILVA SANTOS</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>007.950.739-50</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>41691</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_fPJBGXB9MgcXdBNAWEouEwj2BtqtOJ1FhSUixwFECA--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1760738407 d2e1a72fcca58-7a22ff5da24sm639356b3a.34 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection d2e1a72fcca58-7a22ff5da24sm639356b3a.34 - gsmtp
+
+E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+[2025-10-17 19:00:07]    ✅ E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+Tentando enviar e-mail para: dtioab@oab-sc.org.br
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP d9443c01a7336-292472193dfsm5335295ad.105 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK d9443c01a7336-292472193dfsm5335295ad.105 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK d9443c01a7336-292472193dfsm5335295ad.105 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead d9443c01a7336-292472193dfsm5335295ad.105 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Fri, 17 Oct 2025 19:00:07 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_pr=C3=B3xima_Segunda-feira,_20/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <ihjbvAV79VXYSyfrNPvLKb6Beep3EczAMloMqP6WU@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_ihjbvAV79VXYSyfrNPvLKb6Beep3EczAMloMqP6WU"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_ihjbvAV79VXYSyfrNPvLKb6Beep3EczAMloMqP6WU
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para próxima Segunda-feira (20/10/2025)Total de 3 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     KELY CRISTINY DOS SANTOS
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     088.294.599-84
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     53370
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     ANGELLINA MAYER MENGUE MORALES
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     083.063.579-30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     67418
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     FERNANDA MACHADO DA SILVA SANTOS
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     007.950.739-50
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     41691
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_ihjbvAV79VXYSyfrNPvLKb6Beep3EczAMloMqP6WU
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para próxima Segunda-feira (20/10/2025)</h1><p>Total de <strong>3</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>KELY CRISTINY DOS SANTOS</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>088.294.599-84</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>53370</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>ANGELLINA MAYER MENGUE MORALES</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>083.063.579-30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>67418</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>FERNANDA MACHADO DA SILVA SANTOS</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>007.950.739-50</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>41691</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_ihjbvAV79VXYSyfrNPvLKb6Beep3EczAMloMqP6WU--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1760738410 d9443c01a7336-292472193dfsm5335295ad.105 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection d9443c01a7336-292472193dfsm5335295ad.105 - gsmtp
+
+E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-17 19:00:11]    ✅ E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-17 19:00:11] 📨 Resumo: 2 enviados, 0 falhas
+[2025-10-17 19:00:11] =========================================
+[2025-10-17 19:00:11] ROTINA FINALIZADA COM SUCESSO
+[2025-10-17 19:00:11] =========================================
+sex 17 out 2025 19:00:11 -03: [SHELL] Execu��o finalizada.
+--------------------------------------------------------
+--------------------------------------------------------
+seg 20 out 2025 19:00:01 -03: [SHELL] Iniciando a execu��o de rotina_diaria.php
+[2025-10-20 19:00:01] =========================================
+[2025-10-20 19:00:01] INICIANDO ROTINA DIÁRIA
+[2025-10-20 19:00:01] =========================================
+[2025-10-20 19:00:01] ✅ Arquivos incluídos com sucesso
+[2025-10-20 19:00:01] 📅 Hoje: 20/10/2025 - Dia da semana: 1
+[2025-10-20 19:00:01] 🗓️ Dia útil normal - próximo dia útil: Amanhã
+[2025-10-20 19:00:01] 🎯 Data alvo: 2025-10-21 (amanhã)
+[2025-10-20 19:00:01] 🔍 Buscando agendamentos no banco de dados...
+[2025-10-20 19:00:01] 📊 Total de agendamentos encontrados: 6
+[2025-10-20 19:00:01]    👤 08:30 - CARLOS JORIAN BALESTIERI (023.577.621-10)
+[2025-10-20 19:00:01]    👤 09:00 - LUIZA (084.372.789-61)
+[2025-10-20 19:00:01]    👤 09:30 - LUIZA (084.372.789-61)
+[2025-10-20 19:00:01]    👤 10:00 - MARIANA CARVALHO BELLUSSI (444.952.618-00)
+[2025-10-20 19:00:01]    👤 10:30 - MARIANA CARVALHO BELLUSSI (444.952.618-00)
+[2025-10-20 19:00:01]    👤 11:00 - ROBERTA ANDREZA DE SOUSA COSTA (058.911.973-75)
+[2025-10-20 19:00:01] 📧 Enviando e-mail para os administradores...
+Tentando enviar e-mail para: grasibrasil.gb@gmail.com
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP d2e1a72fcca58-7a23010e25asm9221793b3a.56 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK d2e1a72fcca58-7a23010e25asm9221793b3a.56 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK d2e1a72fcca58-7a23010e25asm9221793b3a.56 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead d2e1a72fcca58-7a23010e25asm9221793b3a.56 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Mon, 20 Oct 2025 19:00:01 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_21/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <6pTU9Scn7du0700JbyBGfnYi4p6n5GPix0SL8eNg@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_6pTU9Scn7du0700JbyBGfnYi4p6n5GPix0SL8eNg"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_6pTU9Scn7du0700JbyBGfnYi4p6n5GPix0SL8eNg
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (21/10/2025)Total de 6 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     08:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     CARLOS JORIAN BALESTIERI
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     023.577.621-10
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     48590
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     LUIZA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     084.372.789-61
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     51389
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     LUIZA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     084.372.789-61
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     51389
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MARIANA CARVALHO BELLUSSI
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     444.952.618-00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     61821
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MARIANA CARVALHO BELLUSSI
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     444.952.618-00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     61821
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     11:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     ROBERTA ANDREZA DE SOUSA COSTA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     058.911.973-75
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     57577
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Outros
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_6pTU9Scn7du0700JbyBGfnYi4p6n5GPix0SL8eNg
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (21/10/2025)</h1><p>Total de <strong>6</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>08:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>CARLOS JORIAN BALESTIERI</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>023.577.621-10</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>48590</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>LUIZA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>084.372.789-61</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>51389</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>LUIZA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>084.372.789-61</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>51389</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MARIANA CARVALHO BELLUSSI</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>444.952.618-00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>61821</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MARIANA CARVALHO BELLUSSI</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>444.952.618-00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>61821</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>11:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>ROBERTA ANDREZA DE SOUSA COSTA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>058.911.973-75</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>57577</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Outros</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_6pTU9Scn7du0700JbyBGfnYi4p6n5GPix0SL8eNg--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1760997605 d2e1a72fcca58-7a23010e25asm9221793b3a.56 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection d2e1a72fcca58-7a23010e25asm9221793b3a.56 - gsmtp
+
+E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+[2025-10-20 19:00:06]    ✅ E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+Tentando enviar e-mail para: dtioab@oab-sc.org.br
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP d9443c01a7336-29246ebca5csm90943015ad.19 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK d9443c01a7336-29246ebca5csm90943015ad.19 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK d9443c01a7336-29246ebca5csm90943015ad.19 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead d9443c01a7336-29246ebca5csm90943015ad.19 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Mon, 20 Oct 2025 19:00:06 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_21/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <lfmusEcU3DRnRYjsQ1QtFxXIe1e0dCSBJiC94JRyLU@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_lfmusEcU3DRnRYjsQ1QtFxXIe1e0dCSBJiC94JRyLU"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_lfmusEcU3DRnRYjsQ1QtFxXIe1e0dCSBJiC94JRyLU
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (21/10/2025)Total de 6 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     08:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     CARLOS JORIAN BALESTIERI
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     023.577.621-10
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     48590
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     LUIZA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     084.372.789-61
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     51389
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     LUIZA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     084.372.789-61
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     51389
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MARIANA CARVALHO BELLUSSI
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     444.952.618-00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     61821
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MARIANA CARVALHO BELLUSSI
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     444.952.618-00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     61821
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     11:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     ROBERTA ANDREZA DE SOUSA COSTA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     058.911.973-75
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     57577
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Outros
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_lfmusEcU3DRnRYjsQ1QtFxXIe1e0dCSBJiC94JRyLU
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (21/10/2025)</h1><p>Total de <strong>6</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>08:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>CARLOS JORIAN BALESTIERI</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>023.577.621-10</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>48590</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>LUIZA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>084.372.789-61</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>51389</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>LUIZA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>084.372.789-61</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>51389</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MARIANA CARVALHO BELLUSSI</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>444.952.618-00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>61821</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MARIANA CARVALHO BELLUSSI</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>444.952.618-00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>61821</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>11:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>ROBERTA ANDREZA DE SOUSA COSTA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>058.911.973-75</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>57577</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Outros</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_lfmusEcU3DRnRYjsQ1QtFxXIe1e0dCSBJiC94JRyLU--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1760997609 d9443c01a7336-29246ebca5csm90943015ad.19 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection d9443c01a7336-29246ebca5csm90943015ad.19 - gsmtp
+
+E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-20 19:00:10]    ✅ E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-20 19:00:10] 📨 Resumo: 2 enviados, 0 falhas
+[2025-10-20 19:00:10] =========================================
+[2025-10-20 19:00:10] ROTINA FINALIZADA COM SUCESSO
+[2025-10-20 19:00:10] =========================================
+seg 20 out 2025 19:00:10 -03: [SHELL] Execu��o finalizada.
+--------------------------------------------------------
+--------------------------------------------------------
+ter 21 out 2025 19:00:02 -03: [SHELL] Iniciando a execu��o de rotina_diaria.php
+[2025-10-21 19:00:02] =========================================
+[2025-10-21 19:00:02] INICIANDO ROTINA DIÁRIA
+[2025-10-21 19:00:02] =========================================
+[2025-10-21 19:00:02] ✅ Arquivos incluídos com sucesso
+[2025-10-21 19:00:02] 📅 Hoje: 21/10/2025 - Dia da semana: 2
+[2025-10-21 19:00:02] 🗓️ Dia útil normal - próximo dia útil: Amanhã
+[2025-10-21 19:00:02] 🎯 Data alvo: 2025-10-22 (amanhã)
+[2025-10-21 19:00:02] 🔍 Buscando agendamentos no banco de dados...
+[2025-10-21 19:00:02] 📊 Total de agendamentos encontrados: 1
+[2025-10-21 19:00:02]    👤 09:30 - THAIANA NUNES (079.847.149-24)
+[2025-10-21 19:00:02] 📧 Enviando e-mail para os administradores...
+Tentando enviar e-mail para: grasibrasil.gb@gmail.com
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP d9443c01a7336-292471fe2cdsm118602935ad.95 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK d9443c01a7336-292471fe2cdsm118602935ad.95 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK d9443c01a7336-292471fe2cdsm118602935ad.95 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead d9443c01a7336-292471fe2cdsm118602935ad.95 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Tue, 21 Oct 2025 19:00:02 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_22/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <g7UDsJvNk8HbzhslKzGkan8gtaPxFxeNQtrB4wa5I@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_g7UDsJvNk8HbzhslKzGkan8gtaPxFxeNQtrB4wa5I"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_g7UDsJvNk8HbzhslKzGkan8gtaPxFxeNQtrB4wa5I
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (22/10/2025)Total de 1 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     THAIANA NUNES
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     079.847.149-24
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     41113
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_g7UDsJvNk8HbzhslKzGkan8gtaPxFxeNQtrB4wa5I
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (22/10/2025)</h1><p>Total de <strong>1</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>THAIANA NUNES</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>079.847.149-24</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>41113</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_g7UDsJvNk8HbzhslKzGkan8gtaPxFxeNQtrB4wa5I--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1761084006 d9443c01a7336-292471fe2cdsm118602935ad.95 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection d9443c01a7336-292471fe2cdsm118602935ad.95 - gsmtp
+
+E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+[2025-10-21 19:00:06]    ✅ E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+Tentando enviar e-mail para: dtioab@oab-sc.org.br
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP 98e67ed59e1d1-33e223de21bsm556526a91.9 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK 98e67ed59e1d1-33e223de21bsm556526a91.9 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK 98e67ed59e1d1-33e223de21bsm556526a91.9 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead 98e67ed59e1d1-33e223de21bsm556526a91.9 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Tue, 21 Oct 2025 19:00:06 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_22/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <GgzQM6MKjqaX6OREfvbmF1cp7XLH5kkssdA7s3ql4@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_GgzQM6MKjqaX6OREfvbmF1cp7XLH5kkssdA7s3ql4"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_GgzQM6MKjqaX6OREfvbmF1cp7XLH5kkssdA7s3ql4
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (22/10/2025)Total de 1 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     THAIANA NUNES
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     079.847.149-24
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     41113
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_GgzQM6MKjqaX6OREfvbmF1cp7XLH5kkssdA7s3ql4
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (22/10/2025)</h1><p>Total de <strong>1</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>THAIANA NUNES</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>079.847.149-24</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>41113</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_GgzQM6MKjqaX6OREfvbmF1cp7XLH5kkssdA7s3ql4--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1761084010 98e67ed59e1d1-33e223de21bsm556526a91.9 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection 98e67ed59e1d1-33e223de21bsm556526a91.9 - gsmtp
+
+E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-21 19:00:11]    ✅ E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-21 19:00:11] 📨 Resumo: 2 enviados, 0 falhas
+[2025-10-21 19:00:11] =========================================
+[2025-10-21 19:00:11] ROTINA FINALIZADA COM SUCESSO
+[2025-10-21 19:00:11] =========================================
+ter 21 out 2025 19:00:11 -03: [SHELL] Execu��o finalizada.
+--------------------------------------------------------
+--------------------------------------------------------
+qua 22 out 2025 19:00:01 -03: [SHELL] Iniciando a execu��o de rotina_diaria.php
+[2025-10-22 19:00:01] =========================================
+[2025-10-22 19:00:01] INICIANDO ROTINA DIÁRIA
+[2025-10-22 19:00:01] =========================================
+[2025-10-22 19:00:01] ✅ Arquivos incluídos com sucesso
+[2025-10-22 19:00:01] 📅 Hoje: 22/10/2025 - Dia da semana: 3
+[2025-10-22 19:00:01] 🗓️ Dia útil normal - próximo dia útil: Amanhã
+[2025-10-22 19:00:01] 🎯 Data alvo: 2025-10-23 (amanhã)
+[2025-10-22 19:00:01] 🔍 Buscando agendamentos no banco de dados...
+[2025-10-22 19:00:01] 📊 Total de agendamentos encontrados: 8
+[2025-10-22 19:00:01]    👤 08:30 - BIANCA DA SILVA SCHWINDT (033.117.210-04)
+[2025-10-22 19:00:01]    👤 09:00 - RODRIGO SILVA DA SILVEIRA (070.536.509-36)
+[2025-10-22 19:00:01]    👤 09:30 - RODRIGO SILVA DA SILVEIRA (070.536.509-36)
+[2025-10-22 19:00:01]    👤 10:00 - THIAGO (075.866.409-55)
+[2025-10-22 19:00:01]    👤 10:30 - THIAGO (075.866.409-55)
+[2025-10-22 19:00:01]    👤 11:00 - MANOELLA PEREIRA BOTELHO (074.312.179-19)
+[2025-10-22 19:00:01]    👤 11:30 - THAÍS TONINI LIMA (218.247.278-95)
+[2025-10-22 19:00:01]    👤 12:00 - CAMILA DE SOUZA MATHIAS (106.903.919-51)
+[2025-10-22 19:00:01] 📧 Enviando e-mail para os administradores...
+Tentando enviar e-mail para: grasibrasil.gb@gmail.com
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP d2e1a72fcca58-7a274bb2174sm252469b3a.55 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK d2e1a72fcca58-7a274bb2174sm252469b3a.55 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK d2e1a72fcca58-7a274bb2174sm252469b3a.55 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead d2e1a72fcca58-7a274bb2174sm252469b3a.55 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Wed, 22 Oct 2025 19:00:01 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <grasibrasil.gb@gmail.com>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_23/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <uZtnEpLiYfRH4B2tB7EJ6ZaXrDLJFTrv3Yere9ntMCY@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_uZtnEpLiYfRH4B2tB7EJ6ZaXrDLJFTrv3Yere9ntMCY"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_uZtnEpLiYfRH4B2tB7EJ6ZaXrDLJFTrv3Yere9ntMCY
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (23/10/2025)Total de 8 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     08:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     BIANCA DA SILVA SCHWINDT
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     033.117.210-04
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     64778
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     RODRIGO SILVA DA SILVEIRA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     070.536.509-36
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     37869
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     RODRIGO SILVA DA SILVEIRA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     070.536.509-36
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     37869
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     THIAGO
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     075.866.409-55
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     THIAGO
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     075.866.409-55
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     11:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MANOELLA PEREIRA BOTELHO
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     074.312.179-19
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     49213
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     11:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     THAÍS TONINI LIMA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     218.247.278-95
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     69073
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     12:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     CAMILA DE SOUZA MATHIAS
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     106.903.919-51
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     71571
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Problemas com Senha
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_uZtnEpLiYfRH4B2tB7EJ6ZaXrDLJFTrv3Yere9ntMCY
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (23/10/2025)</h1><p>Total de <strong>8</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>08:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>BIANCA DA SILVA SCHWINDT</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>033.117.210-04</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>64778</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>RODRIGO SILVA DA SILVEIRA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>070.536.509-36</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>37869</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>RODRIGO SILVA DA SILVEIRA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>070.536.509-36</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>37869</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>THIAGO</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>075.866.409-55</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td></td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>THIAGO</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>075.866.409-55</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td></td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>11:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MANOELLA PEREIRA BOTELHO</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>074.312.179-19</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>49213</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>11:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>THAÍS TONINI LIMA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>218.247.278-95</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>69073</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>12:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>CAMILA DE SOUZA MATHIAS</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>106.903.919-51</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>71571</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Problemas com Senha</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_uZtnEpLiYfRH4B2tB7EJ6ZaXrDLJFTrv3Yere9ntMCY--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1761170406 d2e1a72fcca58-7a274bb2174sm252469b3a.55 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection d2e1a72fcca58-7a274bb2174sm252469b3a.55 - gsmtp
+
+E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+[2025-10-22 19:00:06]    ✅ E-mail enviado com sucesso para: grasibrasil.gb@gmail.com
+Tentando enviar e-mail para: dtioab@oab-sc.org.br
+PHPMailer DEBUG: SERVER -> CLIENT: 220 smtp.gmail.com ESMTP 98e67ed59e1d1-33e223d11c8sm3606351a91.4 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: STARTTLS
+
+PHPMailer DEBUG: SERVER -> CLIENT: 220 2.0.0 Ready to start TLS
+
+PHPMailer DEBUG: CLIENT -> SERVER: EHLO spark.oab-sc.org.br
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250-smtp.gmail.com at your service, [143.0.120.174]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+PHPMailer DEBUG: CLIENT -> SERVER: AUTH LOGIN
+
+PHPMailer DEBUG: SERVER -> CLIENT: 334 VXNlcm5hbWU6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 334 UGFzc3dvcmQ6
+
+PHPMailer DEBUG: CLIENT -> SERVER: [credentials hidden]
+PHPMailer DEBUG: SERVER -> CLIENT: 235 2.7.0 Accepted
+
+PHPMailer DEBUG: CLIENT -> SERVER: MAIL FROM:<no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.0 OK 98e67ed59e1d1-33e223d11c8sm3606351a91.4 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: RCPT TO:<dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.1.5 OK 98e67ed59e1d1-33e223d11c8sm3606351a91.4 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: DATA
+
+PHPMailer DEBUG: SERVER -> CLIENT: 354 Go ahead 98e67ed59e1d1-33e223d11c8sm3606351a91.4 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: Date: Wed, 22 Oct 2025 19:00:06 -0300
+
+PHPMailer DEBUG: CLIENT -> SERVER: To: Administrador do Sistema <dtioab@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: From: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Reply-To: OAB/SC - Sistema de Agendamento <no-reply@oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: Subject: =?UTF-8?Q?Agenda_de_Atendimentos_para_amanh=C3=A3,_23/10/2025?=
+
+PHPMailer DEBUG: CLIENT -> SERVER: Message-ID: <Y9a0TLObipcniLrJSzmqyg1vganhtHQa14W9W6xZI@spark.oab-sc.org.br>
+
+PHPMailer DEBUG: CLIENT -> SERVER: X-Mailer: PHPMailer 6.10.0 (https://github.com/PHPMailer/PHPMailer)
+
+PHPMailer DEBUG: CLIENT -> SERVER: MIME-Version: 1.0
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: multipart/alternative;
+
+PHPMailer DEBUG: CLIENT -> SERVER:  boundary="b1=_Y9a0TLObipcniLrJSzmqyg1vganhtHQa14W9W6xZI"
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_Y9a0TLObipcniLrJSzmqyg1vganhtHQa14W9W6xZI
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/plain; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: Lista de Atendimentos para amanhã (23/10/2025)Total de 8 agendamentos confirmados.
+
+PHPMailer DEBUG: CLIENT -> SERVER:             
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Horário
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nome
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         CPF/OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Nº OAB
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         Motivo
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     08:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     BIANCA DA SILVA SCHWINDT
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     033.117.210-04
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     64778
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     RODRIGO SILVA DA SILVEIRA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     070.536.509-36
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     37869
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     09:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     RODRIGO SILVA DA SILVEIRA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     070.536.509-36
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     37869
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     THIAGO
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     075.866.409-55
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     10:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     THIAGO
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     075.866.409-55
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     11:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     MANOELLA PEREIRA BOTELHO
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     074.312.179-19
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     49213
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     11:30
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     THAÍS TONINI LIMA
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     218.247.278-95
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     69073
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Atendimento
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     12:00
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     CAMILA DE SOUZA MATHIAS
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     106.903.919-51
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     71571
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     Problemas com Senha
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_Y9a0TLObipcniLrJSzmqyg1vganhtHQa14W9W6xZI
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Type: text/html; charset=UTF-8
+
+PHPMailer DEBUG: CLIENT -> SERVER: Content-Transfer-Encoding: 8bit
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: <h1>Lista de Atendimentos para amanhã (23/10/2025)</h1><p>Total de <strong>8</strong> agendamentos confirmados.</p>
+
+PHPMailer DEBUG: CLIENT -> SERVER:             <table border='1' cellpadding='10' cellspacing='0' style='width: 100%; border-collapse: collapse;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <thead style='background-color: #f2f2f2;'>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Horário</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nome</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>CPF/OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Nº OAB</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                         <th>Motivo</th>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </thead>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tbody>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>08:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>BIANCA DA SILVA SCHWINDT</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>033.117.210-04</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>64778</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>RODRIGO SILVA DA SILVEIRA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>070.536.509-36</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>37869</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>09:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>RODRIGO SILVA DA SILVEIRA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>070.536.509-36</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>37869</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>THIAGO</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>075.866.409-55</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td></td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>10:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>THIAGO</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>075.866.409-55</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td></td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>11:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>MANOELLA PEREIRA BOTELHO</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>074.312.179-19</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>49213</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>11:30</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>THAÍS TONINI LIMA</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>218.247.278-95</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>69073</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Atendimento</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 <tr>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>12:00</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>CAMILA DE SOUZA MATHIAS</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>106.903.919-51</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>71571</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                     <td>Problemas com Senha</td>
+
+PHPMailer DEBUG: CLIENT -> SERVER:                 </tr></tbody></table>
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: --b1=_Y9a0TLObipcniLrJSzmqyg1vganhtHQa14W9W6xZI--
+
+PHPMailer DEBUG: CLIENT -> SERVER: 
+
+PHPMailer DEBUG: CLIENT -> SERVER: .
+
+PHPMailer DEBUG: SERVER -> CLIENT: 250 2.0.0 OK  1761170410 98e67ed59e1d1-33e223d11c8sm3606351a91.4 - gsmtp
+
+PHPMailer DEBUG: CLIENT -> SERVER: QUIT
+
+PHPMailer DEBUG: SERVER -> CLIENT: 221 2.0.0 closing connection 98e67ed59e1d1-33e223d11c8sm3606351a91.4 - gsmtp
+
+E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-22 19:00:10]    ✅ E-mail enviado com sucesso para: dtioab@oab-sc.org.br
+[2025-10-22 19:00:10] 📨 Resumo: 2 enviados, 0 falhas
+[2025-10-22 19:00:10] =========================================
+[2025-10-22 19:00:10] ROTINA FINALIZADA COM SUCESSO
+[2025-10-22 19:00:10] =========================================
+qua 22 out 2025 19:00:10 -03: [SHELL] Execu��o finalizada.
+--------------------------------------------------------
