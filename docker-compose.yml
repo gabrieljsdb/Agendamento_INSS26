@@ -1,0 +1,44 @@
+services:
+  # Aplicação Node.js
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: agendamento-inss-app
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      # Conexão com o MySQL no Host IP: 172.16.2.5
+      - OAUTH_SERVER_URL=http://localhost:3000
+      # Usuário: gabrieljsdb
+      # Senha: @Aa016512 (usando %40 para o caractere @)
+      - DATABASE_URL=mysql://gabrieljsdb:%40Aa016512@172.16.2.5:3306/agendamento_inss
+      - SESSION_SECRET=#lmjmMJ2484#$22
+      - JWT_SECRET=#lmjmMJ2484#$22
+      - COOKIE_SECRET=#lmjmMJ2484#$22
+      - APP_ID=agendamento-inss
+      - VITE_ANALYTICS_ENDPOINT=
+      - VITE_ANALYTICS_WEBSITE_ID=
+      - VITE_MANUS_HOST_DEV=false
+      
+      # Configurações SOAP (ajuste conforme necessário)
+      - SOAP_AUTH_URL=${SOAP_AUTH_URL:-https://api.oabsc.org.br/soap/auth}
+      
+      # Configurações de Email (ajuste conforme necessário)
+      - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
+      
+      # Emails de administradores
+      - ADMIN_EMAILS=${ADMIN_EMAILS:-["admin@oabsc.org.br"]}
+    ports:
+      - "3940:3000"
+    volumes:
+      - ./client:/app/client
+      - ./server:/app/server
+      - ./shared:/app/shared
+      - ./drizzle:/app/drizzle
+      - /app/node_modules
+    # Comando simplificado: apenas inicia a aplicação (tabelas já existem)
+    command: sh -c "pnpm dev"

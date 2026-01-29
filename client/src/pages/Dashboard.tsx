@@ -7,9 +7,10 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Calendar, Clock, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { Calendar, Clock, AlertCircle, CheckCircle2, Loader2, FileText, Download } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useLocation } from "wouter";
+import { toast } from "sonner";
 
 interface SelectedSlot {
   date: Date;
@@ -37,7 +38,38 @@ export default function Dashboard() {
       setReason("");
       setNotes("");
       upcomingQuery.refetch();
+      toast.success("Agendamento realizado com sucesso!");
     },
+    onError: (error) => {
+      toast.error(error.message || "Erro ao realizar agendamento");
+    }
+  });
+
+  const generateDocumentMutation = trpc.documents.generateMyDocument.useMutation({
+    onSuccess: (data) => {
+      // Converte base64 para Blob e inicia download
+      const byteCharacters = atob(data.content);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: data.contentType });
+      
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = data.filename;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      
+      toast.success("Documento gerado com sucesso!");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Erro ao gerar documento");
+    }
   });
 
   useEffect(() => {
@@ -76,6 +108,10 @@ export default function Dashboard() {
       reason,
       notes: notes || undefined,
     });
+  };
+
+  const handleGenerateDocument = () => {
+    generateDocumentMutation.mutate();
   };
 
   const getDaysInMonth = (date: Date) => {
@@ -117,9 +153,25 @@ export default function Dashboard() {
     <DashboardLayout>
       <div className="space-y-6">
         {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Painel de Agendamentos</h1>
-          <p className="text-gray-600 mt-1">Bem-vindo, {user.name}</p>
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Painel de Agendamentos</h1>
+            <p className="text-gray-600 mt-1">Bem-vindo, {user.name}</p>
+          </div>
+          
+          {/* Botão de Gerar Documento (Novo) */}
+          <Button 
+            onClick={handleGenerateDocument}
+            disabled={generateDocumentMutation.isPending}
+            className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+          >
+            {generateDocumentMutation.isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <FileText className="h-4 w-4" />
+            )}
+            Gerar Documento Word
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

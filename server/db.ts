@@ -49,6 +49,18 @@ export async function upsertUser(user: Omit<InsertUser, 'id'>): Promise<void> {
       oab: user.oab,
       name: user.name,
       email: user.email,
+      phone: user.phone,
+      cep: user.cep,
+      endereco: user.endereco,
+      bairro: user.bairro,
+      cidade: user.cidade,
+      estado: user.estado,
+      nomeMae: user.nomeMae,
+      nomePai: user.nomePai,
+      rg: user.rg,
+      orgaoRg: user.orgaoRg,
+      dataExpedicaoRg: user.dataExpedicaoRg,
+      loginMethod: user.loginMethod,
     };
 
     const updateSet: Record<string, unknown> = {
@@ -56,12 +68,18 @@ export async function upsertUser(user: Omit<InsertUser, 'id'>): Promise<void> {
       oab: user.oab,
       name: user.name,
       email: user.email,
+      phone: user.phone,
+      cep: user.cep,
+      endereco: user.endereco,
+      bairro: user.bairro,
+      cidade: user.cidade,
+      estado: user.estado,
+      nomeMae: user.nomeMae,
+      nomePai: user.nomePai,
+      rg: user.rg,
+      orgaoRg: user.orgaoRg,
+      dataExpedicaoRg: user.dataExpedicaoRg,
     };
-
-    if (user.phone !== undefined) {
-      values.phone = user.phone;
-      updateSet.phone = user.phone;
-    }
 
     if (user.lastSignedIn !== undefined) {
       values.lastSignedIn = user.lastSignedIn;

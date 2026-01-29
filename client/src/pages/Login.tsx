@@ -32,15 +32,23 @@ export default function Login() {
       return;
     }
 
+    // ENVIAR CPF FORMATADO: Agora enviamos o valor com pontos e traços
+    // O formatCPF já cuida da máscara visual, e o estado 'cpf' terá o valor formatado
     loginMutation.mutate({ cpf, password });
   };
 
   const formatCPF = (value: string) => {
+    // Remove tudo que não é número para aplicar a máscara
     const cleaned = value.replace(/\D/g, "");
     if (cleaned.length <= 3) return cleaned;
     if (cleaned.length <= 6) return `${cleaned.slice(0, 3)}.${cleaned.slice(3)}`;
     if (cleaned.length <= 9) return `${cleaned.slice(0, 3)}.${cleaned.slice(3, 6)}.${cleaned.slice(6)}`;
     return `${cleaned.slice(0, 3)}.${cleaned.slice(3, 6)}.${cleaned.slice(6, 9)}-${cleaned.slice(9, 11)}`;
+  };
+
+  const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatCPF(e.target.value);
+    setCpf(formatted);
   };
 
   return (
@@ -80,10 +88,11 @@ export default function Login() {
                   id="cpf"
                   type="text"
                   placeholder="000.000.000-00"
-                  value={formatCPF(cpf)}
-                  onChange={(e) => setCpf(e.target.value.replace(/\D/g, ""))}
+                  value={cpf}
+                  onChange={handleCpfChange}
                   disabled={loginMutation.isPending}
                   className="text-lg"
+                  maxLength={14}
                 />
               </div>
 
