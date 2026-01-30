@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { publicProcedure, protectedProcedure, router } from "./_core/trpc";
+import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_core/trpc";
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
@@ -13,7 +13,10 @@ import {
   incrementAppointmentCount,
   updateLastCancellation,
   logAuditAction,
+  getDb,
 } from "./db";
+import { eq, and, gte, lte, asc } from "drizzle-orm";
+import { users, appointments, blockedSlots } from "../drizzle/schema";
 import { soapAuthService } from "./services/soapAuthService";
 import { appointmentValidationService } from "./services/appointmentValidationService";
 import { emailService } from "./services/emailService";
@@ -490,10 +493,10 @@ export const appRouter = router({
       }),
 
     cancel: protectedProcedure
-      .input(z.object({ appointmentId: z.number(), reason: z.string().optional() }))
+      .input(z.object({ appointmentId: z.number(), reason: z.string().min(1, "Motivo do cancelamento é obrigatório") }))
       .mutation(async ({ input, ctx }) => {
         try {
-          await cancelAppointment(input.appointmentId, input.reason || "Cancelado pelo usuário");
+          await cancelAppointment(input.appointmentId, input.reason);
           await updateLastCancellation(ctx.user.id);
 
           await emailService.sendAppointmentCancellation({

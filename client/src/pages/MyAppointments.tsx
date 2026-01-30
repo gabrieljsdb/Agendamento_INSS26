@@ -9,11 +9,14 @@ import { toast } from "sonner";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 export default function MyAppointments() {
   const { user } = useAuth();
   const historyQuery = trpc.appointments.getHistory.useQuery({ limit: 50 });
   const [cancellingId, setCancellingId] = useState<number | null>(null);
+  const [cancellationReason, setCancellationReason] = useState("");
   const [reschedulingId, setReschedulingId] = useState<number | null>(null);
   const [rescheduleDate, setRescheduleDate] = useState<Date | null>(null);
   const [rescheduleTime, setRescheduleTime] = useState("");
@@ -23,6 +26,7 @@ export default function MyAppointments() {
       toast.success("Agendamento cancelado com sucesso");
       historyQuery.refetch();
       setCancellingId(null);
+      setCancellationReason("");
     },
     onError: (error) => {
       toast.error(error.message || "Erro ao cancelar agendamento");
@@ -145,20 +149,38 @@ export default function MyAppointments() {
       </div>
 
       {/* Dialog de Confirmação de Cancelamento */}
-      <Dialog open={cancellingId !== null} onOpenChange={() => setCancellingId(null)}>
+      <Dialog open={cancellingId !== null} onOpenChange={(open) => {
+        if (!open) {
+          setCancellingId(null);
+          setCancellationReason("");
+        }
+      }}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirmar Cancelamento</DialogTitle>
             <DialogDescription>
-              Tem certeza que deseja cancelar este agendamento? Esta ação não pode ser desfeita.
+              Por favor, informe o motivo do cancelamento. Esta ação não pode ser desfeita.
             </DialogDescription>
           </DialogHeader>
+          <div className="py-4 space-y-2">
+            <Label htmlFor="reason">Motivo do Cancelamento</Label>
+            <Textarea
+              id="reason"
+              placeholder="Ex: Imprevisto profissional, problema de saúde, etc."
+              value={cancellationReason}
+              onChange={(e) => setCancellationReason(e.target.value)}
+              className="min-h-[100px]"
+            />
+          </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setCancellingId(null)}>Voltar</Button>
             <Button 
               variant="destructive" 
-              onClick={() => cancellingId && cancelMutation.mutate({ appointmentId: cancellingId })}
-              disabled={cancelMutation.isPending}
+              onClick={() => cancellingId && cancelMutation.mutate({ 
+                appointmentId: cancellingId, 
+                reason: cancellationReason 
+              })}
+              disabled={cancelMutation.isPending || !cancellationReason.trim()}
             >
               {cancelMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Confirmar Cancelamento"}
             </Button>
