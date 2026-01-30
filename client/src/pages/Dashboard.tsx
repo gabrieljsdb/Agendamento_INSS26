@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Calendar, Clock, AlertCircle, CheckCircle2, Loader2, FileText, Download } from "lucide-react";
 import { trpc } from "@/lib/trpc";
@@ -22,6 +24,7 @@ export default function Dashboard() {
   const [, navigate] = useLocation();
   const [selectedSlot, setSelectedSlot] = useState<SelectedSlot | null>(null);
   const [reason, setReason] = useState("");
+  const [phone, setPhone] = useState("");
   const [notes, setNotes] = useState("");
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
@@ -78,6 +81,12 @@ export default function Dashboard() {
     }
   }, [availableSlotsQuery.data]);
 
+  useEffect(() => {
+    if (user?.phone) {
+      setPhone(user.phone);
+    }
+  }, [user]);
+
   if (loading) {
     return (
       <DashboardLayout>
@@ -98,7 +107,8 @@ export default function Dashboard() {
   };
 
   const handleCreateAppointment = () => {
-    if (!selectedSlot || !selectedSlot.time || !reason) {
+    if (!selectedSlot || !selectedSlot.time || !reason || !phone) {
+      toast.error("Por favor, preencha todos os campos obrigatórios");
       return;
     }
 
@@ -106,6 +116,7 @@ export default function Dashboard() {
       appointmentDate: selectedSlot.date,
       startTime: selectedSlot.time,
       reason,
+      phone,
       notes: notes || undefined,
     });
   };
@@ -325,9 +336,9 @@ export default function Dashboard() {
 
             {/* Motivo */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Motivo do Agendamento</label>
+              <Label htmlFor="reason">Motivo do Agendamento</Label>
               <Select value={reason} onValueChange={setReason}>
-                <SelectTrigger>
+                <SelectTrigger id="reason">
                   <SelectValue placeholder="Selecione um motivo" />
                 </SelectTrigger>
                 <SelectContent>
@@ -338,6 +349,19 @@ export default function Dashboard() {
                   <SelectItem value="Outros">Outros</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+
+            {/* Telefone */}
+            <div className="space-y-2">
+              <Label htmlFor="phone">Telefone de Contato</Label>
+              <Input 
+                id="phone"
+                placeholder="(00) 00000-0000" 
+                value={phone} 
+                onChange={(e) => setPhone(e.target.value)} 
+                required
+              />
+              <p className="text-[10px] text-gray-500 italic">* Obrigatório para confirmação do agendamento</p>
             </div>
 
             {/* Observações */}
@@ -365,7 +389,7 @@ export default function Dashboard() {
               </Button>
               <Button
                 onClick={handleCreateAppointment}
-                disabled={!selectedSlot?.time || !reason || createAppointmentMutation.isPending}
+                disabled={!selectedSlot?.time || !reason || !phone || createAppointmentMutation.isPending}
                 className="flex-1 bg-indigo-600 hover:bg-indigo-700"
               >
                 {createAppointmentMutation.isPending ? (

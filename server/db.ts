@@ -134,6 +134,16 @@ export async function getUserByOAB(oab: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
+export async function updateUserPhone(userId: number, phone: string) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  return await db
+    .update(users)
+    .set({ phone })
+    .where(eq(users.id, userId));
+}
+
 /**
  * APPOINTMENTS - Gerenciamento de agendamentos
  */

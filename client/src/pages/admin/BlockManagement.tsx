@@ -17,9 +17,10 @@ export default function BlockManagement() {
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [newBlock, setNewBlock] = useState({
     date: "",
+    endDate: "",
     startTime: "08:00:00",
     endTime: "12:00:00",
-    blockType: "full_day" as "full_day" | "time_slot",
+    blockType: "full_day" as "full_day" | "time_slot" | "period",
     reason: ""
   });
   
@@ -53,12 +54,13 @@ export default function BlockManagement() {
   }
 
   const handleCreate = () => {
-    if (!newBlock.date || !newBlock.reason) {
-      toast.error("Preencha todos os campos");
+    if (!newBlock.date || !newBlock.reason || (newBlock.blockType === "period" && !newBlock.endDate)) {
+      toast.error("Preencha todos os campos obrigatórios");
       return;
     }
     createBlockMutation.mutate({
       blockedDate: new Date(newBlock.date + 'T12:00:00'),
+      endDate: newBlock.endDate ? new Date(newBlock.endDate + 'T12:00:00') : undefined,
       startTime: newBlock.startTime,
       endTime: newBlock.endTime,
       blockType: newBlock.blockType,
@@ -158,11 +160,19 @@ export default function BlockManagement() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="full_day">Dia Inteiro</SelectItem>
+                  <SelectItem value="full_day">Dia Único (Inteiro)</SelectItem>
                   <SelectItem value="time_slot">Horário Específico</SelectItem>
+                  <SelectItem value="period">Período (Vários Dias)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
+
+            {newBlock.blockType === "period" && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Data Final</label>
+                <Input type="date" value={newBlock.endDate} onChange={(e) => setNewBlock({...newBlock, endDate: e.target.value})} />
+              </div>
+            )}
             {newBlock.blockType === "time_slot" && (
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">

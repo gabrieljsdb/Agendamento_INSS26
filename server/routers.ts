@@ -14,6 +14,7 @@ import {
   updateLastCancellation,
   logAuditAction,
   getDb,
+  updateUserPhone,
 } from "./db";
 import { eq, and, gte, lte, asc } from "drizzle-orm";
 import { users, appointments, blockedSlots } from "../drizzle/schema";
@@ -344,21 +345,48 @@ export const appRouter = router({
     createBlock: adminProcedure
       .input(z.object({
         blockedDate: z.date(),
+        endDate: z.date().optional(),
         startTime: z.string(),
         endTime: z.string(),
-        blockType: z.enum(["full_day", "time_slot"]),
-        reason: z.string().min(1, "Motivo obrigatório"),
+        blockType: z.enum(["full_day", "time_slot", "period"]),
+        reason: z.string(),
       }))
       .mutation(async ({ input, ctx }) => {
         const db = await getDb();
         if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
 
-        await db.insert(blockedSlots).values({
-          ...input,
-          createdBy: ctx.user.id,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        });
+        if (input.blockType === "period" && input.endDate) {
+          const start = new Date(input.blockedDate);
+          const end = new Date(input.endDate);
+          
+          // Gerar bloqueios para cada dia no intervalo
+          const blocks = [];
+          let current = new Date(start);
+          while (current <= end) {
+            blocks.push({
+              blockedDate: new Date(current),
+              startTime: input.startTime,
+              endTime: input.endTime,
+              blockType: "full_day" as const,
+              reason: input.reason,
+              createdBy: ctx.user.id,
+            });
+            current.setDate(current.getDate() + 1);
+          }
+          
+          if (blocks.length > 0) {
+            await db.insert(blockedSlots).values(blocks);
+          }
+        } else {
+          await db.insert(blockedSlots).values({
+            blockedDate: input.blockedDate,
+            startTime: input.startTime,
+            endTime: input.endTime,
+            blockType: input.blockType === "period" ? "full_day" : input.blockType,
+            reason: input.reason,
+            createdBy: ctx.user.id,
+          });
+        }
 
         await logAuditAction({
           userId: ctx.user.id,
@@ -415,11 +443,15 @@ export const appRouter = router({
           appointmentDate: z.date(),
           startTime: z.string(),
           reason: z.string().min(1, "Motivo obrigatório"),
+          phone: z.string().min(10, "Telefone de contato é obrigatório"),
           notes: z.string().optional(),
         })
       )
       .mutation(async ({ input, ctx }) => {
         try {
+          // Atualizar telefone do usuário
+          await updateUserPhone(ctx.user.id, input.phone);
+
           const validation = await appointmentValidationService.validateAppointment(
             input.appointmentDate,
             input.startTime,
