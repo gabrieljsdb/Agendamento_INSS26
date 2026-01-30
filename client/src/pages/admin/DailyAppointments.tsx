@@ -4,15 +4,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { trpc } from "@/lib/trpc";
-import { Calendar, Clock, Loader2, User, FileText, CheckCircle, XCircle, Clock4, UserMinus } from "lucide-react";
+import { Calendar, Clock, Loader2, User, FileText, CheckCircle, XCircle, Clock4, UserMinus, Info, Mail, Phone, MapPin, AlertTriangle, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useLocation } from "wouter";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 
 export default function DailyAppointments() {
   const { user, loading } = useAuth();
   const [, navigate] = useLocation();
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedAppointment, setSelectedAppointment] = useState<any>(null);
   
   const dailyQuery = trpc.admin.getDailyAppointments.useQuery({ date: selectedDate });
   const updateStatusMutation = trpc.admin.updateStatus.useMutation({
@@ -95,12 +97,19 @@ export default function DailyAppointments() {
                   </thead>
                   <tbody className="divide-y divide-gray-200">
                     {dailyQuery.data.appointments.map((apt) => (
-                      <tr key={apt.id} className="bg-white hover:bg-gray-50">
+                      <tr 
+                        key={apt.id} 
+                        className="bg-white hover:bg-gray-50 cursor-pointer transition-colors"
+                        onClick={() => setSelectedAppointment(apt)}
+                      >
                         <td className="px-4 py-3 font-semibold text-indigo-600">
                           {apt.startTime.substring(0, 5)}
                         </td>
                         <td className="px-4 py-3 font-medium">
-                          {apt.userName}
+                          <div className="flex items-center gap-2">
+                            {apt.userName}
+                            <Info className="h-3 w-3 text-gray-400" />
+                          </div>
                         </td>
                         <td className="px-4 py-3 text-gray-600">
                           <div>{apt.userCpf}</div>
@@ -108,7 +117,7 @@ export default function DailyAppointments() {
                         </td>
                         <td className="px-4 py-3">{apt.reason}</td>
                         <td className="px-4 py-3">{getStatusBadge(apt.status)}</td>
-                        <td className="px-4 py-3">
+                        <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                           <div className="flex flex-wrap gap-1">
                             <Button 
                               size="xs" 
@@ -161,6 +170,114 @@ export default function DailyAppointments() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Modal de Detalhes do Atendimento */}
+      <Dialog open={selectedAppointment !== null} onOpenChange={() => setSelectedAppointment(null)}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-2xl">
+              <User className="h-6 w-6 text-indigo-600" />
+              Detalhes do Atendimento
+            </DialogTitle>
+            <DialogDescription>
+              Informações completas do agendamento e do usuário.
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedAppointment && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Informações do Usuário</h3>
+                  <div className="space-y-2">
+                    <p className="flex items-center gap-2 text-gray-900 font-medium">
+                      <User className="h-4 w-4 text-gray-400" /> {selectedAppointment.userName}
+                    </p>
+                    <p className="flex items-center gap-2 text-gray-600">
+                      <FileText className="h-4 w-4 text-gray-400" /> CPF: {selectedAppointment.userCpf}
+                    </p>
+                    <p className="flex items-center gap-2 text-gray-600">
+                      <Badge variant="outline" className="font-normal">OAB: {selectedAppointment.userOab}</Badge>
+                    </p>
+                    <p className="flex items-center gap-2 text-gray-600">
+                      <Mail className="h-4 w-4 text-gray-400" /> {selectedAppointment.userEmail}
+                    </p>
+                    {selectedAppointment.userPhone && (
+                      <p className="flex items-center gap-2 text-gray-600">
+                        <Phone className="h-4 w-4 text-gray-400" /> {selectedAppointment.userPhone}
+                      </p>
+                    )}
+                    {(selectedAppointment.userCidade || selectedAppointment.userEstado) && (
+                      <p className="flex items-center gap-2 text-gray-600">
+                        <MapPin className="h-4 w-4 text-gray-400" /> {selectedAppointment.userCidade}/{selectedAppointment.userEstado}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Detalhes do Agendamento</h3>
+                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-500 text-sm">Status:</span>
+                      {getStatusBadge(selectedAppointment.status)}
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-500 text-sm">Horário:</span>
+                      <span className="font-semibold text-indigo-600 flex items-center gap-1">
+                        <Clock className="h-4 w-4" /> {selectedAppointment.startTime.substring(0, 5)} - {selectedAppointment.endTime.substring(0, 5)}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-gray-500 text-sm block mb-1">Motivo:</span>
+                      <p className="text-gray-900 font-medium">{selectedAppointment.reason}</p>
+                    </div>
+                    {selectedAppointment.notes && (
+                      <div>
+                        <span className="text-gray-500 text-sm block mb-1">Observações:</span>
+                        <p className="text-gray-700 text-sm italic">"{selectedAppointment.notes}"</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {selectedAppointment.status === "cancelled" && (
+                  <div className="bg-red-50 p-3 rounded-md border border-red-100">
+                    <h4 className="text-red-800 text-xs font-bold uppercase flex items-center gap-1 mb-1">
+                      <AlertTriangle className="h-3 w-3" /> Detalhes do Cancelamento
+                    </h4>
+                    <p className="text-red-700 text-sm">
+                      <strong>Motivo:</strong> {selectedAppointment.cancellationReason || "Não informado"}
+                    </p>
+                    {selectedAppointment.cancelledAt && (
+                      <p className="text-red-600 text-xs mt-1">
+                        Cancelado em: {new Date(selectedAppointment.cancelledAt).toLocaleString("pt-BR")}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          <DialogFooter className="sm:justify-start gap-2">
+            <Button variant="outline" onClick={() => setSelectedAppointment(null)}>Fechar</Button>
+            {selectedAppointment && selectedAppointment.status === "confirmed" && (
+              <Button 
+                className="bg-green-600 hover:bg-green-700 text-white"
+                onClick={() => {
+                  handleStatusUpdate(selectedAppointment.id, "completed");
+                  setSelectedAppointment(null);
+                }}
+              >
+                <CheckCircle className="h-4 w-4 mr-2" /> Marcar como Atendido
+              </Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
   );
 }

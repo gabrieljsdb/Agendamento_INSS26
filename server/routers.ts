@@ -231,10 +231,17 @@ export const appRouter = router({
             startTime: appointments.startTime,
             endTime: appointments.endTime,
             reason: appointments.reason,
+            notes: appointments.notes,
             status: appointments.status,
+            cancellationReason: appointments.cancellationReason,
+            cancelledAt: appointments.cancelledAt,
             userName: users.name,
             userCpf: users.cpf,
             userOab: users.oab,
+            userEmail: users.email,
+            userPhone: users.phone,
+            userCidade: users.cidade,
+            userEstado: users.estado,
           })
           .from(appointments)
           .innerJoin(users, eq(appointments.userId, users.id))
