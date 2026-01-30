@@ -1,8 +1,34 @@
 import { z } from "zod";
 import { notifyOwner } from "./notification";
 import { adminProcedure, publicProcedure, router } from "./trpc";
+import { getSystemSettings, updateSystemSettings } from "../db";
 
 export const systemRouter = router({
+  getSettings: adminProcedure.query(async () => {
+    return await getSystemSettings();
+  }),
+
+  updateSettings: adminProcedure
+    .input(z.object({
+      workingHoursStart: z.string(),
+      workingHoursEnd: z.string(),
+      appointmentDurationMinutes: z.number(),
+      monthlyLimitPerUser: z.number(),
+      cancellationBlockingHours: z.number(),
+      maxAdvancedBookingDays: z.number(),
+      blockingTimeAfterHours: z.string(),
+      institutionName: z.string(),
+      institutionAddress: z.string().optional(),
+      institutionPhone: z.string().optional(),
+      senderEmail: z.string().email(),
+      senderName: z.string(),
+      adminEmails: z.string(),
+    }))
+    .mutation(async ({ input }) => {
+      await updateSystemSettings(input);
+      return { success: true };
+    }),
+
   health: publicProcedure
     .input(
       z.object({
