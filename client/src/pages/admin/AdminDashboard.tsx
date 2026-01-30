@@ -1,21 +1,27 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import DashboardLayout from "@/components/DashboardLayout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
-import { ChevronLeft, ChevronRight, Loader2, Calendar as CalendarIcon } from "lucide-react";
-import { useState } from "react";
+import { 
+  ClipboardList, 
+  Lock, 
+  Settings, 
+  Users, 
+  Calendar as CalendarIcon, 
+  ArrowRight,
+  CheckCircle,
+  XCircle,
+  Clock
+} from "lucide-react";
 import { useLocation } from "wouter";
 
 export default function AdminDashboard() {
   const { user, loading } = useAuth();
   const [, navigate] = useLocation();
-  const [currentDate, setCurrentDate] = useState(new Date());
 
-  const calendarQuery = trpc.admin.getCalendarAppointments.useQuery({
-    month: currentDate.getMonth(),
-    year: currentDate.getFullYear()
-  });
+  // Estatísticas básicas para o dashboard
+  const dailyQuery = trpc.admin.getDailyAppointments.useQuery({ date: new Date() });
 
   if (loading) return null;
   if (!user || user.role !== 'admin') {
@@ -23,85 +29,166 @@ export default function AdminDashboard() {
     return null;
   }
 
-  const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-  const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
-  const monthName = currentDate.toLocaleDateString("pt-BR", { month: "long", year: "numeric" });
+  const stats = {
+    total: dailyQuery.data?.appointments.length || 0,
+    confirmed: dailyQuery.data?.appointments.filter(a => a.status === 'confirmed').length || 0,
+    completed: dailyQuery.data?.appointments.filter(a => a.status === 'completed').length || 0,
+    cancelled: dailyQuery.data?.appointments.filter(a => a.status === 'cancelled').length || 0,
+  };
 
-  const prevMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
-  const nextMonth = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
-
-  const appointmentsByDay = calendarQuery.data?.appointments.reduce((acc, apt) => {
-    if (!acc[apt.day]) acc[apt.day] = [];
-    acc[apt.day].push(apt);
-    return acc;
-  }, {} as Record<number, any[]>) || {};
+  const adminActions = [
+    {
+      title: "Atendimentos do Dia",
+      description: "Visualize e gerencie a lista de atendimentos para hoje.",
+      icon: ClipboardList,
+      path: "/admin/daily",
+      color: "text-blue-600",
+      bgColor: "bg-blue-50"
+    },
+    {
+      title: "Gerenciar Bloqueios",
+      description: "Bloqueie datas ou horários específicos na agenda.",
+      icon: Lock,
+      path: "/admin/blocks",
+      color: "text-amber-600",
+      bgColor: "bg-amber-50"
+    },
+    {
+      title: "Configurações do Sistema",
+      description: "Ajuste horários, limites e informações da instituição.",
+      icon: Settings,
+      path: "/admin/settings",
+      color: "text-indigo-600",
+      bgColor: "bg-indigo-50"
+    }
+  ];
 
   return (
     <DashboardLayout>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-gray-900">Gerenciar Agenda</h1>
-          <div className="flex items-center gap-4">
-            <Button variant="outline" size="icon" onClick={prevMonth}><ChevronLeft className="h-4 w-4" /></Button>
-            <h2 className="text-lg font-semibold capitalize">{monthName}</h2>
-            <Button variant="outline" size="icon" onClick={nextMonth}><ChevronRight className="h-4 w-4" /></Button>
-          </div>
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Painel Administrativo</h1>
+          <p className="text-gray-600 mt-1">Bem-vindo, {user.name}. Gerencie o sistema de agendamentos aqui.</p>
         </div>
 
-        <Card className="border-none shadow-md overflow-hidden">
-          <CardContent className="p-0">
-            <div className="grid grid-cols-7 bg-gray-50 border-b">
-              {["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"].map(day => (
-                <div key={day} className="py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider border-r last:border-r-0">
-                  {day}
+        {/* Cards de Estatísticas Rápidas */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Total Hoje</p>
+                  <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
                 </div>
-              ))}
-            </div>
-            <div className="grid grid-cols-7">
-              {Array.from({ length: firstDayOfMonth }).map((_, i) => (
-                <div key={`empty-${i}`} className="h-32 border-b border-r bg-gray-50/50" />
-              ))}
-              {Array.from({ length: daysInMonth }).map((_, i) => {
-                const day = i + 1;
-                const dayAppointments = appointmentsByDay[day] || [];
-                const isToday = new Date().toDateString() === new Date(currentDate.getFullYear(), currentDate.getMonth(), day).toDateString();
+                <div className="p-2 bg-gray-100 rounded-lg">
+                  <CalendarIcon className="h-6 w-6 text-gray-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Confirmados</p>
+                  <p className="text-2xl font-bold text-green-600">{stats.confirmed}</p>
+                </div>
+                <div className="p-2 bg-green-50 rounded-lg">
+                  <Clock className="h-6 w-6 text-green-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Atendidos</p>
+                  <p className="text-2xl font-bold text-blue-600">{stats.completed}</p>
+                </div>
+                <div className="p-2 bg-blue-50 rounded-lg">
+                  <CheckCircle className="h-6 w-6 text-blue-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-500">Cancelados</p>
+                  <p className="text-2xl font-bold text-red-600">{stats.cancelled}</p>
+                </div>
+                <div className="p-2 bg-red-50 rounded-lg">
+                  <XCircle className="h-6 w-6 text-red-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-                return (
-                  <div key={day} className={`h-32 border-b border-r p-1 overflow-y-auto hover:bg-gray-50 transition-colors ${isToday ? 'bg-indigo-50/30' : ''}`}>
-                    <div className="flex justify-between items-start mb-1">
-                      <span className={`text-xs font-bold px-1.5 py-0.5 rounded-full ${isToday ? 'bg-indigo-600 text-white' : 'text-gray-400'}`}>
-                        {day}
-                      </span>
-                      {dayAppointments.length > 0 && (
-                        <span className="text-[10px] font-medium text-indigo-600 bg-indigo-50 px-1 rounded">
-                          {dayAppointments.length} agend.
-                        </span>
-                      )}
-                    </div>
-                    <div className="space-y-1">
-                      {dayAppointments.slice(0, 4).map((apt: any) => (
-                        <div key={apt.id} className="text-[10px] p-1 bg-white border rounded shadow-sm truncate flex items-center gap-1">
-                          <span className="font-bold text-indigo-600">{apt.startTime.substring(0, 5)}</span>
-                          <span className="text-gray-700">{apt.userName.split(' ')[0]}</span>
-                        </div>
-                      ))}
-                      {dayAppointments.length > 4 && (
-                        <div className="text-[9px] text-center text-gray-400 font-medium">
-                          + {dayAppointments.length - 4} mais
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-              {/* Fill remaining cells */}
-              {Array.from({ length: (7 - (firstDayOfMonth + daysInMonth) % 7) % 7 }).map((_, i) => (
-                <div key={`empty-end-${i}`} className="h-32 border-b border-r last:border-r-0 bg-gray-50/50" />
-              ))}
-            </div>
+        {/* Ações Administrativas */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {adminActions.map((action) => (
+            <Card key={action.path} className="hover:shadow-md transition-shadow cursor-pointer group" onClick={() => navigate(action.path)}>
+              <CardHeader>
+                <div className={`w-12 h-12 ${action.bgColor} rounded-lg flex items-center justify-center mb-2 group-hover:scale-110 transition-transform`}>
+                  <action.icon className={`h-6 w-6 ${action.color}`} />
+                </div>
+                <CardTitle>{action.title}</CardTitle>
+                <CardDescription>{action.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button variant="ghost" className="p-0 h-auto text-indigo-600 hover:text-indigo-700 hover:bg-transparent">
+                  Acessar <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Seção de Atalho Rápido */}
+        <Card className="bg-indigo-600 text-white border-none overflow-hidden relative">
+          <div className="absolute right-0 top-0 opacity-10 transform translate-x-1/4 -translate-y-1/4">
+            <ShieldCheck className="w-64 h-64" />
+          </div>
+          <CardHeader>
+            <CardTitle className="text-2xl">Precisa de ajuda com a agenda?</CardTitle>
+            <CardDescription className="text-indigo-100">
+              Você pode visualizar o calendário completo de agendamentos para ter uma visão mensal.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button 
+              variant="secondary" 
+              className="bg-white text-indigo-600 hover:bg-indigo-50"
+              onClick={() => navigate("/admin/daily")}
+            >
+              Ver Calendário Completo
+            </Button>
           </CardContent>
         </Card>
       </div>
     </DashboardLayout>
   );
+}
+
+function ShieldCheck(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  )
 }
