@@ -208,6 +208,179 @@ export const appRouter = router({
   /**
    * Procedures de Agendamento
    */
+  admin: router({
+    getDailyAppointments: adminProcedure
+      .input(z.object({ date: z.date().optional() }))
+      .query(async ({ input }) => {
+        const date = input.date || new Date();
+        const startOfDay = new Date(date);
+        startOfDay.setHours(0, 0, 0, 0);
+        const endOfDay = new Date(date);
+        endOfDay.setHours(23, 59, 59, 999);
+
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const results = await db
+          .select({
+            id: appointments.id,
+            appointmentDate: appointments.appointmentDate,
+            startTime: appointments.startTime,
+            endTime: appointments.endTime,
+            reason: appointments.reason,
+            status: appointments.status,
+            userName: users.name,
+            userCpf: users.cpf,
+            userOab: users.oab,
+          })
+          .from(appointments)
+          .innerJoin(users, eq(appointments.userId, users.id))
+          .where(
+            and(
+              gte(appointments.appointmentDate, startOfDay),
+              lte(appointments.appointmentDate, endOfDay)
+            )
+          )
+          .orderBy(asc(appointments.startTime));
+
+        return {
+          appointments: results.map(apt => ({
+            ...apt,
+            date: apt.appointmentDate.toLocaleDateString("pt-BR"),
+          }))
+        };
+      }),
+
+    updateStatus: adminProcedure
+      .input(z.object({
+        appointmentId: z.number(),
+        status: z.enum(["pending", "confirmed", "completed", "cancelled", "no_show"])
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        await db
+          .update(appointments)
+          .set({ status: input.status, updatedAt: new Date() })
+          .where(eq(appointments.id, input.appointmentId));
+
+        await logAuditAction({
+          userId: ctx.user.id,
+          action: "UPDATE_STATUS",
+          entityType: "appointment",
+          entityId: input.appointmentId,
+          details: `Status alterado para ${input.status}`,
+          ipAddress: ctx.req.ip,
+        });
+
+        return { success: true };
+      }),
+
+    getCalendarAppointments: adminProcedure
+      .input(z.object({ month: z.number(), year: z.number() }))
+      .query(async ({ input }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const startDate = new Date(input.year, input.month, 1);
+        const endDate = new Date(input.year, input.month + 1, 0, 23, 59, 59);
+
+        const results = await db
+          .select({
+            id: appointments.id,
+            appointmentDate: appointments.appointmentDate,
+            startTime: appointments.startTime,
+            userName: users.name,
+            status: appointments.status,
+          })
+          .from(appointments)
+          .innerJoin(users, eq(appointments.userId, users.id))
+          .where(
+            and(
+              gte(appointments.appointmentDate, startDate),
+              lte(appointments.appointmentDate, endDate),
+              eq(appointments.status, "confirmed")
+            )
+          );
+
+        return {
+          appointments: results.map(apt => ({
+            ...apt,
+            day: apt.appointmentDate.getDate(),
+          }))
+        };
+      }),
+
+    getBlocks: adminProcedure
+      .input(z.object({ date: z.date().optional() }))
+      .query(async ({ input }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const results = await db
+          .select()
+          .from(blockedSlots)
+          .orderBy(asc(blockedSlots.blockedDate));
+
+        return {
+          blocks: results.map(b => ({
+            ...b,
+            date: b.blockedDate.toLocaleDateString("pt-BR"),
+          }))
+        };
+      }),
+
+    createBlock: adminProcedure
+      .input(z.object({
+        blockedDate: z.date(),
+        startTime: z.string(),
+        endTime: z.string(),
+        blockType: z.enum(["full_day", "time_slot"]),
+        reason: z.string().min(1, "Motivo obrigatório"),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        await db.insert(blockedSlots).values({
+          ...input,
+          createdBy: ctx.user.id,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+
+        await logAuditAction({
+          userId: ctx.user.id,
+          action: "CREATE_BLOCK",
+          entityType: "blocked_slot",
+          details: `Bloqueio em ${input.blockedDate.toLocaleDateString("pt-BR")} (${input.blockType})`,
+          ipAddress: ctx.req.ip,
+        });
+
+        return { success: true };
+      }),
+
+    deleteBlock: adminProcedure
+      .input(z.object({ blockId: z.number() }))
+      .mutation(async ({ input, ctx }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        await db.delete(blockedSlots).where(eq(blockedSlots.id, input.blockId));
+
+        await logAuditAction({
+          userId: ctx.user.id,
+          action: "DELETE_BLOCK",
+          entityType: "blocked_slot",
+          entityId: input.blockId,
+          ipAddress: ctx.req.ip,
+        });
+
+        return { success: true };
+      }),
+  }),
+
   appointments: router({
     getAvailableSlots: protectedProcedure
       .input(z.object({ date: z.date() }))

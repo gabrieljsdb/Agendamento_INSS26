@@ -8,6 +8,7 @@ services:
     restart: unless-stopped
     environment:
       - NODE_ENV=production
+      - TZ=America/Sao_Paulo
       # Conexão com o MySQL no Host IP: 172.16.2.5
       - OAUTH_SERVER_URL=http://localhost:3000
       # Usuário: gabrieljsdb
@@ -37,6 +38,8 @@ services:
     volumes:
       - ./client:/app/client
       - ./server:/app/server
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - ./shared:/app/shared
       - ./drizzle:/app/drizzle
       - /app/node_modules

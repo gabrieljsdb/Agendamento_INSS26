@@ -21,15 +21,21 @@ import {
 } from "@/components/ui/sidebar";
 import { getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users } from "lucide-react";
+import { LayoutDashboard, LogOut, PanelLeft, Users, CalendarDays, ClipboardList, ShieldCheck, Lock } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Page 1", path: "/" },
-  { icon: Users, label: "Page 2", path: "/some-path" },
+  { icon: LayoutDashboard, label: "Painel Principal", path: "/dashboard" },
+  { icon: CalendarDays, label: "Meus Agendamentos", path: "/my-appointments" },
+];
+
+const adminMenuItems = [
+  { icon: ClipboardList, label: "Atendimentos do Dia", path: "/admin/daily" },
+  { icon: Lock, label: "Gerenciar Bloqueios", path: "/admin/blocks" },
+  { icon: ShieldCheck, label: "Administração", path: "/admin" },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
@@ -180,6 +186,9 @@ function DashboardLayoutContent({
 
           <SidebarContent className="gap-0">
             <SidebarMenu className="px-2 py-1">
+              <div className="px-2 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                Usuário
+              </div>
               {menuItems.map(item => {
                 const isActive = location === item.path;
                 return (
@@ -198,6 +207,32 @@ function DashboardLayoutContent({
                   </SidebarMenuItem>
                 );
               })}
+
+              {user?.role === 'admin' && (
+                <>
+                  <div className="px-2 py-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    Administrador
+                  </div>
+                  {adminMenuItems.map(item => {
+                    const isActive = location === item.path;
+                    return (
+                      <SidebarMenuItem key={item.path}>
+                        <SidebarMenuButton
+                          isActive={isActive}
+                          onClick={() => setLocation(item.path)}
+                          tooltip={item.label}
+                          className={`h-10 transition-all font-normal`}
+                        >
+                          <item.icon
+                            className={`h-4 w-4 ${isActive ? "text-primary" : ""}`}
+                          />
+                          <span>{item.label}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </>
+              )}
             </SidebarMenu>
           </SidebarContent>
 

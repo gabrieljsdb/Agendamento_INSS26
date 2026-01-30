@@ -4,6 +4,9 @@ FROM node:22-alpine
 # Instalar pnpm globalmente
 RUN npm install -g pnpm@10.15.1
 
+# Definir fuso horário
+ENV TZ=America/Sao_Paulo
+
 # Definir diretório de trabalho
 WORKDIR /app
 
@@ -12,7 +15,7 @@ COPY package.json pnpm-lock.yaml ./
 COPY patches ./patches
 
 # Instalar dependências
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # Copiar todo o código fonte
 COPY . .

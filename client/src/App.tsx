@@ -7,6 +7,10 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import MyAppointments from "./pages/MyAppointments";
+import DailyAppointments from "./pages/admin/DailyAppointments";
+import BlockManagement from "./pages/admin/BlockManagement";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 function Router() {
   return (
@@ -14,6 +18,10 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/login"} component={Login} />
       <Route path={"/dashboard"} component={Dashboard} />
+      <Route path={"/my-appointments"} component={MyAppointments} />
+      <Route path={"/admin/daily"} component={DailyAppointments} />
+      <Route path={"/admin/blocks"} component={BlockManagement} />
+      <Route path={"/admin"} component={AdminDashboard} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
