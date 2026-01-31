@@ -5,15 +5,35 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Calendar as CalendarIcon, Clock, User, Phone, Mail, MapPin, FileText, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, User, Phone, Mail, MapPin, FileText, ChevronLeft, ChevronRight, Loader2, Send } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useLocation } from "wouter";
+import { toast } from "sonner";
+import { Textarea } from "@/components/ui/textarea";
+import { DialogFooter, DialogDescription } from "@/components/ui/dialog";
 
 export default function AdminCalendar() {
   const { user, loading } = useAuth();
   const [, navigate] = useLocation();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedApt, setSelectedApt] = useState<any>(null);
+  const [notificationModalOpen, setNotificationModalOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  const [isSendingNotification, setIsSendingNotification] = useState(false);
+
+  const sendNotificationMutation = trpc.admin.sendCustomNotification.useMutation({
+    onSuccess: () => {
+      toast.success("Notificação enviada com sucesso!");
+      setNotificationModalOpen(false);
+      setNotificationMessage("");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Erro ao enviar notificação");
+    },
+    onSettled: () => {
+      setIsSendingNotification(false);
+    }
+  });
 
   const calendarQuery = trpc.admin.getCalendarAppointments.useQuery({
     month: currentMonth.getMonth(),
@@ -190,9 +210,79 @@ export default function AdminCalendar() {
                 </div>
               </div>
 
-              <Button onClick={() => setSelectedApt(null)} className="w-full">Fechar</Button>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => setSelectedApt(null)} className="flex-1">Fechar</Button>
+                <Button 
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white flex-1"
+                  onClick={() => setNotificationModalOpen(true)}
+                >
+                  <Mail className="h-4 w-4 mr-2" /> Notificar
+                </Button>
+              </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de Envio de Notificação */}
+      <Dialog open={notificationModalOpen} onOpenChange={(open) => {
+        if (!open) {
+          setNotificationModalOpen(false);
+          setNotificationMessage("");
+        }
+      }}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Send className="h-5 w-5 text-indigo-600" />
+              Enviar Notificação por E-mail
+            </DialogTitle>
+            <DialogDescription>
+              A mensagem abaixo será enviada para o e-mail de <strong>{selectedApt?.userName}</strong>.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="py-4 space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Mensagem</label>
+              <Textarea 
+                placeholder="Ex: Por favor, traga a documentação original do INSS..."
+                className="min-h-[150px]"
+                value={notificationMessage}
+                onChange={(e) => setNotificationMessage(e.target.value)}
+              />
+              <p className="text-xs text-gray-500">
+                O usuário receberá esta mensagem formatada em um e-mail oficial do sistema.
+              </p>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setNotificationModalOpen(false)}>Cancelar</Button>
+            <Button 
+              className="bg-indigo-600 hover:bg-indigo-700 text-white"
+              disabled={!notificationMessage.trim() || isSendingNotification}
+              onClick={() => {
+                setIsSendingNotification(true);
+                sendNotificationMutation.mutate({
+                  appointmentId: selectedApt.id,
+                  message: notificationMessage
+                });
+              }}
+            >
+              {isSendingNotification ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Enviando...
+                </>
+              ) : (
+                <>
+                  <Send className="h-4 w-4 mr-2" />
+                  Enviar E-mail
+                </>
+              )}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </DashboardLayout>
