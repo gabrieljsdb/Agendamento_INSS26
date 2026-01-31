@@ -12,6 +12,7 @@ import DailyAppointments from "./pages/admin/DailyAppointments";
 import BlockManagement from "./pages/admin/BlockManagement";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Settings from "./pages/admin/Settings";
+import AdminCalendar from "./pages/admin/Calendar";
 
 function Router() {
   return (
@@ -24,6 +25,7 @@ function Router() {
       <Route path={"/admin/blocks"} component={BlockManagement} />
       <Route path={"/admin"} component={AdminDashboard} />
       <Route path={"/admin/settings"} component={Settings} />
+      <Route path={"/admin/calendar"} component={AdminCalendar} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

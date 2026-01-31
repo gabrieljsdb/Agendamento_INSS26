@@ -33,10 +33,11 @@ const menuItems = [
 ];
 
 const adminMenuItems = [
+  { icon: LayoutDashboard, label: "Painel Principal", path: "/admin" },
+  { icon: CalendarDays, label: "Calendário", path: "/admin/calendar" },
   { icon: ClipboardList, label: "Atendimentos do Dia", path: "/admin/daily" },
   { icon: Lock, label: "Gerenciar Bloqueios", path: "/admin/blocks" },
-  { icon: ShieldCheck, label: "Calendário", path: "/admin" },
-  { icon: LayoutDashboard, label: "Configurações", path: "/admin/settings" },
+  { icon: ShieldCheck, label: "Configurações", path: "/admin/settings" },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";

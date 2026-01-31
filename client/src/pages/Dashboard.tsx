@@ -28,8 +28,14 @@ export default function Dashboard() {
   const [notes, setNotes] = useState("");
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
+  const [isFullDayBlocked, setIsFullDayBlocked] = useState(false);
+  const [blockReason, setBlockReason] = useState<string | null>(null);
 
   const upcomingQuery = trpc.appointments.getUpcoming.useQuery();
+  const publicBlocksQuery = trpc.appointments.getPublicBlocks.useQuery({
+    month: currentMonth.getMonth(),
+    year: currentMonth.getFullYear()
+  });
   const availableSlotsQuery = trpc.appointments.getAvailableSlots.useQuery(
     { date: selectedSlot?.date || new Date() },
     { enabled: !!selectedSlot?.date }
@@ -76,8 +82,10 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    if (availableSlotsQuery.data?.slots) {
+    if (availableSlotsQuery.data) {
       setAvailableSlots(availableSlotsQuery.data.slots);
+      setIsFullDayBlocked(availableSlotsQuery.data.isFullDayBlocked);
+      setBlockReason(availableSlotsQuery.data.blockReason || null);
     }
   }, [availableSlotsQuery.data]);
 
@@ -225,22 +233,25 @@ export default function Dashboard() {
 
                   {days.map((day) => {
                     const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+                    const isBlocked = publicBlocksQuery.data?.blocks.some(b => b.day === day);
                     const isDisabled = isPastDate(day, currentMonth) || isWeekend(day, currentMonth);
                     const isSelected = selectedSlot?.date.getDate() === day && selectedSlot?.date.getMonth() === currentMonth.getMonth();
 
                     return (
                       <button
                         key={day}
-                        onClick={() => !isDisabled && handleDateClick(date)}
-                        disabled={isDisabled}
+                        onClick={() => handleDateClick(date)}
+                        disabled={isDisabled && !isBlocked}
                         className={`aspect-square rounded-lg font-semibold text-sm transition-colors ${
-                          isDisabled
+                          isDisabled && !isBlocked
                             ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                            : isSelected
-                              ? "bg-indigo-600 text-white"
-                              : isToday(day, currentMonth)
-                                ? "bg-indigo-100 text-indigo-900 border-2 border-indigo-600"
-                                : "bg-white border border-gray-200 hover:border-indigo-600 hover:bg-indigo-50"
+                            : isBlocked
+                              ? "bg-red-100 text-red-600 border border-red-200 hover:bg-red-200"
+                              : isSelected
+                                ? "bg-indigo-600 text-white"
+                                : isToday(day, currentMonth)
+                                  ? "bg-indigo-100 text-indigo-900 border-2 border-indigo-600"
+                                  : "bg-white border border-gray-200 hover:border-indigo-600 hover:bg-indigo-50"
                         }`}
                       >
                         {day}
@@ -262,6 +273,10 @@ export default function Dashboard() {
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 bg-indigo-600 rounded"></div>
                     <span>Data selecionada</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 bg-red-100 border border-red-200 rounded"></div>
+                    <span>Dia Bloqueado (Indisponível)</span>
                   </div>
                 </div>
               </CardContent>
@@ -317,6 +332,15 @@ export default function Dashboard() {
           </DialogHeader>
 
           <div className="space-y-4">
+            {isFullDayBlocked && (
+              <Alert variant="destructive" className="bg-red-50 border-red-200 text-red-800">
+                <AlertCircle className="h-4 w-4 text-red-600" />
+                <AlertDescription className="font-medium">
+                  Este dia está bloqueado: {blockReason || "Indisponível para agendamento"}
+                </AlertDescription>
+              </Alert>
+            )}
+
             {/* Horário */}
             <div className="space-y-2">
               <label className="text-sm font-medium">Horário</label>
@@ -389,7 +413,7 @@ export default function Dashboard() {
               </Button>
               <Button
                 onClick={handleCreateAppointment}
-                disabled={!selectedSlot?.time || !reason || !phone || createAppointmentMutation.isPending}
+                disabled={isFullDayBlocked || !selectedSlot?.time || !reason || !phone || createAppointmentMutation.isPending}
                 className="flex-1 bg-indigo-600 hover:bg-indigo-700"
               >
                 {createAppointmentMutation.isPending ? (

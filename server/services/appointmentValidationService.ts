@@ -140,7 +140,7 @@ export class AppointmentValidationService {
   /**
    * Obtém horários disponíveis para uma data específica
    */
-  async getAvailableSlots(appointmentDate: Date): Promise<string[]> {
+  async getAvailableSlots(appointmentDate: Date): Promise<{ slots: string[], isFullDayBlocked: boolean, blockReason?: string }> {
     const settings = await getSystemSettings();
     const workStart = settings?.workingHoursStart || "08:00:00";
     const workEnd = settings?.workingHoursEnd || "12:00:00";
@@ -165,6 +165,8 @@ export class AppointmentValidationService {
     const blockedSlots = await getBlockedSlotsForDate(appointmentDate);
     const bookedAppointments = await getAppointmentsByDate(appointmentDate);
 
+    const fullDayBlock = blockedSlots.find(b => b.blockType === "full_day");
+
     const availableSlots = slots.filter((slot) => {
       // Verifica bloqueios
       const isBlocked = blockedSlots.some((blocked) => {
@@ -184,15 +186,19 @@ export class AppointmentValidationService {
       return !isBooked;
     });
 
-    return availableSlots;
+    return {
+      slots: availableSlots,
+      isFullDayBlocked: !!fullDayBlock,
+      blockReason: fullDayBlock?.reason || undefined
+    };
   }
 
   /**
    * Valida se um slot está disponível
    */
   async isSlotAvailable(appointmentDate: Date, startTime: string): Promise<boolean> {
-    const availableSlots = await this.getAvailableSlots(appointmentDate);
-    return availableSlots.includes(startTime);
+    const { slots } = await this.getAvailableSlots(appointmentDate);
+    return slots.includes(startTime);
   }
 
   /**
@@ -232,11 +238,11 @@ export class AppointmentValidationService {
     }
 
     // Obtém slots disponíveis para retorno
-    const availableSlots = await this.getAvailableSlots(appointmentDate);
+    const { slots } = await this.getAvailableSlots(appointmentDate);
 
     return {
       valid: true,
-      availableSlots,
+      availableSlots: slots,
     };
   }
 

@@ -302,8 +302,17 @@ export const appRouter = router({
             id: appointments.id,
             appointmentDate: appointments.appointmentDate,
             startTime: appointments.startTime,
-            userName: users.name,
+            endTime: appointments.endTime,
+            reason: appointments.reason,
+            notes: appointments.notes,
             status: appointments.status,
+            userName: users.name,
+            userCpf: users.cpf,
+            userOab: users.oab,
+            userEmail: users.email,
+            userPhone: users.phone,
+            userCidade: users.cidade,
+            userEstado: users.estado,
           })
           .from(appointments)
           .innerJoin(users, eq(appointments.userId, users.id))
@@ -319,6 +328,7 @@ export const appRouter = router({
           appointments: results.map(apt => ({
             ...apt,
             day: apt.appointmentDate.getDate(),
+            dateFormatted: apt.appointmentDate.toLocaleDateString("pt-BR"),
           }))
         };
       }),
@@ -423,8 +433,36 @@ export const appRouter = router({
     getAvailableSlots: protectedProcedure
       .input(z.object({ date: z.date() }))
       .query(async ({ input }) => {
-        const slots = await appointmentValidationService.getAvailableSlots(input.date);
-        return { slots };
+        const result = await appointmentValidationService.getAvailableSlots(input.date);
+        return result;
+      }),
+
+    getPublicBlocks: protectedProcedure
+      .input(z.object({ month: z.number(), year: z.number() }))
+      .query(async ({ input }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const startDate = new Date(input.year, input.month, 1);
+        const endDate = new Date(input.year, input.month + 1, 0, 23, 59, 59);
+
+        const results = await db
+          .select()
+          .from(blockedSlots)
+          .where(
+            and(
+              gte(blockedSlots.blockedDate, startDate),
+              lte(blockedSlots.blockedDate, endDate),
+              eq(blockedSlots.blockType, "full_day")
+            )
+          );
+
+        return {
+          blocks: results.map(b => ({
+            day: b.blockedDate.getDate(),
+            reason: b.reason
+          }))
+        };
       }),
 
     validate: protectedProcedure
