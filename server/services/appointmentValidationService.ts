@@ -5,12 +5,15 @@
  */
 
 import {
+  getDb,
   getAppointmentsByDate,
   getBlockedSlotsForDate,
   getOrCreateAppointmentLimit,
   getUserAppointments,
   getSystemSettings,
 } from "../db";
+import { eq, and, gte, lte } from "drizzle-orm";
+import { appointments } from "../../drizzle/schema";
 
 export interface ValidationError {
   valid: false;
