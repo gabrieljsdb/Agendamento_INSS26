@@ -288,6 +288,57 @@ export const appRouter = router({
         return { success: true };
       }),
 
+    sendCustomNotification: adminProcedure
+      .input(z.object({
+        appointmentId: z.number(),
+        message: z.string().min(1, "A mensagem não pode estar vazia"),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const appointment = await db
+          .select({
+            id: appointments.id,
+            appointmentDate: appointments.appointmentDate,
+            startTime: appointments.startTime,
+            userName: users.name,
+            userEmail: users.email,
+            userId: users.id,
+          })
+          .from(appointments)
+          .innerJoin(users, eq(appointments.userId, users.id))
+          .where(eq(appointments.id, input.appointmentId))
+          .limit(1);
+
+        if (appointment.length === 0) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Agendamento não encontrado" });
+        }
+
+        const apt = appointment[0];
+
+        await emailService.sendCustomNotification({
+          toEmail: apt.userEmail,
+          userName: apt.userName,
+          message: input.message,
+          appointmentDate: apt.appointmentDate.toLocaleDateString("pt-BR"),
+          startTime: apt.startTime,
+          appointmentId: apt.id,
+          userId: apt.userId,
+        });
+
+        await logAuditAction({
+          userId: ctx.user.id,
+          action: "SEND_CUSTOM_NOTIFICATION",
+          entityType: "appointment",
+          entityId: input.appointmentId,
+          details: `Notificação enviada: ${input.message.substring(0, 100)}...`,
+          ipAddress: ctx.req.ip,
+        });
+
+        return { success: true };
+      }),
+
     getCalendarAppointments: adminProcedure
       .input(z.object({ month: z.number(), year: z.number() }))
       .query(async ({ input }) => {
@@ -571,6 +622,17 @@ export const appRouter = router({
       .input(z.object({ appointmentId: z.number(), reason: z.string().min(1, "Motivo do cancelamento é obrigatório") }))
       .mutation(async ({ input, ctx }) => {
         try {
+          // Se não for admin, valida a antecedência mínima de 5 horas
+          if (ctx.user.role !== "admin") {
+            const validationError = await appointmentValidationService.validateCancellationLeadTime(input.appointmentId);
+            if (validationError) {
+              throw new TRPCError({
+                code: "BAD_REQUEST",
+                message: validationError.message,
+              });
+            }
+          }
+
           await cancelAppointment(input.appointmentId, input.reason);
           await updateLastCancellation(ctx.user.id);
 
