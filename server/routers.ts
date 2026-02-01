@@ -52,9 +52,6 @@ export const appRouter = router({
           // Autentica contra SOAP
           const soapResult = await soapAuthService.authenticate(input.cpf, input.password);
 
-          // DEBUG: Ver o que chegou do SOAP antes de verificar erro
-          // console.log('DEBUG SOAP RAW:', JSON.stringify(soapResult, null, 2));
-
           if (!soapResult.success || !soapResult.userData) {
             throw new TRPCError({
               code: "UNAUTHORIZED",
@@ -63,33 +60,18 @@ export const appRouter = router({
           }
 
           const userData = soapResult.userData;
-
-          // --- BLOCO DE VERIFICAÇÃO DE INADIMPLÊNCIA CORRIGIDO ---
-          // Acessamos como 'any' caso a tipagem do userData ainda não tenha esse campo definido
           const statusInadimplente = (userData as any).Inadimplente;
 
-          console.log('DEBUG LOGIN OAB:', {
-              nome: userData.nome,
-              statusInadimplente: statusInadimplente,
-              tamanho: statusInadimplente?.length,
-              ehSim: statusInadimplente?.trim() === 'Sim'
-          });
-
-          // Verifica se é estritamente "Sim" (ignorando espaços)
           if (statusInadimplente && statusInadimplente.trim() === 'Sim') {
               throw new TRPCError({
                   code: 'UNAUTHORIZED',
                   message: 'Acesso negado: Regularize sua situação com a OAB'
               });
           }
-          // --- FIM DO BLOCO CORRIGIDO ---
 
-          // Busca ou cria usuário no banco com todos os campos extras
           let user = await getUserByCPF(userData.cpf);
-
           const { upsertUser } = await import("./db");
           
-          // Mapeamento dos dados
           const userPayload = {
             openId: `soap_${userData.cpf}`,
             cpf: userData.cpf,
@@ -101,7 +83,7 @@ export const appRouter = router({
             bairro: userData.bairro,
             cidade: userData.cidade,
             estado: userData.estado,
-            nomeMae: userData.nome_mae, // Certifique-se que o snake_case bate com o retorno do service
+            nomeMae: userData.nome_mae,
             nomePai: userData.nome_pai,
             rg: userData.rg,
             orgaoRg: userData.orgao_rg,
@@ -120,7 +102,6 @@ export const appRouter = router({
             });
           }
 
-          // Cria sessão
           const { sdk } = await import("./_core/sdk");
           const sessionToken = await sdk.createSessionToken(user.openId, {
             name: user.name,
@@ -133,7 +114,6 @@ export const appRouter = router({
             maxAge: 365 * 24 * 60 * 60 * 1000,
           });
 
-          // Log auditoria
           await logAuditAction({
             userId: user.id,
             action: "LOGIN_SOAP",
@@ -163,9 +143,6 @@ export const appRouter = router({
       }),
   }),
 
-  /**
-   * Procedures de Documentos
-   */
   documents: router({
     generateMyDocument: protectedProcedure.mutation(async ({ ctx }) => {
       try {
@@ -209,9 +186,6 @@ export const appRouter = router({
     })
   }),
 
-  /**
-   * Procedures de Agendamento
-   */
   admin: router({
     getDailyAppointments: adminProcedure
       .input(z.object({ date: z.date().optional() }))
@@ -288,6 +262,57 @@ export const appRouter = router({
         return { success: true };
       }),
 
+    sendCustomNotification: adminProcedure
+      .input(z.object({
+        appointmentId: z.number(),
+        message: z.string().min(1, "A mensagem não pode estar vazia"),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const appointment = await db
+          .select({
+            id: appointments.id,
+            appointmentDate: appointments.appointmentDate,
+            startTime: appointments.startTime,
+            userName: users.name,
+            userEmail: users.email,
+            userId: users.id,
+          })
+          .from(appointments)
+          .innerJoin(users, eq(appointments.userId, users.id))
+          .where(eq(appointments.id, input.appointmentId))
+          .limit(1);
+
+        if (appointment.length === 0) {
+          throw new TRPCError({ code: "NOT_FOUND", message: "Agendamento não encontrado" });
+        }
+
+        const apt = appointment[0];
+
+        await emailService.sendCustomNotification({
+          toEmail: apt.userEmail,
+          userName: apt.userName,
+          message: input.message,
+          appointmentDate: apt.appointmentDate.toLocaleDateString("pt-BR"),
+          startTime: apt.startTime,
+          appointmentId: apt.id,
+          userId: apt.userId,
+        });
+
+        await logAuditAction({
+          userId: ctx.user.id,
+          action: "SEND_CUSTOM_NOTIFICATION",
+          entityType: "appointment",
+          entityId: input.appointmentId,
+          details: `Notificação enviada: ${input.message.substring(0, 100)}...`,
+          ipAddress: ctx.req.ip,
+        });
+
+        return { success: true };
+      }),
+
     getCalendarAppointments: adminProcedure
       .input(z.object({ month: z.number(), year: z.number() }))
       .query(async ({ input }) => {
@@ -302,47 +327,39 @@ export const appRouter = router({
             id: appointments.id,
             appointmentDate: appointments.appointmentDate,
             startTime: appointments.startTime,
-            endTime: appointments.endTime,
-            reason: appointments.reason,
-            notes: appointments.notes,
             status: appointments.status,
             userName: users.name,
-            userCpf: users.cpf,
-            userOab: users.oab,
-            userEmail: users.email,
-            userPhone: users.phone,
-            userCidade: users.cidade,
-            userEstado: users.estado,
           })
           .from(appointments)
           .innerJoin(users, eq(appointments.userId, users.id))
           .where(
             and(
               gte(appointments.appointmentDate, startDate),
-              lte(appointments.appointmentDate, endDate),
-              eq(appointments.status, "confirmed")
+              lte(appointments.appointmentDate, endDate)
             )
           );
 
-        return {
-          appointments: results.map(apt => ({
-            ...apt,
-            day: apt.appointmentDate.getDate(),
-            dateFormatted: apt.appointmentDate.toLocaleDateString("pt-BR"),
-          }))
-        };
+        return { appointments: results };
       }),
 
-    getBlocks: adminProcedure
-      .input(z.object({ date: z.date().optional() }))
+    getBlockedSlots: adminProcedure
+      .input(z.object({ month: z.number(), year: z.number() }))
       .query(async ({ input }) => {
         const db = await getDb();
         if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
 
+        const startDate = new Date(input.year, input.month, 1);
+        const endDate = new Date(input.year, input.month + 1, 0, 23, 59, 59);
+
         const results = await db
           .select()
           .from(blockedSlots)
-          .orderBy(asc(blockedSlots.blockedDate));
+          .where(
+            and(
+              gte(blockedSlots.blockedDate, startDate),
+              lte(blockedSlots.blockedDate, endDate)
+            )
+          );
 
         return {
           blocks: results.map(b => ({
@@ -369,7 +386,6 @@ export const appRouter = router({
           const start = new Date(input.blockedDate);
           const end = new Date(input.endDate);
           
-          // Gerar bloqueios para cada dia no intervalo
           const blocks = [];
           let current = new Date(start);
           while (current <= end) {
@@ -447,68 +463,60 @@ export const appRouter = router({
         const endDate = new Date(input.year, input.month + 1, 0, 23, 59, 59);
 
         const results = await db
-          .select()
+          .select({
+            blockedDate: blockedSlots.blockedDate,
+            blockType: blockedSlots.blockType,
+          })
           .from(blockedSlots)
           .where(
             and(
               gte(blockedSlots.blockedDate, startDate),
-              lte(blockedSlots.blockedDate, endDate),
-              eq(blockedSlots.blockType, "full_day")
+              lte(blockedSlots.blockedDate, endDate)
             )
           );
 
-        return {
-          blocks: results.map(b => ({
-            day: b.blockedDate.getDate(),
-            reason: b.reason
-          }))
-        };
-      }),
-
-    validate: protectedProcedure
-      .input(z.object({ appointmentDate: z.date(), startTime: z.string() }))
-      .query(async ({ input, ctx }) => {
-        return await appointmentValidationService.validateAppointment(
-          input.appointmentDate,
-          input.startTime,
-          ctx.user.id
-        );
+        return { blocks: results };
       }),
 
     create: protectedProcedure
-      .input(
-        z.object({
-          appointmentDate: z.date(),
-          startTime: z.string(),
-          reason: z.string().min(1, "Motivo obrigatório"),
-          phone: z.string().min(10, "Telefone de contato é obrigatório"),
-          notes: z.string().optional(),
-        })
-      )
+      .input(z.object({
+        appointmentDate: z.date(),
+        startTime: z.string(),
+        endTime: z.string(),
+        reason: z.string(),
+        notes: z.string().optional(),
+        phone: z.string().optional(),
+      }))
       .mutation(async ({ input, ctx }) => {
         try {
-          // Atualizar telefone do usuário
-          await updateUserPhone(ctx.user.id, input.phone);
-
-          const validation = await appointmentValidationService.validateAppointment(
-            input.appointmentDate,
-            input.startTime,
-            ctx.user.id
-          );
-
-          if (!validation.valid) {
-            throw new TRPCError({ code: "BAD_REQUEST", message: validation.message });
+          if (input.phone) {
+            await updateUserPhone(ctx.user.id, input.phone);
           }
 
-          const endTime = appointmentValidationService.calculateEndTime(input.startTime);
-          await createAppointment({
+          const validationError = await appointmentValidationService.validateNewAppointment(
+            ctx.user.id,
+            input.appointmentDate,
+            input.startTime
+          );
+
+          if (validationError) {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: validationError.message,
+            });
+          }
+
+          const appointmentId = await createAppointment({
             userId: ctx.user.id,
             appointmentDate: input.appointmentDate,
             startTime: input.startTime,
-            endTime: endTime,
+            endTime: input.endTime,
             reason: input.reason,
             notes: input.notes,
+            status: "confirmed",
           });
+
+          await incrementAppointmentCount(ctx.user.id);
 
           const appointmentDateStr = input.appointmentDate.toLocaleDateString("pt-BR");
           await emailService.sendAppointmentConfirmation({
@@ -516,8 +524,8 @@ export const appRouter = router({
             userName: ctx.user.name,
             appointmentDate: appointmentDateStr,
             startTime: input.startTime,
-            endTime: endTime,
             reason: input.reason,
+            appointmentId: appointmentId,
             userId: ctx.user.id,
           });
 
@@ -525,30 +533,18 @@ export const appRouter = router({
             userId: ctx.user.id,
             action: "CREATE_APPOINTMENT",
             entityType: "appointment",
+            entityId: appointmentId,
             details: `Agendamento para ${appointmentDateStr} às ${input.startTime}`,
             ipAddress: ctx.req.ip,
           });
 
-          return { success: true, message: "Agendamento realizado com sucesso" };
+          return { success: true, appointmentId };
         } catch (error) {
           console.error("[Appointments] Erro ao criar agendamento:", error);
           if (error instanceof TRPCError) throw error;
-          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Erro ao criar agendamento" });
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Erro ao processar agendamento" });
         }
       }),
-
-    getUpcoming: protectedProcedure.query(async ({ ctx }) => {
-      const appointments = await getUpcomingAppointments(ctx.user.id);
-      return {
-        appointments: appointments.map((apt) => ({
-          id: apt.id,
-          date: apt.appointmentDate.toLocaleDateString("pt-BR"),
-          time: apt.startTime,
-          reason: apt.reason,
-          status: apt.status,
-        })),
-      };
-    }),
 
     getHistory: protectedProcedure
       .input(z.object({ limit: z.number().default(50) }).optional())
@@ -571,6 +567,16 @@ export const appRouter = router({
       .input(z.object({ appointmentId: z.number(), reason: z.string().min(1, "Motivo do cancelamento é obrigatório") }))
       .mutation(async ({ input, ctx }) => {
         try {
+          if (ctx.user.role !== "admin") {
+            const validationError = await appointmentValidationService.validateCancellationLeadTime(input.appointmentId);
+            if (validationError) {
+              throw new TRPCError({
+                code: "BAD_REQUEST",
+                message: validationError.message,
+              });
+            }
+          }
+
           await cancelAppointment(input.appointmentId, input.reason);
           await updateLastCancellation(ctx.user.id);
 

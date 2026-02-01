@@ -42,15 +42,24 @@ export class EmailWorker {
         return null;
       }
 
+      // Determina se deve usar SSL implícito (porta 465) ou STARTTLS (outras portas)
+      // O erro 'wrong version number' ocorre quando tentamos SSL em uma porta que espera STARTTLS
+      const isSecure = settings.smtpPort === 465 || settings.smtpSecure;
+
       // Cria o transporter com as configurações do banco
       const transporter = nodemailer.createTransport({
         host: settings.smtpHost,
         port: settings.smtpPort,
-        secure: settings.smtpSecure, // true para 465, false para outras portas
+        secure: isSecure,
         auth: {
           user: settings.smtpUser,
           pass: settings.smtpPassword,
         },
+        // Adiciona configurações extras de segurança para evitar erros de certificado/versão
+        tls: {
+          rejectUnauthorized: false, // Permite certificados auto-assinados se necessário
+          minVersion: 'TLSv1.2'
+        }
       });
 
       // Verifica a conexão
