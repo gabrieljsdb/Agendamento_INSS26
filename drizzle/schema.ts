@@ -169,6 +169,12 @@ export const systemSettings = mysqlTable("system_settings", {
   adminEmails: text("ADMINEMAILS").notNull(),
   dailyReportTime: varchar("DAILYREPORTTIME", { length: 5 }).default("19:00").notNull(),
   dailyReportEnabled: boolean("DAILYREPORTENABLED").default(true).notNull(),
+  // Configurações SMTP
+  smtpHost: varchar("SMTPHOST", { length: 255 }).default("smtp.gmail.com").notNull(),
+  smtpPort: int("SMTPPORT").default(587).notNull(),
+  smtpSecure: boolean("SMTPSECURE").default(false).notNull(),
+  smtpUser: varchar("SMTPUSER", { length: 320 }),
+  smtpPassword: text("SMTPPASSWORD"),
   updatedAt: timestamp("UPDATEDAT").defaultNow().onUpdateNow().notNull(),
 });
 

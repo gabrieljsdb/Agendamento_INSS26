@@ -26,6 +26,11 @@ export const systemRouter = router({
       adminEmails: z.string(),
       dailyReportTime: z.string(),
       dailyReportEnabled: z.boolean(),
+      smtpHost: z.string(),
+      smtpPort: z.number(),
+      smtpSecure: z.boolean(),
+      smtpUser: z.string().optional(),
+      smtpPassword: z.string().optional(),
     }))
     .mutation(async ({ input }) => {
       await updateSystemSettings(input);

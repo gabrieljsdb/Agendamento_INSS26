@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { trpc } from "@/lib/trpc";
-import { Settings as SettingsIcon, Save, Loader2, Clock, Building, Mail, Shield } from "lucide-react";
+import { Settings as SettingsIcon, Save, Loader2, Clock, Building, Mail, Shield, Server } from "lucide-react";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
@@ -42,6 +42,11 @@ export default function Settings() {
     adminEmails: "[]",
     dailyReportTime: "19:00",
     dailyReportEnabled: true,
+    smtpHost: "smtp.gmail.com",
+    smtpPort: 587,
+    smtpSecure: false,
+    smtpUser: "",
+    smtpPassword: "",
   });
 
   useEffect(() => {
@@ -62,6 +67,11 @@ export default function Settings() {
         adminEmails: settingsQuery.data.adminEmails,
         dailyReportTime: settingsQuery.data.dailyReportTime || "19:00",
         dailyReportEnabled: settingsQuery.data.dailyReportEnabled ?? true,
+        smtpHost: settingsQuery.data.smtpHost || "smtp.gmail.com",
+        smtpPort: settingsQuery.data.smtpPort || 587,
+        smtpSecure: settingsQuery.data.smtpSecure ?? false,
+        smtpUser: settingsQuery.data.smtpUser || "",
+        smtpPassword: settingsQuery.data.smtpPassword || "",
       });
     }
   }, [settingsQuery.data]);
@@ -218,8 +228,53 @@ export default function Settings() {
                     <p className="text-[10px] text-gray-400">O relatório contém os agendamentos marcados para o próximo dia útil.</p>
                   </div>
                 </div>
-	            </CardContent>
-	          </Card>
+		            </CardContent>
+		          </Card>
+
+          {/* Configurações SMTP */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Server className="h-5 w-5 text-indigo-500" />
+                Servidor SMTP
+              </CardTitle>
+              <CardDescription>Configure o servidor de e-mail para envio de notificações.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="smtpHost">Servidor SMTP</Label>
+                  <Input id="smtpHost" name="smtpHost" value={formData.smtpHost} onChange={handleChange} placeholder="smtp.gmail.com" required />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="smtpPort">Porta SMTP</Label>
+                  <Input id="smtpPort" name="smtpPort" type="number" value={formData.smtpPort} onChange={handleChange} required />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="smtpUser">Usuário SMTP</Label>
+                <Input id="smtpUser" name="smtpUser" type="email" value={formData.smtpUser} onChange={handleChange} placeholder="seu-email@gmail.com" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="smtpPassword">Senha SMTP</Label>
+                <Input id="smtpPassword" name="smtpPassword" type="password" value={formData.smtpPassword} onChange={handleChange} placeholder="Senha de aplicativo" />
+                <p className="text-[10px] text-gray-400">Para Gmail, use uma senha de aplicativo gerada em https://myaccount.google.com/apppasswords</p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input 
+                  id="smtpSecure" 
+                  name="smtpSecure" 
+                  type="checkbox" 
+                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  checked={formData.smtpSecure} 
+                  onChange={handleChange} 
+                />
+                <Label htmlFor="smtpSecure" className="text-sm font-normal">
+                  Usar conexão segura (TLS/SSL)
+                </Label>
+              </div>
+            </CardContent>
+          </Card>
 
           <div className="flex justify-end gap-4">
             <Button type="button" variant="outline" onClick={() => navigate("/admin")}>Cancelar</Button>

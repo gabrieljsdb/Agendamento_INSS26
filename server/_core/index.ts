@@ -7,6 +7,7 @@ import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { cronService } from "../services/cronService";
+import { emailWorker } from "../services/emailWorker";
 import { serveStatic, setupVite } from "./vite";
 
 function isPortAvailable(port: number): Promise<boolean> {
@@ -65,6 +66,9 @@ async function startServer() {
     setInterval(() => {
       cronService.checkAndRun().catch(err => console.error("[Cron] Error:", err));
     }, 60 * 1000);
+    
+    // Inicia o worker de processamento de e-mails (a cada 30 segundos)
+    emailWorker.start(30);
   });
 }
 
