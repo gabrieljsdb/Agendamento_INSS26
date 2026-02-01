@@ -120,9 +120,17 @@ export default function Dashboard() {
       return;
     }
 
+    // Calcula o horário de término (endTime) baseado na duração padrão de 30 min
+    const [hour, min] = selectedSlot.time.split(":").map(Number);
+    const totalMinutes = hour * 60 + min + 30;
+    const endHour = Math.floor(totalMinutes / 60);
+    const endMin = totalMinutes % 60;
+    const endTime = `${String(endHour).padStart(2, "0")}:${String(endMin).padStart(2, "0")}:00`;
+
     createAppointmentMutation.mutate({
       appointmentDate: selectedSlot.date,
       startTime: selectedSlot.time,
+      endTime,
       reason,
       phone,
       notes: notes || undefined,
