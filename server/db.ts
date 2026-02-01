@@ -159,7 +159,7 @@ export async function createAppointment(data: {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
-  const result = await db.insert(appointments).values({
+  const [result] = await db.insert(appointments).values({
     userId: data.userId,
     appointmentDate: data.appointmentDate,
     startTime: data.startTime,
@@ -169,7 +169,8 @@ export async function createAppointment(data: {
     status: "confirmed",
   });
 
-  return result;
+  // Retorna apenas o ID inserido (insertId) para evitar problemas de serialização
+  return (result as any).insertId as number;
 }
 
 export async function getUserAppointments(userId: number, limit = 50) {

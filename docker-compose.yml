@@ -25,14 +25,8 @@ services:
       # Configurações SOAP (ajuste conforme necessário)
       - SOAP_AUTH_URL=${SOAP_AUTH_URL:-https://api.oabsc.org.br/soap/auth}
       
-      # Configurações de Email (ajuste conforme necessário)
-      - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
-      - SMTP_PORT=${SMTP_PORT:-587}
-      - SMTP_USER=${SMTP_USER:-no-reply@oab-sc.org.br}
-      - SMTP_PASSWORD=${SMTP_PASSWORD:-whkx qwhg rubh zqll}
-      
-      # Emails de administradores
-      - ADMIN_EMAILS=${ADMIN_EMAILS:-["admin@oabsc.org.br"]}
+      # NOTA: Configurações de e-mail (SMTP e admin emails) agora são gerenciadas
+      # pelo painel administrativo do sistema. Acesse /admin/settings para configurar.
     ports:
       - "3940:3000"
     volumes:
@@ -43,5 +37,5 @@ services:
       - ./shared:/app/shared
       - ./drizzle:/app/drizzle
       - /app/node_modules
-    # Comando simplificado: apenas inicia a aplicação (tabelas já existem)
-    command: sh -c "pnpm dev"
+    # Garante que o nodemailer seja instalado no container mesmo com volumes montados
+    command: sh -c "pnpm install --no-frozen-lockfile && pnpm dev"

@@ -493,16 +493,18 @@ export const appRouter = router({
             await updateUserPhone(ctx.user.id, input.phone);
           }
 
-          const validationError = await appointmentValidationService.validateNewAppointment(
-            ctx.user.id,
+          const validationResult = await appointmentValidationService.validateAppointment(
             input.appointmentDate,
-            input.startTime
+            input.startTime,
+            ctx.user.id
           );
 
-          if (validationError) {
+          // Se valid for false, aí sim barramos o agendamento
+          if (validationResult.valid === false) {
+            console.warn("[Appointments] Falha na validação do agendamento:", validationResult.message);
             throw new TRPCError({
               code: "BAD_REQUEST",
-              message: validationError.message,
+              message: validationResult.message,
             });
           }
 
