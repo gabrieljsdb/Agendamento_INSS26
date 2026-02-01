@@ -225,12 +225,14 @@ export default function Dashboard() {
                     const isDisabled = isPastDate(day, currentMonth) || isWeekend(day, currentMonth);
                     const isSelected = selectedSlot?.date.getDate() === day && selectedSlot?.date.getMonth() === currentMonth.getMonth();
 
+                    const blockData = publicBlocksQuery.data?.blocks.find(b => b.day === day);
+
                     return (
                       <button
                         key={day}
                         onClick={() => handleDateClick(date)}
                         disabled={isDisabled && !isBlocked}
-                        className={`aspect-square rounded-lg font-semibold text-sm transition-colors ${
+                        className={`aspect-square rounded-lg font-semibold text-sm transition-colors flex flex-col items-center justify-center relative overflow-hidden ${
                           isDisabled && !isBlocked
                             ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                             : isBlocked
@@ -242,7 +244,12 @@ export default function Dashboard() {
                                   : "bg-white border border-gray-200 hover:border-indigo-600 hover:bg-indigo-50"
                         }`}
                       >
-                        {day}
+                        <span>{day}</span>
+                        {isBlocked && blockData?.reason && (
+                          <span className="text-[8px] leading-tight mt-1 px-1 text-center font-normal opacity-80 truncate w-full">
+                            {blockData.reason}
+                          </span>
+                        )}
                       </button>
                     );
                   })}
