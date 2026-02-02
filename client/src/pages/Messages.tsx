@@ -29,6 +29,10 @@ export default function Messages() {
 
   const appointments = appointmentsQuery.data?.appointments || [];
 
+  if (appointmentsQuery.isError) {
+    console.error("Erro ao carregar agendamentos:", appointmentsQuery.error);
+  }
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "confirmed":
@@ -41,6 +45,18 @@ export default function Messages() {
         return <Badge className="bg-red-100 text-red-800 border-red-200">Cancelado</Badge>;
       default:
         return <Badge>{status}</Badge>;
+    }
+  };
+
+  // Função segura para formatar data
+  const formatDate = (date: any) => {
+    if (!date) return "";
+    try {
+      const d = new Date(date);
+      if (isNaN(d.getTime())) return String(date);
+      return d.toLocaleDateString("pt-BR");
+    } catch (e) {
+      return String(date);
     }
   };
 
@@ -83,13 +99,13 @@ export default function Messages() {
                           {user?.role === 'admin' ? apt.userName : apt.reason}
                         </span>
                         <span className="text-[10px] text-gray-500 font-medium">
-                          {apt.date}
+                          {formatDate(apt.appointmentDate || apt.date)}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1.5 text-xs text-gray-500">
                           <Calendar className="h-3 w-3" />
-                          {apt.time}
+                          {apt.startTime?.substring(0, 5) || apt.time}
                         </div>
                         {getStatusBadge(apt.status)}
                       </div>

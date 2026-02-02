@@ -17,7 +17,7 @@ import {
   updateUserPhone,
   getAppointmentsByDate,
 } from "./db";
-import { eq, and, gte, lte, asc, desc } from "drizzle-orm";
+import { eq, and, gte, lte, asc, desc, ne, sql } from "drizzle-orm";
 import { users, appointments, blockedSlots, appointmentMessages } from "../drizzle/schema";
 import { soapAuthService } from "./services/soapAuthService";
 import { appointmentValidationService } from "./services/appointmentValidationService";
@@ -224,7 +224,72 @@ export const appRouter = router({
             )
           );
 
-        return { appointments: results };
+        return {
+          appointments: results.map((apt) => ({
+            id: apt.id,
+            date: apt.appointmentDate.toLocaleDateString("pt-BR"),
+            time: apt.startTime,
+            reason: apt.reason,
+            notes: apt.notes,
+            status: apt.status,
+            cancellationReason: apt.cancellationReason,
+            cancelledAt: apt.cancelledAt?.toLocaleDateString("pt-BR"),
+            userName: apt.userName,
+            userCpf: apt.userCpf,
+            userOab: apt.userOab,
+            userEmail: apt.userEmail,
+            userPhone: apt.userPhone,
+            userCidade: apt.userCidade,
+            userEstado: apt.userEstado,
+          })),
+        };
+      }),
+
+    getAllAppointments: adminProcedure
+      .input(z.object({ limit: z.number().optional() }))
+      .query(async ({ input }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        // Query Ultra-Simplificada: Apenas busca os dados. A ordenação será feita no navegador.
+        const results = await db
+          .select({
+            id: appointments.id,
+            appointmentDate: appointments.appointmentDate,
+            startTime: appointments.startTime,
+            reason: appointments.reason,
+            status: appointments.status,
+            userName: users.name,
+          })
+          .from(appointments)
+          .innerJoin(users, eq(appointments.userId, users.id))
+          .orderBy(desc(appointments.appointmentDate), desc(appointments.startTime));
+
+        const appointmentsWithUnread = await Promise.all(results.map(async (apt) => {
+          const unread = await db
+            .select({ id: appointmentMessages.id })
+            .from(appointmentMessages)
+            .where(
+              and(
+                eq(appointmentMessages.appointmentId, apt.id),
+                eq(appointmentMessages.isAdmin, false),
+                eq(appointmentMessages.isRead, false)
+              )
+            )
+            .limit(1);
+          
+          return {
+            id: apt.id,
+            date: apt.appointmentDate.toLocaleDateString("pt-BR"),
+            time: apt.startTime,
+            reason: apt.reason,
+            status: apt.status,
+            userName: apt.userName,
+            hasUnreadForAdmin: unread.length > 0
+          };
+        }));
+
+        return { appointments: appointmentsWithUnread };
       }),
 
     getCalendarAppointments: adminProcedure
@@ -456,6 +521,27 @@ export const appRouter = router({
   }),
 
   messages: router({
+    hasUnreadMessages: protectedProcedure
+      .query(async ({ ctx }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const unread = await db
+          .select({ id: appointmentMessages.id })
+          .from(appointmentMessages)
+          .innerJoin(appointments, eq(appointmentMessages.appointmentId, appointments.id))
+          .where(
+            and(
+              eq(appointments.userId, ctx.user.id),
+              eq(appointmentMessages.isAdmin, true),
+              eq(appointmentMessages.isRead, false)
+            )
+          )
+          .limit(1);
+
+        return { hasUnread: unread.length > 0 };
+      }),
+
     getMessages: protectedProcedure
       .input(z.object({ appointmentId: z.number() }))
       .query(async ({ input, ctx }) => {
@@ -645,9 +731,31 @@ export const appRouter = router({
     getHistory: protectedProcedure
       .input(z.object({ limit: z.number().default(50) }).optional())
       .query(async ({ input, ctx }) => {
-        const appointments = await getUserAppointments(ctx.user.id, input?.limit);
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const results = await db
+          .select({
+            id: appointments.id,
+            appointmentDate: appointments.appointmentDate,
+            startTime: appointments.startTime,
+            reason: appointments.reason,
+            status: appointments.status,
+            createdAt: appointments.createdAt,
+            cancelledAt: appointments.cancelledAt,
+          })
+          .from(appointments)
+          .where(
+            and(
+              eq(appointments.userId, ctx.user.id),
+              ne(appointments.status, "cancelled")
+            )
+          )
+          .orderBy(desc(appointments.appointmentDate))
+          .limit(input?.limit || 50);
+
         return {
-          appointments: appointments.map((apt) => ({
+          appointments: results.map((apt) => ({
             id: apt.id,
             date: apt.appointmentDate.toLocaleDateString("pt-BR"),
             time: apt.startTime,

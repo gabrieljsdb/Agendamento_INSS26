@@ -34,6 +34,10 @@ export default function Dashboard() {
   const [chatAppointmentId, setChatAppointmentId] = useState<number | null>(null);
 
   const upcomingQuery = trpc.appointments.getUpcoming.useQuery();
+  const unreadMessagesQuery = trpc.messages.hasUnreadMessages.useQuery(undefined, { 
+    enabled: !!user && user.role !== "admin",
+    refetchInterval: 30000 // Atualiza a cada 30 segundos
+  });
   const publicBlocksQuery = trpc.appointments.getPublicBlocks.useQuery({
     month: currentMonth.getMonth(),
     year: currentMonth.getFullYear()
@@ -183,6 +187,15 @@ export default function Dashboard() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
+        {unreadMessagesQuery.data?.hasUnread && (
+          <Alert className="bg-indigo-50 border-indigo-200 text-indigo-800 animate-pulse cursor-pointer" onClick={() => navigate("/messages")}>
+            <MessageSquare className="h-4 w-4 text-indigo-600" />
+            <AlertDescription className="font-medium flex justify-between items-center">
+              Você tem novas mensagens do administrador sobre seus agendamentos!
+              <Button variant="link" className="text-indigo-700 p-0 h-auto font-bold">Ver Mensagens →</Button>
+            </AlertDescription>
+          </Alert>
+        )}
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>

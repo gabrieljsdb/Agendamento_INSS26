@@ -166,7 +166,7 @@ export default function DailyAppointments() {
                         onClick={() => setSelectedAppointment(apt)}
                       >
                         <td className="px-4 py-3 font-semibold text-indigo-600">
-                          {apt.startTime.substring(0, 5)}
+                          {apt.startTime?.substring(0, 5)}
                         </td>
                         <td className="px-4 py-3 font-medium">
                           <div className="flex items-center gap-2">
@@ -315,7 +315,7 @@ export default function DailyAppointments() {
                         <Calendar className="h-4 w-4 text-gray-400" /> {selectedAppointment.date}
                       </p>
                       <p className="flex items-center gap-2 text-gray-900 font-medium">
-                        <Clock className="h-4 w-4 text-gray-400" /> {selectedAppointment.startTime.substring(0, 5)} - {selectedAppointment.endTime.substring(0, 5)}
+                        <Clock className="h-4 w-4 text-gray-400" /> {selectedAppointment.startTime?.substring(0, 5)} - {selectedAppointment.endTime?.substring(0, 5)}
                       </p>
                       <p className="flex items-center gap-2 text-gray-600">
                         <Info className="h-4 w-4 text-gray-400" /> <strong>Motivo:</strong> {selectedAppointment.reason}
@@ -480,7 +480,7 @@ export default function DailyAppointments() {
             <DialogHeader className="p-4 pb-0">
               <DialogTitle>Chat com {selectedAppointment?.userName}</DialogTitle>
               <DialogDescription>
-                Conversa vinculada ao agendamento das {selectedAppointment?.startTime.substring(0, 5)}
+                Conversa vinculada ao agendamento das {selectedAppointment?.startTime ? selectedAppointment.startTime.substring(0, 5) : '--:--'}
               </DialogDescription>
             </DialogHeader>
             <div className="p-4">
