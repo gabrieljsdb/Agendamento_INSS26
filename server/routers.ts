@@ -18,7 +18,7 @@ import {
   getAppointmentsByDate,
 } from "./db";
 import { eq, and, gte, lte, asc, desc, ne, sql } from "drizzle-orm";
-import { users, appointments, blockedSlots, appointmentMessages } from "../drizzle/schema";
+import { users, appointments, blockedSlots, appointmentMessages, emailTemplates } from "../drizzle/schema";
 import { soapAuthService } from "./services/soapAuthService";
 import { appointmentValidationService } from "./services/appointmentValidationService";
 import { emailService } from "./services/emailService";
@@ -188,10 +188,14 @@ export const appRouter = router({
       .input(z.object({ date: z.date().optional() }))
       .query(async ({ input }) => {
         const date = input.date || new Date();
-        const startOfDay = new Date(date);
-        startOfDay.setHours(0, 0, 0, 0);
-        const endOfDay = new Date(date);
-        endOfDay.setHours(23, 59, 59, 999);
+        
+        const startOfPeriod = new Date(date);
+        startOfPeriod.setDate(startOfPeriod.getDate() - 7); 
+        startOfPeriod.setHours(0, 0, 0, 0);
+        
+        const endOfPeriod = new Date(date);
+        endOfPeriod.setDate(endOfPeriod.getDate() + 7); 
+        endOfPeriod.setHours(23, 59, 59, 999);
 
         const db = await getDb();
         if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
@@ -216,13 +220,14 @@ export const appRouter = router({
             userEstado: users.estado,
           })
           .from(appointments)
-          .innerJoin(users, eq(appointments.userId, users.id))
+          .leftJoin(users, eq(appointments.userId, users.id))
           .where(
             and(
-              gte(appointments.appointmentDate, startOfDay),
-              lte(appointments.appointmentDate, endOfDay)
+              gte(appointments.appointmentDate, startOfPeriod),
+              lte(appointments.appointmentDate, endOfPeriod)
             )
-          );
+          )
+          .orderBy(desc(appointments.appointmentDate), desc(appointments.startTime));
 
         return {
           appointments: results.map((apt) => ({
@@ -234,7 +239,7 @@ export const appRouter = router({
             status: apt.status,
             cancellationReason: apt.cancellationReason,
             cancelledAt: apt.cancelledAt?.toLocaleDateString("pt-BR"),
-            userName: apt.userName,
+            userName: apt.userName || "Usuário não encontrado",
             userCpf: apt.userCpf,
             userOab: apt.userOab,
             userEmail: apt.userEmail,
@@ -251,7 +256,6 @@ export const appRouter = router({
         const db = await getDb();
         if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
 
-        // Query Ultra-Simplificada: Apenas busca os dados. A ordenação será feita no navegador.
         const results = await db
           .select({
             id: appointments.id,
@@ -262,7 +266,7 @@ export const appRouter = router({
             userName: users.name,
           })
           .from(appointments)
-          .innerJoin(users, eq(appointments.userId, users.id))
+          .leftJoin(users, eq(appointments.userId, users.id))
           .orderBy(desc(appointments.appointmentDate), desc(appointments.startTime));
 
         const appointmentsWithUnread = await Promise.all(results.map(async (apt) => {
@@ -284,7 +288,7 @@ export const appRouter = router({
             time: apt.startTime,
             reason: apt.reason,
             status: apt.status,
-            userName: apt.userName,
+            userName: apt.userName || "Usuário não encontrado",
             hasUnreadForAdmin: unread.length > 0
           };
         }));
@@ -306,152 +310,66 @@ export const appRouter = router({
             id: appointments.id,
             appointmentDate: appointments.appointmentDate,
             startTime: appointments.startTime,
-            endTime: appointments.endTime,
-            reason: appointments.reason,
-            notes: appointments.notes,
             status: appointments.status,
             userName: users.name,
-            userCpf: users.cpf,
-            userOab: users.oab,
-            userEmail: users.email,
-            userPhone: users.phone,
-            userCidade: users.cidade,
-            userEstado: users.estado,
           })
           .from(appointments)
-          .innerJoin(users, eq(appointments.userId, users.id))
+          .leftJoin(users, eq(appointments.userId, users.id))
           .where(
             and(
               gte(appointments.appointmentDate, startDate),
-              lte(appointments.appointmentDate, endDate),
-              eq(appointments.status, "confirmed")
+              lte(appointments.appointmentDate, endDate)
             )
           );
 
         return {
-          appointments: results.map((apt) => ({
-            ...apt,
-            day: apt.appointmentDate.getDate(),
-            dateFormatted: apt.appointmentDate.toLocaleDateString("pt-BR"),
-          })),
+          appointments: results.map(apt => ({
+            id: apt.id,
+            date: apt.appointmentDate,
+            time: apt.startTime,
+            status: apt.status,
+            userName: apt.userName || "Usuário não encontrado",
+          }))
         };
       }),
 
-    updateStatus: adminProcedure
-      .input(z.object({
-        appointmentId: z.number(),
-        status: z.enum(["pending", "confirmed", "completed", "cancelled", "no_show"]),
-      }))
-      .mutation(async ({ input, ctx }) => {
-        const db = await getDb();
-        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
-
-        await db
-          .update(appointments)
-          .set({ status: input.status })
-          .where(eq(appointments.id, input.appointmentId));
-
-        await logAuditAction({
-          userId: ctx.user.id,
-          action: "UPDATE_STATUS",
-          entityType: "appointment",
-          entityId: input.appointmentId,
-          details: `Status alterado para ${input.status}`,
-          ipAddress: ctx.req.ip,
-        });
-
-        return { success: true };
-      }),
-
-    getEmailTemplates: adminProcedure.query(async () => {
-      const { getEmailTemplates } = await import("./db");
-      return await getEmailTemplates();
-    }),
-
-    saveEmailTemplate: adminProcedure
-      .input(z.object({
-        slug: z.string(),
-        name: z.string(),
-        subject: z.string(),
-        body: z.string(),
-      }))
-      .mutation(async ({ input, ctx }) => {
-        const { upsertEmailTemplate } = await import("./db");
-        await upsertEmailTemplate(input);
-
-        await logAuditAction({
-          userId: ctx.user.id,
-          action: "UPDATE_EMAIL_TEMPLATE",
-          entityType: "email_template",
-          details: `Template ${input.slug} atualizado`,
-          ipAddress: ctx.req.ip,
-        });
-
-        return { success: true };
-      }),
-
-    sendCustomNotification: adminProcedure
-      .input(z.object({
-        appointmentId: z.number(),
-        message: z.string().min(1, "A mensagem não pode estar vazia"),
-      }))
-      .mutation(async ({ input, ctx }) => {
-        const db = await getDb();
-        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
-
-        const appointment = await db
-          .select({
-            id: appointments.id,
-            userName: users.name,
-            userEmail: users.email,
-          })
-          .from(appointments)
-          .innerJoin(users, eq(appointments.userId, users.id))
-          .where(eq(appointments.id, input.appointmentId))
-          .limit(1);
-
-        if (!appointment[0]) throw new TRPCError({ code: "NOT_FOUND", message: "Agendamento não encontrado" });
-
-        await emailService.sendCustomNotification({
-          toEmail: appointment[0].userEmail,
-          userName: appointment[0].userName,
-          message: input.message,
-          appointmentId: input.appointmentId,
-        });
-
-        return { success: true };
-      }),
-
     getBlockedSlots: adminProcedure
-      .input(z.object({ month: z.number().optional(), year: z.number().optional() }))
+      .input(z.object({ 
+        month: z.number().optional(), 
+        year: z.number().optional() 
+      }))
       .query(async ({ input }) => {
         const db = await getDb();
         if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
 
-        let query = db.select().from(blockedSlots);
-        
-        if (input.month !== undefined && input.year !== undefined) {
-          const startDate = new Date(input.year, input.month, 1);
-          const endDate = new Date(input.year, input.month + 1, 0, 23, 59, 59);
-          return await query.where(
+        const now = new Date();
+        const month = input.month ?? now.getMonth();
+        const year = input.year ?? now.getFullYear();
+
+        const startDate = new Date(year, month, 1);
+        const endDate = new Date(year, month + 1, 0, 23, 59, 59);
+
+        const results = await db
+          .select()
+          .from(blockedSlots)
+          .where(
             and(
               gte(blockedSlots.blockedDate, startDate),
               lte(blockedSlots.blockedDate, endDate)
             )
-          ).orderBy(asc(blockedSlots.blockedDate));
-        }
+          );
 
-        return await query.orderBy(desc(blockedSlots.blockedDate));
+        return results;
       }),
 
     createBlock: adminProcedure
       .input(z.object({
         blockedDate: z.date(),
-        startTime: z.string(),
-        endTime: z.string(),
-        blockType: z.enum(["full_day", "time_slot", "period"]),
-        reason: z.string(),
+        startTime: z.string().optional(),
+        endTime: z.string().optional(),
+        blockType: z.enum(["full_day", "morning", "afternoon", "period"]),
         endDate: z.date().optional(),
+        reason: z.string().optional(),
       }))
       .mutation(async ({ input, ctx }) => {
         const db = await getDb();
@@ -518,6 +436,12 @@ export const appRouter = router({
 
         return { success: true };
       }),
+
+    getEmailTemplates: adminProcedure.query(async () => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+      return await db.select().from(emailTemplates);
+    }),
   }),
 
   messages: router({
@@ -548,7 +472,6 @@ export const appRouter = router({
         const db = await getDb();
         if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
 
-        // Se não for admin, verifica se o agendamento pertence ao usuário
         if (ctx.user.role !== "admin") {
           const appointment = await db.select().from(appointments).where(eq(appointments.id, input.appointmentId)).limit(1);
           if (appointment.length === 0 || appointment[0].userId !== ctx.user.id) {
@@ -556,7 +479,6 @@ export const appRouter = router({
           }
         }
 
-        // Marca mensagens como lidas
         await db.update(appointmentMessages)
           .set({ isRead: true })
           .where(
@@ -581,7 +503,6 @@ export const appRouter = router({
         const db = await getDb();
         if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
 
-        // Se não for admin, verifica se o agendamento pertence ao usuário
         if (ctx.user.role !== "admin") {
           const appointment = await db.select().from(appointments).where(eq(appointments.id, input.appointmentId)).limit(1);
           if (appointment.length === 0 || appointment[0].userId !== ctx.user.id) {
@@ -613,7 +534,6 @@ export const appRouter = router({
       }))
       .mutation(async ({ input, ctx }) => {
         try {
-          // Validações
           const validationResult = await appointmentValidationService.validateAppointment(
             input.appointmentDate,
             input.startTime,
@@ -627,7 +547,6 @@ export const appRouter = router({
             });
           }
 
-          // Cria o agendamento
           const appointmentId = await createAppointment({
             userId: ctx.user.id,
             appointmentDate: input.appointmentDate,
@@ -637,15 +556,12 @@ export const appRouter = router({
             notes: input.notes,
           });
 
-          // Atualiza o telefone do usuário se fornecido
           if (input.phone) {
             await updateUserPhone(ctx.user.id, input.phone);
           }
 
-          // Incrementa contador de agendamentos
           await incrementAppointmentCount(ctx.user.id);
 
-          // Envia email de confirmação
           await emailService.sendAppointmentConfirmation({
             toEmail: ctx.user.email,
             userName: ctx.user.name,
@@ -657,7 +573,6 @@ export const appRouter = router({
             userId: ctx.user.id,
           });
 
-          // Log de auditoria
           await logAuditAction({
             userId: ctx.user.id,
             action: "CREATE_APPOINTMENT",

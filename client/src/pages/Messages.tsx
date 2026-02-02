@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -11,10 +11,10 @@ export default function Messages() {
   const { user, loading } = useAuth();
   const [selectedAppointmentId, setSelectedAppointmentId] = useState<number | null>(null);
 
-  // Se for admin, busca todos os agendamentos do dia para ver as conversas
-  // Se for usuário, busca o histórico dele
+  const today = useMemo(() => new Date(), []);
+
   const appointmentsQuery = user?.role === 'admin' 
-    ? trpc.admin.getDailyAppointments.useQuery({ date: new Date() })
+    ? trpc.admin.getDailyAppointments.useQuery({ date: today })
     : trpc.appointments.getHistory.useQuery({ limit: 50 });
 
   if (loading) {
@@ -28,10 +28,6 @@ export default function Messages() {
   }
 
   const appointments = appointmentsQuery.data?.appointments || [];
-
-  if (appointmentsQuery.isError) {
-    console.error("Erro ao carregar agendamentos:", appointmentsQuery.error);
-  }
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -48,16 +44,21 @@ export default function Messages() {
     }
   };
 
-  // Função segura para formatar data
-  const formatDate = (date: any) => {
-    if (!date) return "";
-    try {
-      const d = new Date(date);
-      if (isNaN(d.getTime())) return String(date);
-      return d.toLocaleDateString("pt-BR");
-    } catch (e) {
-      return String(date);
+  const formatDate = (apt: any) => {
+    if (apt.date) return apt.date;
+    if (apt.appointmentDate) {
+      try {
+        const d = new Date(apt.appointmentDate);
+        if (!isNaN(d.getTime())) return d.toLocaleDateString("pt-BR");
+      } catch (e) {}
     }
+    if (apt.createdAt) {
+      try {
+        const d = new Date(apt.createdAt);
+        if (!isNaN(d.getTime())) return d.toLocaleDateString("pt-BR");
+      } catch (e) {}
+    }
+    return "";
   };
 
   return (
@@ -68,7 +69,6 @@ export default function Messages() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full overflow-hidden">
-          {/* Lista de Conversas */}
           <Card className="md:col-span-1 flex flex-col overflow-hidden">
             <CardHeader className="border-b">
               <CardTitle className="text-lg flex items-center gap-2">
@@ -76,7 +76,7 @@ export default function Messages() {
                 Conversas
               </CardTitle>
               <CardDescription>
-                {user?.role === 'admin' ? 'Agendamentos de hoje' : 'Seus agendamentos'}
+                {user?.role === 'admin' ? 'Agendamentos recentes' : 'Seus agendamentos'}
               </CardDescription>
             </CardHeader>
             <CardContent className="p-0 flex-1 overflow-y-auto">
@@ -99,7 +99,7 @@ export default function Messages() {
                           {user?.role === 'admin' ? apt.userName : apt.reason}
                         </span>
                         <span className="text-[10px] text-gray-500 font-medium">
-                          {formatDate(apt.appointmentDate || apt.date)}
+                          {formatDate(apt)}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
@@ -121,7 +121,6 @@ export default function Messages() {
             </CardContent>
           </Card>
 
-          {/* Área do Chat */}
           <Card className="md:col-span-2 flex flex-col overflow-hidden">
             {selectedAppointmentId ? (
               <div className="flex-1 flex flex-col overflow-hidden">
