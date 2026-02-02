@@ -293,6 +293,53 @@ export class AppointmentValidationService {
 
     return `${String(endHour).padStart(2, "0")}:${String(endMin).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
   }
+
+  /**
+   * Valida se o cancelamento está dentro do prazo permitido (12 horas de antecedência)
+   */
+  async validateCancellationLeadTime(appointmentId: number): Promise<ValidationError | null> {
+    const db = await getDb();
+    if (!db) return null;
+
+    const result = await db
+      .select({
+        appointmentDate: appointments.appointmentDate,
+        startTime: appointments.startTime,
+      })
+      .from(appointments)
+      .where(eq(appointments.id, appointmentId))
+      .limit(1);
+
+    if (result.length === 0) {
+      return {
+        valid: false,
+        message: "Agendamento não encontrado",
+        code: "NOT_FOUND",
+      };
+    }
+
+    const apt = result[0];
+    const [hours, minutes] = apt.startTime.split(":").map(Number);
+    
+    const appointmentDateTime = new Date(apt.appointmentDate);
+    appointmentDateTime.setHours(hours, minutes, 0, 0);
+
+    const now = new Date();
+    const diffInMilliseconds = appointmentDateTime.getTime() - now.getTime();
+    const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
+
+    const minLeadTime = 12; // Regra solicitada: 12 horas
+
+    if (diffInHours < minLeadTime) {
+      return {
+        valid: false,
+        message: `O cancelamento só é permitido com no mínimo ${minLeadTime} horas de antecedência.`,
+        code: "CANCELLATION_LEAD_TIME_EXCEEDED",
+      };
+    }
+
+    return null;
+  }
 }
 
 // Exporta instância singleton

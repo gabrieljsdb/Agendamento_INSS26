@@ -9,6 +9,8 @@ import {
   auditLogs,
   emailQueue,
   systemSettings,
+  emailTemplates,
+  appointmentMessages,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 
@@ -189,14 +191,19 @@ export async function getUpcomingAppointments(userId: number) {
   const db = await getDb();
   if (!db) return [];
 
-  const now = new Date();
+  // Usamos uma data de ontem para garantir que agendamentos de hoje 
+  // apareçam mesmo com pequenas diferenças de fuso horário no servidor
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  yesterday.setHours(0, 0, 0, 0);
+
   return await db
     .select()
     .from(appointments)
     .where(
       and(
         eq(appointments.userId, userId),
-        gte(appointments.appointmentDate, now),
+        gte(appointments.appointmentDate, yesterday),
         eq(appointments.status, "confirmed")
       )
     )
@@ -231,7 +238,14 @@ export async function cancelAppointment(appointmentId: number, reason: string) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
 
-  return await db
+  // Busca o userId do agendamento antes de cancelar
+  const apt = await db
+    .select({ userId: appointments.userId })
+    .from(appointments)
+    .where(eq(appointments.id, appointmentId))
+    .limit(1);
+
+  const result = await db
     .update(appointments)
     .set({
       status: "cancelled",
@@ -239,6 +253,18 @@ export async function cancelAppointment(appointmentId: number, reason: string) {
       cancellationReason: reason,
     })
     .where(eq(appointments.id, appointmentId));
+
+  // Decrementa o contador de agendamentos do mês para o usuário
+  if (apt.length > 0) {
+    await db
+      .update(appointmentLimits)
+      .set({
+        appointmentsThisMonth: sql`GREATEST(0, appointmentsThisMonth - 1)`,
+      })
+      .where(eq(appointmentLimits.userId, apt[0].userId));
+  }
+
+  return result;
 }
 
 /**
@@ -462,5 +488,89 @@ export async function logAuditAction(data: {
     await db.insert(auditLogs).values(data);
   } catch (error) {
     console.error("[Database] Failed to log audit action:", error);
+  }
+}
+
+/**
+ * EMAIL TEMPLATES - Gerenciamento de modelos de e-mail
+ */
+export async function getEmailTemplates() {
+  const db = await getDb();
+  if (!db) return [];
+  return await db.select().from(emailTemplates);
+}
+
+export async function getEmailTemplateBySlug(slug: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db
+    .select()
+    .from(emailTemplates)
+    .where(eq(emailTemplates.slug, slug))
+    .limit(1);
+  return result[0] || null;
+}
+
+export async function upsertEmailTemplate(data: {
+  slug: string;
+  name: string;
+  subject: string;
+  body: string;
+  variables?: string;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+
+  const existing = await getEmailTemplateBySlug(data.slug);
+
+  if (existing) {
+    return await db
+      .update(emailTemplates)
+      .set({
+        name: data.name,
+        subject: data.subject,
+        body: data.body,
+        variables: data.variables,
+        updatedAt: new Date(),
+      })
+      .where(eq(emailTemplates.slug, data.slug));
+  } else {
+    return await db.insert(emailTemplates).values(data);
+  }
+}
+
+/**
+ * Inicializa templates padrão se não existirem
+ */
+export async function seedEmailTemplates() {
+  const templates = [
+    {
+      slug: "appointment_confirmation",
+      name: "Confirmação de Agendamento",
+      subject: "Agendamento Confirmado - Sistema de Agendamento INSS",
+      body: "<h1>Olá {userName}</h1><p>Seu agendamento para o dia {appointmentDate} às {startTime} foi confirmado.</p>",
+      variables: "{userName}, {appointmentDate}, {startTime}, {endTime}, {reason}"
+    },
+    {
+      slug: "appointment_cancellation",
+      name: "Cancelamento de Agendamento",
+      subject: "Agendamento Cancelado - Sistema de Agendamento INSS",
+      body: "<h1>Olá {userName}</h1><p>Seu agendamento para o dia {appointmentDate} às {startTime} foi cancelado.</p>",
+      variables: "{userName}, {appointmentDate}, {startTime}, {reason}"
+    },
+    {
+      slug: "custom_notification",
+      name: "Notificação Customizada",
+      subject: "Aviso Importante - Sistema de Agendamento INSS",
+      body: "<h1>Olá {userName}</h1><p>{message}</p>",
+      variables: "{userName}, {message}"
+    }
+  ];
+
+  for (const t of templates) {
+    const existing = await getEmailTemplateBySlug(t.slug);
+    if (!existing) {
+      await upsertEmailTemplate(t);
+    }
   }
 }

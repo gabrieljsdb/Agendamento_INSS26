@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { Calendar, Clock, Loader2, Trash2, Plus, Lock, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -24,28 +24,31 @@ export default function BlockManagement() {
     reason: ""
   });
   
-  const blocksQuery = trpc.admin.getBlocks.useQuery({});
-  const createBlockMutation = trpc.admin.createBlock.useMutation({
-    onSuccess: () => {
+  const blocksQuery = trpc.admin.getBlockedSlots.useQuery({});
+  const createBlockMutation = trpc.admin.createBlock.useMutation();
+  const deleteBlockMutation = trpc.admin.deleteBlock.useMutation();
+
+  useEffect(() => {
+    if (createBlockMutation.isSuccess) {
       toast.success("Bloqueio criado");
       blocksQuery.refetch();
       setIsAddOpen(false);
-      setNewBlock({ date: "", startTime: "08:00:00", endTime: "12:00:00", blockType: "full_day", reason: "" });
-    },
-    onError: (error) => {
-      toast.error(error.message || "Erro ao criar bloqueio");
+      setNewBlock({ date: "", endDate: "", startTime: "08:00:00", endTime: "12:00:00", blockType: "full_day", reason: "" });
     }
-  });
+    if (createBlockMutation.isError) {
+      toast.error(createBlockMutation.error.message || "Erro ao criar bloqueio");
+    }
+  }, [createBlockMutation.isSuccess, createBlockMutation.isError]);
 
-  const deleteBlockMutation = trpc.admin.deleteBlock.useMutation({
-    onSuccess: () => {
+  useEffect(() => {
+    if (deleteBlockMutation.isSuccess) {
       toast.success("Bloqueio removido");
       blocksQuery.refetch();
-    },
-    onError: (error) => {
-      toast.error(error.message || "Erro ao remover bloqueio");
     }
-  });
+    if (deleteBlockMutation.isError) {
+      toast.error(deleteBlockMutation.error.message || "Erro ao remover bloqueio");
+    }
+  }, [deleteBlockMutation.isSuccess, deleteBlockMutation.isError]);
 
   if (loading) return null;
   if (!user || user.role !== 'admin') {
@@ -91,7 +94,7 @@ export default function BlockManagement() {
               <div className="flex justify-center py-8">
                 <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
               </div>
-            ) : blocksQuery.data?.blocks && blocksQuery.data.blocks.length > 0 ? (
+            ) : blocksQuery.data && blocksQuery.data.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -104,7 +107,7 @@ export default function BlockManagement() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {blocksQuery.data.blocks.map((block) => (
+                    {blocksQuery.data.map((block: any) => (
                       <tr key={block.id} className="bg-white hover:bg-gray-50">
                         <td className="px-4 py-3 font-medium flex items-center gap-2">
                           <Calendar className="h-4 w-4 text-gray-400" />

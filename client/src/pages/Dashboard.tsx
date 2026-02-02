@@ -9,7 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Calendar, Clock, AlertCircle, CheckCircle2, Loader2, FileText, Download } from "lucide-react";
+import { Calendar, Clock, AlertCircle, CheckCircle2, Loader2, FileText, Download, MessageSquare } from "lucide-react";
+import { AppointmentChat } from "@/components/AppointmentChat";
 import { trpc } from "@/lib/trpc";
 import { useLocation } from "wouter";
 import { toast } from "sonner";
@@ -30,6 +31,7 @@ export default function Dashboard() {
   const [availableSlots, setAvailableSlots] = useState<string[]>([]);
   const [isFullDayBlocked, setIsFullDayBlocked] = useState(false);
   const [blockReason, setBlockReason] = useState<string | null>(null);
+  const [chatAppointmentId, setChatAppointmentId] = useState<number | null>(null);
 
   const upcomingQuery = trpc.appointments.getUpcoming.useQuery();
   const publicBlocksQuery = trpc.appointments.getPublicBlocks.useQuery({
@@ -41,18 +43,20 @@ export default function Dashboard() {
     { enabled: !!selectedSlot?.date }
   );
 
-  const createAppointmentMutation = trpc.appointments.create.useMutation({
-    onSuccess: () => {
+  const createAppointmentMutation = trpc.appointments.create.useMutation();
+
+  useEffect(() => {
+    if (createAppointmentMutation.isSuccess) {
       setSelectedSlot(null);
       setReason("");
       setNotes("");
       upcomingQuery.refetch();
       toast.success("Agendamento realizado com sucesso!");
-    },
-    onError: (error) => {
-      toast.error(error.message || "Erro ao realizar agendamento");
     }
-  });
+    if (createAppointmentMutation.isError) {
+      toast.error(createAppointmentMutation.error.message || "Erro ao realizar agendamento");
+    }
+  }, [createAppointmentMutation.isSuccess, createAppointmentMutation.isError]);
 
   const generateDocumentMutation = trpc.documents.generateMyDocument.useMutation({
     onSuccess: (data) => {
@@ -303,13 +307,24 @@ export default function Dashboard() {
                 ) : upcomingQuery.data?.appointments && upcomingQuery.data.appointments.length > 0 ? (
                   <div className="space-y-3">
                     {upcomingQuery.data.appointments.map((apt) => (
-                      <div key={apt.id} className="border-l-4 border-indigo-600 pl-3 py-2">
-                        <div className="font-semibold text-sm">{apt.date}</div>
-                        <div className="flex items-center gap-1 text-xs text-gray-600 mt-1">
-                          <Clock className="h-3 w-3" />
-                          {apt.time}
+                      <div key={apt.id} className="border-l-4 border-indigo-600 pl-3 py-2 flex justify-between items-start">
+                        <div>
+                          <div className="font-semibold text-sm">{apt.date}</div>
+                          <div className="flex items-center gap-1 text-xs text-gray-600 mt-1">
+                            <Clock className="h-3 w-3" />
+                            {apt.time}
+                          </div>
+                          <div className="text-xs text-gray-700 mt-1">{apt.reason}</div>
                         </div>
-                        <div className="text-xs text-gray-700 mt-1">{apt.reason}</div>
+                        <Button 
+                          variant="ghost" 
+                          size="icon-sm" 
+                          onClick={() => setChatAppointmentId(apt.id)}
+                          className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50"
+                          title="Conversar com Administrador"
+                        >
+                          <MessageSquare className="h-4 w-4" />
+                        </Button>
                       </div>
                     ))}
                   </div>
@@ -323,6 +338,21 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* Dialog de Chat */}
+      <Dialog open={!!chatAppointmentId} onOpenChange={(open) => !open && setChatAppointmentId(null)}>
+        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden">
+          <DialogHeader className="p-4 pb-0">
+            <DialogTitle>Conversa com Administrador</DialogTitle>
+            <DialogDescription>
+              Tire suas dúvidas sobre este agendamento
+            </DialogDescription>
+          </DialogHeader>
+          <div className="p-4">
+            {chatAppointmentId && <AppointmentChat appointmentId={chatAppointmentId} />}
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Dialog de Agendamento */}
       <Dialog open={!!selectedSlot} onOpenChange={(open) => !open && setSelectedSlot(null)}>

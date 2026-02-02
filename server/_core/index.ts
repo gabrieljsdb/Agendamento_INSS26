@@ -9,6 +9,7 @@ import { createContext } from "./context";
 import { cronService } from "../services/cronService";
 import { emailWorker } from "../services/emailWorker";
 import { serveStatic, setupVite } from "./vite";
+import { seedEmailTemplates } from "../db";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -30,6 +31,9 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 }
 
 async function startServer() {
+  // Inicializa templates de e-mail padrão se necessário
+  await seedEmailTemplates().catch(err => console.error("[EmailSeed] Error:", err));
+
   const app = express();
   const server = createServer(app);
   // Configure body parser with larger size limit for file uploads

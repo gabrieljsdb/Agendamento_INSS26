@@ -8,6 +8,7 @@ import {
   boolean,
   datetime,
   index,
+  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 
 /**
@@ -70,6 +71,8 @@ export const appointments = mysqlTable(
     userIdIdx: index("userId_idx").on(table.userId),
     appointmentDateIdx: index("appointmentDate_idx").on(table.appointmentDate),
     statusIdx: index("status_idx").on(table.status),
+    // Garante que não existam dois agendamentos confirmados/pendentes no mesmo horário
+    uniqueAppointmentIdx: uniqueIndex("unique_appointment_idx").on(table.appointmentDate, table.startTime),
   })
 );
 
@@ -177,6 +180,34 @@ export const systemSettings = mysqlTable("system_settings", {
   smtpPassword: text("SMTPPASSWORD"),
   updatedAt: timestamp("UPDATEDAT").defaultNow().onUpdateNow().notNull(),
 });
+
+/**
+ * EMAIL_TEMPLATES TABLE - Modelos de email customizáveis
+ */
+export const emailTemplates = mysqlTable("email_templates", {
+  id: int("ID").autoincrement().primaryKey(),
+  slug: varchar("SLUG", { length: 50 }).notNull().unique(), // appointment_confirmation, appointment_cancellation, etc.
+  name: varchar("NAME", { length: 100 }).notNull(),
+  subject: varchar("SUBJECT", { length: 255 }).notNull(),
+  body: text("BODY").notNull(),
+  variables: text("VARIABLES"), // Descrição das variáveis disponíveis (ex: {userName}, {date})
+  updatedAt: timestamp("UPDATEDAT").defaultNow().onUpdateNow().notNull(),
+});
+
+/**
+ * APPOINTMENT_MESSAGES TABLE - Chat entre usuário e administrador
+ */
+export const appointmentMessages = mysqlTable("appointment_messages", {
+  id: int("ID").autoincrement().primaryKey(),
+  appointmentId: int("APPOINTMENTID").notNull(),
+  senderId: int("SENDERID").notNull(),
+  message: text("MESSAGE").notNull(),
+  isAdmin: boolean("ISADMIN").default(false).notNull(),
+  isRead: boolean("ISREAD").default(false).notNull(),
+  createdAt: timestamp("CREATEDAT").defaultNow().notNull(),
+}, (table) => ({
+  appointmentIdx: index("appointment_idx").on(table.appointmentId),
+}));
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;

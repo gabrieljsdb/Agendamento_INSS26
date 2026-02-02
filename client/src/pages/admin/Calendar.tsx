@@ -17,6 +17,8 @@ export default function AdminCalendar() {
   const [, navigate] = useLocation();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedApt, setSelectedApt] = useState<any>(null);
+  const [viewDayModalOpen, setViewDayModalOpen] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
   const [notificationModalOpen, setNotificationModalOpen] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
   const [isSendingNotification, setIsSendingNotification] = useState(false);
@@ -36,6 +38,11 @@ export default function AdminCalendar() {
   });
 
   const calendarQuery = trpc.admin.getCalendarAppointments.useQuery({
+    month: currentMonth.getMonth(),
+    year: currentMonth.getFullYear()
+  });
+
+  const publicBlocksQuery = trpc.appointments.getPublicBlocks.useQuery({
     month: currentMonth.getMonth(),
     year: currentMonth.getFullYear()
   });
@@ -93,11 +100,32 @@ export default function AdminCalendar() {
               {days.map(day => {
                 const dayApts = appointmentsByDay[day] || [];
                 const isToday = new Date().getDate() === day && new Date().getMonth() === currentMonth.getMonth() && new Date().getFullYear() === currentMonth.getFullYear();
+                const blockData = publicBlocksQuery.data?.blocks.find(b => b.day === day);
+                const isBlocked = !!blockData;
                 
                 return (
-                  <div key={day} className={`border-r border-b p-2 transition-colors hover:bg-gray-50 overflow-y-auto ${isToday ? 'bg-indigo-50/30' : ''}`}>
+                  <div 
+                    key={day} 
+                    onClick={() => {
+                      if (dayApts.length > 0) {
+                        setSelectedDay(day);
+                        setViewDayModalOpen(true);
+                      }
+                    }}
+                    className={`border-r border-b p-2 transition-colors hover:bg-gray-50 overflow-y-auto cursor-pointer ${
+                      isToday ? 'bg-indigo-50/30' : ''
+                    } ${
+                      isBlocked ? 'bg-red-50 hover:bg-red-100' : ''
+                    }`}
+                  >
                     <div className="flex justify-between items-start mb-1">
-                      <span className={`text-sm font-bold ${isToday ? 'bg-indigo-600 text-white w-6 h-6 flex items-center justify-center rounded-full' : 'text-gray-700'}`}>
+                      <span className={`text-sm font-bold ${
+                        isToday 
+                          ? 'bg-indigo-600 text-white w-6 h-6 flex items-center justify-center rounded-full' 
+                          : isBlocked 
+                            ? 'text-red-600' 
+                            : 'text-gray-700'
+                      }`}>
                         {day}
                       </span>
                       {dayApts.length > 0 && (
@@ -107,21 +135,24 @@ export default function AdminCalendar() {
                       )}
                     </div>
                     <div className="space-y-1">
-                      {dayApts.slice(0, 3).map((apt: any) => (
+                      {isBlocked && (
+                        <div className="text-[9px] font-bold text-red-600 bg-red-100 px-1 py-0.5 rounded mb-1 truncate" title={blockData.reason}>
+                          BLOQUEADO: {blockData.reason}
+                        </div>
+                      )}
+                      {dayApts.map((apt: any) => (
                         <button
                           key={apt.id}
-                          onClick={() => setSelectedApt(apt)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedApt(apt);
+                          }}
                           className="w-full text-left px-1.5 py-0.5 text-[10px] rounded bg-white border border-gray-200 truncate hover:border-indigo-400 hover:shadow-sm transition-all"
                         >
                           <span className="font-bold text-indigo-600 mr-1">{apt.startTime.substring(0, 5)}</span>
                           {apt.userName}
                         </button>
                       ))}
-                      {dayApts.length > 3 && (
-                        <div className="text-[9px] text-center text-gray-400 font-medium">
-                          + {dayApts.length - 3} mais
-                        </div>
-                      )}
                     </div>
                   </div>
                 );
@@ -130,6 +161,47 @@ export default function AdminCalendar() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Modal de Lista do Dia */}
+      <Dialog open={viewDayModalOpen} onOpenChange={(open) => !open && setViewDayModalOpen(false)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <CalendarIcon className="h-5 w-5 text-indigo-600" />
+              Agendamentos - Dia {selectedDay}
+            </DialogTitle>
+            <DialogDescription>
+              Lista completa de atendimentos para este dia.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="max-h-[60vh] overflow-y-auto space-y-2 py-4">
+            {selectedDay && appointmentsByDay[selectedDay]?.map((apt: any) => (
+              <div 
+                key={apt.id} 
+                onClick={() => {
+                  setSelectedApt(apt);
+                  setViewDayModalOpen(false);
+                }}
+                className="flex items-center justify-between p-3 border rounded-lg hover:bg-indigo-50 hover:border-indigo-200 cursor-pointer transition-all"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded text-sm">
+                    {apt.startTime.substring(0, 5)}
+                  </span>
+                  <div>
+                    <p className="font-medium text-sm">{apt.userName}</p>
+                    <p className="text-xs text-gray-500">{apt.reason}</p>
+                  </div>
+                </div>
+                <ChevronRight className="h-4 w-4 text-gray-400" />
+              </div>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setViewDayModalOpen(false)}>Fechar</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Modal de Detalhes */}
       <Dialog open={!!selectedApt} onOpenChange={(open) => !open && setSelectedApt(null)}>

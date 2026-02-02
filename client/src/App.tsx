@@ -13,6 +13,7 @@ import BlockManagement from "./pages/admin/BlockManagement";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import Settings from "./pages/admin/Settings";
 import AdminCalendar from "./pages/admin/Calendar";
+import EmailSettings from "./pages/admin/EmailSettings";
 
 function Router() {
   return (
@@ -26,6 +27,7 @@ function Router() {
       <Route path={"/admin"} component={AdminDashboard} />
       <Route path={"/admin/settings"} component={Settings} />
       <Route path={"/admin/calendar"} component={AdminCalendar} />
+      <Route path={"/admin/email-settings"} component={EmailSettings} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
