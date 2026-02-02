@@ -14,114 +14,154 @@ interface AppointmentChatProps {
 
 export function AppointmentChat({ appointmentId, isAdmin = false }: AppointmentChatProps) {
   const [newMessage, setNewMessage] = useState("");
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   
   const messagesQuery = trpc.messages.getMessages.useQuery(
     { appointmentId },
     { 
-      refetchInterval: 5000, // Atualiza a cada 5 segundos
+      refetchInterval: 3000, // Atualiza a cada 3 segundos
     }
   );
-  
+
   const sendMessageMutation = trpc.messages.sendMessage.useMutation({
     onSuccess: () => {
       setNewMessage("");
       messagesQuery.refetch();
-    }
+    },
   });
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
+    scrollToBottom();
   }, [messagesQuery.data]);
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMessage.trim() || sendMessageMutation.isPending) return;
-    
+
     sendMessageMutation.mutate({
       appointmentId,
-      message: newMessage.trim(),
+      content: newMessage.trim(),
     });
   };
 
+  if (messagesQuery.isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[500px] min-h-[300px]">
+        <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
+      </div>
+    );
+  }
+
+  const messages = messagesQuery.data || [];
+
   return (
-    <div className="flex flex-col h-[400px] border rounded-lg bg-white overflow-hidden">
-      <div className="bg-gray-50 px-4 py-2 border-b flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-gray-700">Mensagens do Agendamento</h3>
-        {messagesQuery.isFetching && <Loader2 className="h-3 w-3 animate-spin text-gray-400" />}
+    <div className="flex flex-col h-[500px] bg-white rounded-lg overflow-hidden border shadow-sm">
+      {/* Header do Chat */}
+      <div className="p-4 border-b bg-gray-50 flex-shrink-0">
+        <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+          <MessageSquareIcon className="h-4 w-4 text-indigo-600" />
+          Mensagens do Agendamento
+        </h3>
       </div>
 
-      <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-        {messagesQuery.isLoading ? (
-          <div className="flex justify-center items-center h-full">
-            <Loader2 className="h-6 w-6 animate-spin text-indigo-600" />
-          </div>
-        ) : messagesQuery.data && messagesQuery.data.length > 0 ? (
-          <div className="space-y-4">
-            {messagesQuery.data.map((msg) => {
-              const isOwnMessage = isAdmin ? msg.isAdmin : !msg.isAdmin;
-              return (
-                <div
-                  key={msg.id}
-                  className={`flex ${isOwnMessage ? "justify-end" : "justify-start"}`}
-                >
-                  <div
-                    className={`max-w-[80%] rounded-lg px-3 py-2 ${
-                      isOwnMessage
-                        ? "bg-indigo-600 text-white rounded-br-none"
-                        : "bg-gray-100 text-gray-800 rounded-bl-none"
-                    }`}
-                  >
-                    <div className="flex items-center gap-1 mb-1">
-                      {msg.isAdmin ? (
-                        <ShieldCheck className={`h-3 w-3 ${isOwnMessage ? "text-indigo-200" : "text-indigo-600"}`} />
-                      ) : (
-                        <User className={`h-3 w-3 ${isOwnMessage ? "text-indigo-200" : "text-gray-500"}`} />
-                      )}
-                      <span className="text-[10px] font-bold uppercase opacity-70">
-                        {msg.isAdmin ? "Administrador" : "Usuário"}
-                      </span>
-                    </div>
-                    <p className="text-sm whitespace-pre-wrap break-words">{msg.message}</p>
-                    <span className="text-[10px] block mt-1 opacity-70 text-right">
-                      {format(new Date(msg.createdAt), "HH:mm", { locale: ptBR })}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-full text-gray-400 text-sm italic">
-            <p>Nenhuma mensagem ainda.</p>
-            <p>Inicie a conversa abaixo.</p>
-          </div>
-        )}
-      </ScrollArea>
-
-      <form onSubmit={handleSendMessage} className="p-3 border-t bg-gray-50 flex gap-2">
-        <Input
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Digite sua mensagem..."
-          className="flex-1"
-          disabled={sendMessageMutation.isPending}
-        />
-        <Button 
-          type="submit" 
-          size="icon" 
-          disabled={!newMessage.trim() || sendMessageMutation.isPending}
-          className="bg-indigo-600 hover:bg-indigo-700"
-        >
-          {sendMessageMutation.isPending ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+      {/* Área de Mensagens com Scroll Independente */}
+      <div className="flex-1 overflow-hidden relative">
+        <ScrollArea className="h-full w-full p-4">
+          {messages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full text-gray-500 py-10 min-h-[300px]">
+              <p className="text-sm">Nenhuma mensagem ainda.</p>
+              <p className="text-xs">Inicie a conversa abaixo.</p>
+            </div>
           ) : (
-            <Send className="h-4 w-4" />
+            <div className="space-y-4 pb-4">
+              {messages.map((msg) => {
+                const isMe = isAdmin ? msg.isAdmin : !msg.isAdmin;
+                return (
+                  <div
+                    key={msg.id}
+                    className={`flex ${isMe ? "justify-end" : "justify-start"}`}
+                  >
+                    <div
+                      className={`max-w-[80%] rounded-2xl px-4 py-2 shadow-sm ${
+                        isMe
+                          ? "bg-indigo-600 text-white rounded-tr-none"
+                          : "bg-gray-100 text-gray-900 rounded-tl-none"
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 mb-1">
+                        {msg.isAdmin ? (
+                          <ShieldCheck className={`h-3 w-3 ${isMe ? "text-indigo-200" : "text-indigo-600"}`} />
+                        ) : (
+                          <User className={`h-3 w-3 ${isMe ? "text-indigo-200" : "text-gray-500"}`} />
+                        )}
+                        <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">
+                          {msg.isAdmin ? "Administrador" : "Usuário"}
+                        </span>
+                      </div>
+                      <p className="text-sm leading-relaxed break-words">{msg.message}</p>
+                      <p
+                        className={`text-[10px] mt-1 text-right opacity-70`}
+                      >
+                        {format(new Date(msg.createdAt), "HH:mm", { locale: ptBR })}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+              {/* Âncora para o scroll automático */}
+              <div ref={messagesEndRef} />
+            </div>
           )}
-        </Button>
+        </ScrollArea>
+      </div>
+
+      {/* Formulário de Envio Fixo no Rodapé */}
+      <form onSubmit={handleSend} className="p-4 border-t bg-white flex-shrink-0">
+        <div className="flex gap-2">
+          <Input
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Digite sua mensagem..."
+            className="flex-1 focus-visible:ring-indigo-600"
+            disabled={sendMessageMutation.isPending}
+          />
+          <Button 
+            type="submit" 
+            size="icon" 
+            className="bg-indigo-600 hover:bg-indigo-700 shrink-0"
+            disabled={!newMessage.trim() || sendMessageMutation.isPending}
+          >
+            {sendMessageMutation.isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Send className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
       </form>
     </div>
+  );
+}
+
+function MessageSquareIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
   );
 }

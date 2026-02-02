@@ -489,7 +489,7 @@ export const appRouter = router({
     sendMessage: protectedProcedure
       .input(z.object({
         appointmentId: z.number(),
-        message: z.string().min(1, "Mensagem não pode ser vazia"),
+        content: z.string().min(1, "Mensagem não pode ser vazia"),
       }))
       .mutation(async ({ input, ctx }) => {
         const db = await getDb();
@@ -506,7 +506,7 @@ export const appRouter = router({
         await db.insert(appointmentMessages).values({
           appointmentId: input.appointmentId,
           senderId: ctx.user.id,
-          message: input.message,
+          message: input.content,
           isAdmin: ctx.user.role === "admin",
           isRead: false,
         });

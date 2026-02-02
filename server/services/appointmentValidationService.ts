@@ -251,11 +251,13 @@ export class AppointmentValidationService {
       return dateTimeError;
     }
 
-    // Validação de limite mensal
+    // Validação de limite mensal (REMOVIDA conforme solicitado)
+    /*
     const monthlyError = await this.validateMonthlyLimit(userId);
     if (monthlyError) {
       return monthlyError;
     }
+    */
 
     // Validação de bloqueio de cancelamento
     const cancellationError = await this.validateCancellationBlock(userId);

@@ -14,6 +14,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import Settings from "./pages/admin/Settings";
 import AdminCalendar from "./pages/admin/Calendar";
 import EmailSettings from "./pages/admin/EmailSettings";
+import Messages from "./pages/Messages";
 
 function Router() {
   return (
@@ -22,6 +23,7 @@ function Router() {
       <Route path={"/login"} component={Login} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/my-appointments"} component={MyAppointments} />
+      <Route path={"/messages"} component={Messages} />
       <Route path={"/admin/daily"} component={DailyAppointments} />
       <Route path={"/admin/blocks"} component={BlockManagement} />
       <Route path={"/admin"} component={AdminDashboard} />

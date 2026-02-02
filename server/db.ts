@@ -356,7 +356,7 @@ export async function getOrCreateAppointmentLimit(userId: number) {
   return {
     id: 0,
     userId,
-    monthlyLimit: 2,
+    monthlyLimit: 999,
     currentMonth,
     appointmentsThisMonth: 0,
     lastCancellationAt: null,

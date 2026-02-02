@@ -102,7 +102,7 @@ export const appointmentLimits = mysqlTable(
   {
     id: int("ID").autoincrement().primaryKey(),
     userId: int("USERID").notNull().unique(),
-    monthlyLimit: int("MONTHLYLIMIT").default(2).notNull(),
+    monthlyLimit: int("MONTHLYLIMIT").default(999).notNull(),
     currentMonth: varchar("CURRENTMONTH", { length: 7 }).notNull(),
     appointmentsThisMonth: int("APPOINTMENTSTHISMONTH").default(0).notNull(),
     lastCancellationAt: timestamp("LASTCANCELLATIONAT"),
@@ -159,7 +159,7 @@ export const systemSettings = mysqlTable("system_settings", {
   workingHoursStart: varchar("WORKINGHOURSSTART", { length: 8 }).default("08:00:00").notNull(),
   workingHoursEnd: varchar("WORKINGHOURSEND", { length: 8 }).default("12:00:00").notNull(),
   appointmentDurationMinutes: int("APPOINTMENTDURATIONMINUTES").default(30).notNull(),
-  monthlyLimitPerUser: int("MONTHLYLIMITPERUSER").default(2).notNull(),
+  monthlyLimitPerUser: int("MONTHLYLIMITPERUSER").default(999).notNull(),
   cancellationBlockingHours: int("CANCELLATIONBLOCKINGHOURS").default(2).notNull(),
   minCancellationLeadTimeHours: int("MINCANCELLATIONLEADTIMEHOURS").default(5).notNull(),
   maxAdvancedBookingDays: int("MAXADVANCEDBOOKINGDAYS").default(30).notNull(),

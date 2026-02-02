@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users, CalendarDays, ClipboardList, ShieldCheck, Lock, Mail } from "lucide-react";
+import { LayoutDashboard, LogOut, PanelLeft, Users, CalendarDays, ClipboardList, ShieldCheck, Lock, Mail, MessageSquare } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -30,12 +30,14 @@ import { Button } from "./ui/button";
 const menuItems = [
   { icon: LayoutDashboard, label: "Painel Principal", path: "/dashboard" },
   { icon: CalendarDays, label: "Meus Agendamentos", path: "/my-appointments" },
+  { icon: MessageSquare, label: "Mensagens", path: "/messages" },
 ];
 
 const adminMenuItems = [
   { icon: LayoutDashboard, label: "Painel Principal", path: "/admin" },
   { icon: CalendarDays, label: "Calendário", path: "/admin/calendar" },
   { icon: ClipboardList, label: "Atendimentos do Dia", path: "/admin/daily" },
+  { icon: MessageSquare, label: "Mensagens", path: "/messages" },
   { icon: Lock, label: "Gerenciar Bloqueios", path: "/admin/blocks" },
   { icon: Mail, label: "Modelos de E-mail", path: "/admin/email-settings" },
   { icon: ShieldCheck, label: "Configurações", path: "/admin/settings" },
