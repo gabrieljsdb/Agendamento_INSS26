@@ -189,11 +189,13 @@ export const appRouter = router({
       .query(async ({ input }) => {
         const date = input.date || new Date();
         
-        const startOfDay = new Date(date);
-        startOfDay.setHours(0, 0, 0, 0);
+        const startOfPeriod = new Date(date);
+        startOfPeriod.setDate(startOfPeriod.getDate() - 7); 
+        startOfPeriod.setHours(0, 0, 0, 0);
         
-        const endOfDay = new Date(date);
-        endOfDay.setHours(23, 59, 59, 999);
+        const endOfPeriod = new Date(date);
+        endOfPeriod.setDate(endOfPeriod.getDate() + 7); 
+        endOfPeriod.setHours(23, 59, 59, 999);
 
         const db = await getDb();
         if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
@@ -221,18 +223,17 @@ export const appRouter = router({
           .leftJoin(users, eq(appointments.userId, users.id))
           .where(
             and(
-              gte(appointments.appointmentDate, startOfDay),
-              lte(appointments.appointmentDate, endOfDay)
+              gte(appointments.appointmentDate, startOfPeriod),
+              lte(appointments.appointmentDate, endOfPeriod)
             )
           )
-          .orderBy(asc(appointments.startTime));
+          .orderBy(desc(appointments.appointmentDate), desc(appointments.startTime));
 
         return {
           appointments: results.map((apt) => ({
             id: apt.id,
             date: apt.appointmentDate.toLocaleDateString("pt-BR"),
-            startTime: apt.startTime, // Puxa diretamente o StartTime do banco
-            time: apt.startTime,      // Mantém compatibilidade com o campo 'time'
+            time: apt.startTime,
             reason: apt.reason,
             notes: apt.notes,
             status: apt.status,
@@ -281,8 +282,6 @@ export const appRouter = router({
             )
             .limit(1);
           
-          if (unread.length === 0) return null; // Se não tem mensagem não lida, ignora
-
           return {
             id: apt.id,
             date: apt.appointmentDate.toLocaleDateString("pt-BR"),
@@ -290,14 +289,11 @@ export const appRouter = router({
             reason: apt.reason,
             status: apt.status,
             userName: apt.userName || "Usuário não encontrado",
-            hasUnreadForAdmin: true
+            hasUnreadForAdmin: unread.length > 0
           };
         }));
 
-        // Filtra os nulos para retornar apenas os que têm mensagens pendentes
-        const pendingAppointments = appointmentsWithUnread.filter(apt => apt !== null);
-
-        return { appointments: pendingAppointments };
+        return { appointments: appointmentsWithUnread };
       }),
 
     getCalendarAppointments: adminProcedure
@@ -550,58 +546,6 @@ export const appRouter = router({
         });
 
         return { success: true };
-      }),
-
-    getAllAppointmentsWithStatus: adminProcedure
-      .query(async () => {
-        const db = await getDb();
-        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
-
-        const results = await db
-          .select({
-            id: appointments.id,
-            appointmentDate: appointments.appointmentDate,
-            startTime: appointments.startTime,
-            reason: appointments.reason,
-            status: appointments.status,
-            userName: users.name,
-          })
-          .from(appointments)
-          .leftJoin(users, eq(appointments.userId, users.id))
-          .orderBy(desc(appointments.appointmentDate), desc(appointments.startTime));
-
-        const appointmentsWithUnread = await Promise.all(results.map(async (apt) => {
-          const unread = await db
-            .select({ id: appointmentMessages.id })
-            .from(appointmentMessages)
-            .where(
-              and(
-                eq(appointmentMessages.appointmentId, apt.id),
-                eq(appointmentMessages.isAdmin, false),
-                eq(appointmentMessages.isRead, false)
-              )
-            )
-            .limit(1);
-          
-          const hasMessages = await db
-            .select({ id: appointmentMessages.id })
-            .from(appointmentMessages)
-            .where(eq(appointmentMessages.appointmentId, apt.id))
-            .limit(1);
-
-          return {
-            id: apt.id,
-            date: apt.appointmentDate.toLocaleDateString("pt-BR"),
-            time: apt.startTime,
-            reason: apt.reason,
-            status: apt.status,
-            userName: apt.userName || "Usuário não encontrado",
-            hasUnreadForAdmin: unread.length > 0,
-            hasMessages: hasMessages.length > 0
-          };
-        }));
-
-        return { appointments: appointmentsWithUnread };
       }),
   }),
 

@@ -1,4 +1,5 @@
 import "dotenv/config";
+process.env.TZ = "America/Sao_Paulo";
 import express from "express";
 import { createServer } from "http";
 import net from "net";

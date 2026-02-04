@@ -106,7 +106,20 @@ export function AppointmentChat({ appointmentId, isAdmin = false }: AppointmentC
                       <p
                         className={`text-[10px] mt-1 text-right opacity-70`}
                       >
-                        {format(new Date(msg.createdAt), "HH:mm", { locale: ptBR })}
+                        {(() => {
+                          // O banco de dados MySQL/Drizzle pode estar retornando a data como string ou objeto Date
+                          // Se o horário está vindo com 3 horas de atraso (ex: 11:18 em vez de 14:18),
+                          // precisamos adicionar essas 3 horas manualmente para exibição.
+                          const date = new Date(msg.createdAt);
+                          
+                          // Adiciona 3 horas (3 * 60 * 60 * 1000 ms) para compensar o fuso horário
+                          const adjustedDate = new Date(date.getTime() + (3 * 60 * 60 * 1000));
+                          
+                          return adjustedDate.toLocaleTimeString("pt-BR", { 
+                            hour: "2-digit", 
+                            minute: "2-digit"
+                          });
+                        })()}
                       </p>
                     </div>
                   </div>
