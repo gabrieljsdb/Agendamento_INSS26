@@ -12,7 +12,7 @@ import {
   getUserAppointments,
   getSystemSettings,
 } from "../db";
-import { eq, and, gte, lte } from "drizzle-orm";
+import { eq, and, gte, lte, sql } from "drizzle-orm";
 import { appointments } from "../../drizzle/schema";
 
 export interface ValidationError {
@@ -98,18 +98,17 @@ export class AppointmentValidationService {
 
   /**
    * Valida limite mensal de agendamentos
-   * Regra: Considera apenas agendamentos confirmados ou atendidos.
-   * Se houver um agendamento com status 'completed' (atendido), bloqueia novos agendamentos no mês.
+   * Regra: Considera apenas agendamentos confirmados ou atendidos no mês da data solicitada.
    */
-  async validateMonthlyLimit(userId: number): Promise<ValidationError | null> {
+  async validateMonthlyLimit(userId: number, targetDate: Date): Promise<ValidationError | null> {
     const db = await getDb();
     if (!db) return null;
 
-    const now = new Date();
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+    // Define o início e fim do mês baseado na data do agendamento solicitado
+    const startOfMonth = new Date(targetDate.getFullYear(), targetDate.getMonth(), 1);
+    const endOfMonth = new Date(targetDate.getFullYear(), targetDate.getMonth() + 1, 0, 23, 59, 59);
 
-    // Busca todos os agendamentos do usuário no mês atual
+    // Busca todos os agendamentos do usuário no mês da data solicitada
     const monthAppointments = await db
       .select()
       .from(appointments)
@@ -121,26 +120,51 @@ export class AppointmentValidationService {
         )
       );
 
-    // Verifica se já foi atendido este mês
-    const hasBeenAttended = monthAppointments.some(apt => apt.status === "completed");
-    if (hasBeenAttended) {
-      return {
-        valid: false,
-        message: "Você já realizou um atendimento este mês e não pode fazer novos agendamentos.",
-        code: "ALREADY_ATTENDED_THIS_MONTH",
-      };
-    }
-
-    // Conta apenas confirmados (agendamentos ativos)
-    const activeAppointments = monthAppointments.filter(apt => apt.status === "confirmed").length;
+    // Conta agendamentos confirmados e atendidos (limite total do mês)
+    const relevantAppointments = monthAppointments.filter(
+      apt => apt.status === "confirmed" || apt.status === "completed"
+    ).length;
     
     const settings = await getSystemSettings();
     const monthlyLimit = settings?.monthlyLimitPerUser || 2;
 
-    if (activeAppointments >= monthlyLimit) {
+    if (relevantAppointments >= monthlyLimit) {
+      // Regra Especial: Se atingiu o limite do mês, verifica se a nova data é pelo menos 30 dias após o último agendamento
+      const allUserAppointments = await db
+        .select()
+        .from(appointments)
+        .where(
+          and(
+            eq(appointments.userId, userId),
+            sql`${appointments.status} IN ('confirmed', 'completed')`
+          )
+        )
+        .orderBy(sql`${appointments.appointmentDate} DESC`)
+        .limit(1);
+
+      if (allUserAppointments.length > 0) {
+        const lastAptDate = new Date(allUserAppointments[0].appointmentDate);
+        const diffTime = targetDate.getTime() - lastAptDate.getTime();
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays < 30) {
+          const availableDate = new Date(lastAptDate);
+          availableDate.setDate(availableDate.getDate() + 30);
+          
+          return {
+            valid: false,
+            message: `Você já atingiu o limite mensal. Para um novo agendamento, escolha uma data a partir de ${availableDate.toLocaleDateString("pt-BR")} (30 dias após seu último agendamento).`,
+            code: "MONTHLY_LIMIT_EXCEEDED_WITH_QUARANTINE",
+          };
+        }
+        
+        // Se passou dos 30 dias, permite o agendamento mesmo que tecnicamente "estoure" o limite do mês civil
+        return null;
+      }
+
       return {
         valid: false,
-        message: `Você já possui ${monthlyLimit} agendamentos ativos este mês. Cancele um para agendar outro ou aguarde o próximo mês.`,
+        message: `Você já atingiu o limite de ${monthlyLimit} agendamentos este mês.`,
         code: "MONTHLY_LIMIT_EXCEEDED",
       };
     }
@@ -251,13 +275,11 @@ export class AppointmentValidationService {
       return dateTimeError;
     }
 
-    // Validação de limite mensal (REMOVIDA conforme solicitado)
-    /*
-    const monthlyError = await this.validateMonthlyLimit(userId);
+    // Validação de limite mensal
+    const monthlyError = await this.validateMonthlyLimit(userId, appointmentDate);
     if (monthlyError) {
       return monthlyError;
     }
-    */
 
     // Validação de bloqueio de cancelamento
     const cancellationError = await this.validateCancellationBlock(userId);

@@ -266,6 +266,7 @@ export const appRouter = router({
           })
           .from(appointments)
           .leftJoin(users, eq(appointments.userId, users.id))
+          .where(eq(appointments.status, "confirmed")) // Filtra apenas confirmados para notificações
           .orderBy(desc(appointments.appointmentDate), desc(appointments.startTime));
 
         const appointmentsWithUnread = await Promise.all(results.map(async (apt) => {
@@ -314,8 +315,16 @@ export const appRouter = router({
             id: appointments.id,
             appointmentDate: appointments.appointmentDate,
             startTime: appointments.startTime,
+            reason: appointments.reason,
+            notes: appointments.notes,
             status: appointments.status,
             userName: users.name,
+            userCpf: users.cpf,
+            userOab: users.oab,
+            userEmail: users.email,
+            userPhone: users.phone,
+            userCidade: users.cidade,
+            userEstado: users.estado,
           })
           .from(appointments)
           .leftJoin(users, eq(appointments.userId, users.id))
@@ -333,8 +342,16 @@ export const appRouter = router({
             day: apt.appointmentDate.getDate(),
             dateFormatted: apt.appointmentDate.toLocaleDateString("pt-BR"),
             startTime: apt.startTime,
+            reason: apt.reason,
+            notes: apt.notes,
             status: apt.status,
             userName: apt.userName || "Usuário não encontrado",
+            userCpf: apt.userCpf,
+            userOab: apt.userOab,
+            userEmail: apt.userEmail,
+            userPhone: apt.userPhone,
+            userCidade: apt.userCidade,
+            userEstado: apt.userEstado,
           }))
         };
       }),
@@ -571,7 +588,10 @@ export const appRouter = router({
           .orderBy(desc(appointments.appointmentDate), desc(appointments.startTime));
 
         const appointmentsWithUnread = await Promise.all(results.map(async (apt) => {
-          const unread = await db
+          // Só verifica mensagens não lidas se o agendamento estiver confirmado
+          const isConfirmed = apt.status === "confirmed";
+          
+          const unread = isConfirmed ? await db
             .select({ id: appointmentMessages.id })
             .from(appointmentMessages)
             .where(
@@ -581,7 +601,7 @@ export const appRouter = router({
                 eq(appointmentMessages.isRead, false)
               )
             )
-            .limit(1);
+            .limit(1) : [];
           
           const hasMessages = await db
             .select({ id: appointmentMessages.id })
@@ -618,6 +638,7 @@ export const appRouter = router({
           .where(
             and(
               eq(appointments.userId, ctx.user.id),
+              eq(appointments.status, "confirmed"), // Só alerta se o agendamento estiver confirmado
               eq(appointmentMessages.isAdmin, true),
               eq(appointmentMessages.isRead, false)
             )
@@ -830,8 +851,26 @@ export const appRouter = router({
           .orderBy(desc(appointments.appointmentDate))
           .limit(input?.limit || 50);
 
-        return {
-          appointments: results.map((apt) => ({
+        const appointmentsWithUnread = await Promise.all(results.map(async (apt) => {
+          const unread = await db
+            .select({ id: appointmentMessages.id })
+            .from(appointmentMessages)
+            .where(
+              and(
+                eq(appointmentMessages.appointmentId, apt.id),
+                eq(appointmentMessages.isAdmin, true), // Mensagens vindas do admin
+                eq(appointmentMessages.isRead, false)
+              )
+            )
+            .limit(1);
+          
+          const hasMessages = await db
+            .select({ id: appointmentMessages.id })
+            .from(appointmentMessages)
+            .where(eq(appointmentMessages.appointmentId, apt.id))
+            .limit(1);
+
+          return {
             id: apt.id,
             date: apt.appointmentDate.toLocaleDateString("pt-BR"),
             time: apt.startTime,
@@ -839,7 +878,13 @@ export const appRouter = router({
             status: apt.status,
             createdAt: apt.createdAt.toLocaleDateString("pt-BR"),
             cancelledAt: apt.cancelledAt?.toLocaleDateString("pt-BR"),
-          })),
+            hasUnreadForAdmin: unread.length > 0, // Reutilizando o nome do campo que o frontend já usa
+            hasMessages: hasMessages.length > 0
+          };
+        }));
+
+        return {
+          appointments: appointmentsWithUnread,
         };
       }),
 
