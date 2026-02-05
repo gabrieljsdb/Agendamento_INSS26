@@ -61,11 +61,16 @@ export default function BlockManagement() {
       toast.error("Preencha todos os campos obrigatórios");
       return;
     }
+
+    // Normalização das datas para evitar problemas de fuso horário
+    const blockedDate = new Date(newBlock.date + 'T12:00:00');
+    const endDate = newBlock.endDate ? new Date(newBlock.endDate + 'T12:00:00') : undefined;
+
     createBlockMutation.mutate({
-      blockedDate: new Date(newBlock.date + 'T12:00:00'),
-      endDate: newBlock.endDate ? new Date(newBlock.endDate + 'T12:00:00') : undefined,
-      startTime: newBlock.startTime,
-      endTime: newBlock.endTime,
+      blockedDate,
+      endDate,
+      startTime: newBlock.blockType === "time_slot" ? newBlock.startTime : "00:00:00",
+      endTime: newBlock.blockType === "time_slot" ? newBlock.endTime : "23:59:59",
       blockType: newBlock.blockType,
       reason: newBlock.reason
     });
@@ -111,7 +116,9 @@ export default function BlockManagement() {
                       <tr key={block.id} className="bg-white hover:bg-gray-50">
                         <td className="px-4 py-3 font-medium flex items-center gap-2">
                           <Calendar className="h-4 w-4 text-gray-400" />
-                          {block.date}
+                          {block.blockedDate instanceof Date 
+                            ? block.blockedDate.toLocaleDateString("pt-BR") 
+                            : new Date(block.blockedDate).toLocaleDateString("pt-BR")}
                         </td>
                         <td className="px-4 py-3">
                           {block.blockType === "full_day" ? "Dia Inteiro" : "Horário Específico"}
@@ -153,7 +160,7 @@ export default function BlockManagement() {
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Data</label>
+              <label className="text-sm font-medium">Data {newBlock.blockType === "period" ? "Inicial" : ""}</label>
               <Input type="date" value={newBlock.date} onChange={(e) => setNewBlock({...newBlock, date: e.target.value})} />
             </div>
             <div className="space-y-2">
@@ -180,11 +187,17 @@ export default function BlockManagement() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Início</label>
-                  <Input type="time" value={newBlock.startTime} onChange={(e) => setNewBlock({...newBlock, startTime: e.target.value + ':00'})} />
+                  <Input type="time" value={newBlock.startTime} onChange={(e) => {
+                    const val = e.target.value;
+                    setNewBlock({...newBlock, startTime: val.length === 5 ? val + ':00' : val});
+                  }} />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Fim</label>
-                  <Input type="time" value={newBlock.endTime} onChange={(e) => setNewBlock({...newBlock, endTime: e.target.value + ':00'})} />
+                  <Input type="time" value={newBlock.endTime} onChange={(e) => {
+                    const val = e.target.value;
+                    setNewBlock({...newBlock, endTime: val.length === 5 ? val + ':00' : val});
+                  }} />
                 </div>
               </div>
             )}

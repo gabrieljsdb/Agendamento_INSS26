@@ -246,21 +246,25 @@ export default function Dashboard() {
 
                   {days.map((day) => {
                     const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
-                    const isBlocked = publicBlocksQuery.data?.blocks.some(b => b.day === day);
+                    const dayBlocks = publicBlocksQuery.data?.blocks.filter(b => b.day === day) || [];
+                    const isFullDayBlocked = dayBlocks.some(b => b.blockType === "full_day");
+                    const isPartialBlocked = dayBlocks.length > 0 && !isFullDayBlocked;
+                    const isBlocked = dayBlocks.length > 0;
+                    
                     const isDisabled = isPastDate(day, currentMonth) || isWeekend(day, currentMonth);
                     const isSelected = selectedSlot?.date.getDate() === day && selectedSlot?.date.getMonth() === currentMonth.getMonth();
 
-                    const blockData = publicBlocksQuery.data?.blocks.find(b => b.day === day);
+                    const blockData = dayBlocks[0];
 
                     return (
                       <button
                         key={day}
                         onClick={() => handleDateClick(date)}
-                        disabled={isDisabled && !isBlocked}
+                        disabled={isDisabled && isFullDayBlocked}
                         className={`aspect-square rounded-lg font-semibold text-sm transition-colors flex flex-col items-center justify-center relative overflow-hidden ${
-                          isDisabled && !isBlocked
+                          isDisabled && !isFullDayBlocked
                             ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                            : isBlocked
+                            : isFullDayBlocked
                               ? "bg-red-100 text-red-600 border border-red-200 hover:bg-red-200"
                               : isSelected
                                 ? "bg-indigo-600 text-white"
@@ -270,7 +274,7 @@ export default function Dashboard() {
                         }`}
                       >
                         <span>{day}</span>
-                        {isBlocked && blockData?.reason && (
+                        {isFullDayBlocked && blockData?.reason && (
                           <span className="text-[8px] leading-tight mt-1 px-1 text-center font-normal opacity-80 truncate w-full">
                             {blockData.reason}
                           </span>
@@ -296,7 +300,7 @@ export default function Dashboard() {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 bg-red-100 border border-red-200 rounded"></div>
-                    <span>Dia Bloqueado (Indisponível)</span>
+                    <span>Dia totalmente bloqueado</span>
                   </div>
                 </div>
               </CardContent>

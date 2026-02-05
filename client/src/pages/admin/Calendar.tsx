@@ -100,14 +100,16 @@ export default function AdminCalendar() {
               {days.map(day => {
                 const dayApts = appointmentsByDay[day] || [];
                 const isToday = new Date().getDate() === day && new Date().getMonth() === currentMonth.getMonth() && new Date().getFullYear() === currentMonth.getFullYear();
-                const blockData = publicBlocksQuery.data?.blocks.find(b => b.day === day);
-                const isBlocked = !!blockData;
+                const dayBlocks = publicBlocksQuery.data?.blocks.filter(b => b.day === day) || [];
+                const isFullDayBlocked = dayBlocks.some(b => b.blockType === "full_day");
+                const isPartialBlocked = dayBlocks.length > 0 && !isFullDayBlocked;
+                const blockData = dayBlocks[0];
                 
                 return (
                   <div 
                     key={day} 
                     onClick={() => {
-                      if (dayApts.length > 0) {
+                      if (dayApts.length > 0 || isPartialBlocked) {
                         setSelectedDay(day);
                         setViewDayModalOpen(true);
                       }
@@ -115,16 +117,20 @@ export default function AdminCalendar() {
                     className={`border-r border-b p-2 transition-colors hover:bg-gray-50 overflow-y-auto cursor-pointer ${
                       isToday ? 'bg-indigo-50/30' : ''
                     } ${
-                      isBlocked ? 'bg-red-50 hover:bg-red-100' : ''
+                      isFullDayBlocked ? 'bg-red-50 hover:bg-red-100' : ''
+                    } ${
+                      isPartialBlocked ? 'bg-amber-50 hover:bg-amber-100' : ''
                     }`}
                   >
                     <div className="flex justify-between items-start mb-1">
                       <span className={`text-sm font-bold ${
                         isToday 
                           ? 'bg-indigo-600 text-white w-6 h-6 flex items-center justify-center rounded-full' 
-                          : isBlocked 
+                          : isFullDayBlocked 
                             ? 'text-red-600' 
-                            : 'text-gray-700'
+                            : isPartialBlocked
+                              ? 'text-amber-600'
+                              : 'text-gray-700'
                       }`}>
                         {day}
                       </span>
@@ -135,9 +141,14 @@ export default function AdminCalendar() {
                       )}
                     </div>
                     <div className="space-y-1">
-                      {isBlocked && (
+                      {isFullDayBlocked && (
                         <div className="text-[9px] font-bold text-red-600 bg-red-100 px-1 py-0.5 rounded mb-1 truncate" title={blockData.reason}>
-                          BLOQUEADO: {blockData.reason}
+                          BLOQUEIO TOTAL: {blockData.reason}
+                        </div>
+                      )}
+                      {isPartialBlocked && (
+                        <div className="text-[9px] font-bold text-amber-600 bg-amber-100 px-1 py-0.5 rounded mb-1 truncate" title={blockData.reason}>
+                          BLOQUEIO PARCIAL: {blockData.startTime.substring(0, 5)} - {blockData.endTime.substring(0, 5)}
                         </div>
                       )}
                       {dayApts.map((apt: any) => (

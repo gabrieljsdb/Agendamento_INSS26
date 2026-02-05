@@ -74,7 +74,7 @@ export default function MyAppointments() {
               <div className="flex justify-center py-8">
                 <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
               </div>
-            ) : historyQuery.data?.appointments && historyQuery.data.appointments.length > 0 ? (
+            ) : historyQuery.data && historyQuery.data.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm text-left">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -87,16 +87,19 @@ export default function MyAppointments() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200">
-                    {historyQuery.data.appointments.map((apt) => (
+                    {/* AQUI ESTÁ A CORREÇÃO PRINCIPAL: removido o .appointments */}
+                    {historyQuery.data.map((apt: any) => (
                       <tr key={apt.id} className="bg-white hover:bg-gray-50">
                         <td className="px-4 py-3 font-medium flex items-center gap-2">
                           <Calendar className="h-4 w-4 text-gray-400" />
-                          {apt.date}
+                          {/* CORREÇÃO DO NOME DA PROPRIEDADE E FORMATAÇÃO DA DATA */}
+                          {new Date(apt.appointmentDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
                             <Clock className="h-4 w-4 text-gray-400" />
-                            {apt.time}
+                            {/* CORREÇÃO DO NOME DA PROPRIEDADE DO TEMPO (Remove os segundos) */}
+                            {apt.startTime ? apt.startTime.substring(0, 5) : '--:--'}
                           </div>
                         </td>
                         <td className="px-4 py-3">{apt.reason}</td>

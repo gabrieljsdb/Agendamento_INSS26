@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_core/trpc.js";
+import { publicProcedure, protectedProcedure, adminProcedure, router } from "./_core/trpc";
 import { COOKIE_NAME } from "@shared/const";
-import { getSessionCookieOptions } from "./_core/cookies.js";
-import { systemRouter } from "./_core/systemRouter.js";
+import { getSessionCookieOptions } from "./_core/cookies";
+import { systemRouter } from "./_core/systemRouter";
 import {
   getUserByCPF,
   createAppointment,
@@ -16,140 +16,16 @@ import {
   getDb,
   updateUserPhone,
   getAppointmentsByDate,
-} from "./db.js";
+} from "./db";
 import { eq, and, gte, lte, asc, desc, ne, sql } from "drizzle-orm";
-import { users, appointments, blockedSlots, appointmentMessages, emailTemplates } from "../drizzle/schema.js";
-import { soapAuthService } from "./services/soapAuthService.js";
-import { appointmentValidationService } from "./services/appointmentValidationService.js";
-import { emailService } from "./services/emailService.js";
-import { documentService } from "./services/documentService.js";
+import { users, appointments, blockedSlots, appointmentMessages, emailTemplates } from "../drizzle/schema";
+import { soapAuthService } from "./services/soapAuthService";
+import { appointmentValidationService } from "./services/appointmentValidationService";
+import { emailService } from "./services/emailService";
+import { documentService } from "./services/documentService";
 
 export const appRouter = router({
   system: systemRouter,
-
-  appointments: router({
-    getPublicBlocks: publicProcedure
-      .input(z.object({ 
-        month: z.number(), 
-        year: z.number() 
-      }))
-      .query(async ({ input }) => {
-        const db = await getDb();
-        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
-
-        const startDate = new Date(input.year, input.month, 1);
-        const endDate = new Date(input.year, input.month + 1, 0, 23, 59, 59);
-
-        const results = await db
-          .select()
-          .from(blockedSlots)
-          .where(
-            and(
-              gte(blockedSlots.blockedDate, startDate),
-              lte(blockedSlots.blockedDate, endDate)
-            )
-          );
-
-        return {
-          blocks: results.map(b => ({
-            id: b.id,
-            day: b.blockedDate.getDate(),
-            reason: b.reason,
-            blockType: b.blockType,
-            startTime: b.startTime,
-            endTime: b.endTime
-          }))
-        };
-      }),
-
-    getAvailableSlots: publicProcedure
-      .input(z.object({ date: z.date() }))
-      .query(async ({ input }) => {
-        return await appointmentValidationService.getAvailableSlots(input.date);
-      }),
-
-    create: protectedProcedure
-      .input(z.object({
-        appointmentDate: z.date(),
-        startTime: z.string(),
-        endTime: z.string(),
-        reason: z.string(),
-        phone: z.string(),
-        notes: z.string().optional(),
-      }))
-      .mutation(async ({ input, ctx }) => {
-        const validation = await appointmentValidationService.validateAppointment(
-          input.appointmentDate,
-          input.startTime,
-          ctx.user.id
-        );
-
-        if (!validation.valid) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: validation.message,
-          });
-        }
-
-        // Atualiza telefone do usuário se necessário
-        await updateUserPhone(ctx.user.id, input.phone);
-
-        const appointmentId = await createAppointment({
-          userId: ctx.user.id,
-          appointmentDate: input.appointmentDate,
-          startTime: input.startTime,
-          endTime: input.endTime,
-          reason: input.reason,
-          notes: input.notes,
-        });
-
-        await incrementAppointmentCount(ctx.user.id);
-
-        await logAuditAction({
-          userId: ctx.user.id,
-          action: "CREATE_APPOINTMENT",
-          entityType: "appointment",
-          entityId: appointmentId,
-          ipAddress: ctx.req.ip,
-        });
-
-        return { success: true, id: appointmentId };
-      }),
-
-    getUpcoming: protectedProcedure.query(async ({ ctx }) => {
-      return await getUpcomingAppointments(ctx.user.id);
-    }),
-
-    getHistory: protectedProcedure.query(async ({ ctx }) => {
-      return await getUserAppointments(ctx.user.id);
-    }),
-
-    cancel: protectedProcedure
-      .input(z.object({ appointmentId: z.number(), reason: z.string() }))
-      .mutation(async ({ input, ctx }) => {
-        const leadTimeError = await appointmentValidationService.validateCancellationLeadTime(input.appointmentId);
-        if (leadTimeError) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: leadTimeError.message,
-          });
-        }
-
-        await cancelAppointment(input.appointmentId, input.reason);
-        await updateLastCancellation(ctx.user.id);
-
-        await logAuditAction({
-          userId: ctx.user.id,
-          action: "CANCEL_APPOINTMENT",
-          entityType: "appointment",
-          entityId: input.appointmentId,
-          details: `Motivo: ${input.reason}`,
-          ipAddress: ctx.req.ip,
-        });
-
-        return { success: true };
-      }),
-  }),
 
   auth: router({
     me: publicProcedure.query((opts) => opts.ctx.user),
@@ -191,7 +67,7 @@ export const appRouter = router({
           }
 
           let user = await getUserByCPF(userData.cpf);
-          const { upsertUser } = await import("./db.js");
+          const { upsertUser } = await import("./db");
           
           const userPayload = {
             openId: `soap_${userData.cpf}`,
@@ -223,7 +99,7 @@ export const appRouter = router({
             });
           }
 
-          const { sdk } = await import("./_core/sdk.js");
+          const { sdk } = await import("./_core/sdk");
           const sessionToken = await sdk.createSessionToken(user.openId, {
             name: user.name,
             expiresInMs: 365 * 24 * 60 * 60 * 1000,
@@ -308,51 +184,6 @@ export const appRouter = router({
   }),
 
   admin: router({
-    getCalendarAppointments: adminProcedure
-      .input(z.object({ 
-        month: z.number(), 
-        year: z.number() 
-      }))
-      .query(async ({ input }) => {
-        const db = await getDb();
-        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
-
-        const startDate = new Date(input.year, input.month, 1);
-        const endDate = new Date(input.year, input.month + 1, 0, 23, 59, 59);
-
-        const results = await db
-          .select({
-            id: appointments.id,
-            appointmentDate: appointments.appointmentDate,
-            startTime: appointments.startTime,
-            reason: appointments.reason,
-            status: appointments.status,
-            userName: users.name,
-            userCpf: users.cpf,
-            userOab: users.oab,
-            userEmail: users.email,
-            userPhone: users.phone,
-          })
-          .from(appointments)
-          .leftJoin(users, eq(appointments.userId, users.id))
-          .where(
-            and(
-              gte(appointments.appointmentDate, startDate),
-              lte(appointments.appointmentDate, endDate),
-              eq(appointments.status, "confirmed")
-            )
-          )
-          .orderBy(asc(appointments.appointmentDate), asc(appointments.startTime));
-
-        return {
-          appointments: results.map(apt => ({
-            ...apt,
-            day: apt.appointmentDate.getDate(),
-            dateFormatted: apt.appointmentDate.toLocaleDateString("pt-BR"),
-          }))
-        };
-      }),
-
     getDailyAppointments: adminProcedure
       .input(z.object({ date: z.date().optional() }))
       .query(async ({ input }) => {
@@ -457,30 +288,99 @@ export const appRouter = router({
             id: apt.id,
             date: apt.appointmentDate.toLocaleDateString("pt-BR"),
             time: apt.startTime,
-            userName: apt.userName,
+            reason: apt.reason,
+            status: apt.status,
+            userName: apt.userName || "Usuário não encontrado",
+            hasUnreadForAdmin: true
           };
         }));
 
-        return appointmentsWithUnread.filter(Boolean);
+        // Filtra os nulos para retornar apenas os que têm mensagens pendentes
+        const pendingAppointments = appointmentsWithUnread.filter(apt => apt !== null);
+
+        return { appointments: pendingAppointments };
+      }),
+
+    getCalendarAppointments: adminProcedure
+      .input(z.object({ month: z.number(), year: z.number() }))
+      .query(async ({ input }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const startDate = new Date(input.year, input.month, 1);
+        const endDate = new Date(input.year, input.month + 1, 0, 23, 59, 59);
+
+        const results = await db
+          .select({
+            id: appointments.id,
+            appointmentDate: appointments.appointmentDate,
+            startTime: appointments.startTime,
+            reason: appointments.reason,
+            notes: appointments.notes,
+            status: appointments.status,
+            userName: users.name,
+            userCpf: users.cpf,
+            userOab: users.oab,
+            userEmail: users.email,
+            userPhone: users.phone,
+            userCidade: users.cidade,
+            userEstado: users.estado,
+          })
+          .from(appointments)
+          .leftJoin(users, eq(appointments.userId, users.id))
+          .where(
+            and(
+              gte(appointments.appointmentDate, startDate),
+              lte(appointments.appointmentDate, endDate)
+            )
+          );
+
+        return {
+          appointments: results.map(apt => ({
+            id: apt.id,
+            date: apt.appointmentDate,
+            day: apt.appointmentDate.getDate(),
+            dateFormatted: apt.appointmentDate.toLocaleDateString("pt-BR"),
+            startTime: apt.startTime,
+            reason: apt.reason,
+            notes: apt.notes,
+            status: apt.status,
+            userName: apt.userName || "Usuário não encontrado",
+            userCpf: apt.userCpf,
+            userOab: apt.userOab,
+            userEmail: apt.userEmail,
+            userPhone: apt.userPhone,
+            userCidade: apt.userCidade,
+            userEstado: apt.userEstado,
+          }))
+        };
       }),
 
     getBlockedSlots: adminProcedure
       .input(z.object({ 
-        all: z.boolean().optional().default(true)
+        month: z.number().optional(), 
+        year: z.number().optional() 
       }))
       .query(async ({ input }) => {
         const db = await getDb();
         if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
 
         const now = new Date();
-        now.setHours(0, 0, 0, 0);
+        const month = input.month ?? now.getMonth();
+        const year = input.year ?? now.getFullYear();
 
-        // Por padrão, trazemos todos os bloqueios de hoje em diante para gerenciamento
+        const startDate = new Date(year, month, 1);
+        const endDate = new Date(year, month + 1, 0, 23, 59, 59);
+
         const results = await db
           .select()
           .from(blockedSlots)
-          .where(gte(blockedSlots.blockedDate, now))
-          .orderBy(asc(blockedSlots.blockedDate), asc(blockedSlots.startTime));
+          .where(
+            and(
+              gte(blockedSlots.blockedDate, startDate),
+              lte(blockedSlots.blockedDate, endDate)
+            )
+          );
 
         return results;
       }),
@@ -507,10 +407,10 @@ export const appRouter = router({
           while (current <= end) {
             blocks.push({
               blockedDate: new Date(current),
-              startTime: input.startTime || "00:00:00",
-              endTime: input.endTime || "23:59:59",
+              startTime: input.startTime,
+              endTime: input.endTime,
               blockType: "full_day" as const,
-              reason: input.reason || "Bloqueio de período",
+              reason: input.reason,
               createdBy: ctx.user.id,
             });
             current.setDate(current.getDate() + 1);
@@ -522,10 +422,10 @@ export const appRouter = router({
         } else {
           await db.insert(blockedSlots).values({
             blockedDate: input.blockedDate,
-            startTime: input.startTime || "00:00:00",
-            endTime: input.endTime || "23:59:59",
+            startTime: input.startTime,
+            endTime: input.endTime,
             blockType: (input.blockType === "period" || input.blockType === "morning" || input.blockType === "afternoon") ? "full_day" : input.blockType,
-            reason: input.reason || "Bloqueio de agenda",
+            reason: input.reason,
             createdBy: ctx.user.id,
           });
         }
@@ -560,10 +460,42 @@ export const appRouter = router({
         return { success: true };
       }),
 
+    getEmailTemplates: adminProcedure.query(async () => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+      return await db.select().from(emailTemplates);
+    }),
+
+    updateStatus: adminProcedure
+      .input(z.object({
+        appointmentId: z.number(),
+        status: z.enum(["pending", "confirmed", "completed", "cancelled", "no_show"]),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        await db
+          .update(appointments)
+          .set({ status: input.status })
+          .where(eq(appointments.id, input.appointmentId));
+
+        await logAuditAction({
+          userId: ctx.user.id,
+          action: "UPDATE_STATUS",
+          entityType: "appointment",
+          entityId: input.appointmentId,
+          details: `Status alterado para ${input.status}`,
+          ipAddress: ctx.req.ip,
+        });
+
+        return { success: true };
+      }),
+
     sendCustomNotification: adminProcedure
       .input(z.object({
         appointmentId: z.number(),
-        message: z.string().min(1, "Mensagem é obrigatória"),
+        message: z.string().min(1, "Mensagem não pode ser vazia"),
       }))
       .mutation(async ({ input, ctx }) => {
         const db = await getDb();
@@ -671,99 +603,332 @@ export const appRouter = router({
             )
             .limit(1) : [];
           
+          const hasMessages = await db
+            .select({ id: appointmentMessages.id })
+            .from(appointmentMessages)
+            .where(eq(appointmentMessages.appointmentId, apt.id))
+            .limit(1);
+
           return {
-            ...apt,
+            id: apt.id,
             date: apt.appointmentDate.toLocaleDateString("pt-BR"),
-            hasUnread: unread.length > 0
+            time: apt.startTime,
+            reason: apt.reason,
+            status: apt.status,
+            userName: apt.userName || "Usuário não encontrado",
+            hasUnreadForAdmin: unread.length > 0,
+            hasMessages: hasMessages.length > 0
           };
         }));
 
-        return appointmentsWithUnread;
+        return { appointments: appointmentsWithUnread };
+      }),
+  }),
+
+  messages: router({
+    hasUnreadMessages: protectedProcedure
+      .query(async ({ ctx }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const unread = await db
+          .select({ id: appointmentMessages.id })
+          .from(appointmentMessages)
+          .innerJoin(appointments, eq(appointmentMessages.appointmentId, appointments.id))
+          .where(
+            and(
+              eq(appointments.userId, ctx.user.id),
+              eq(appointments.status, "confirmed"), // Só alerta se o agendamento estiver confirmado
+              eq(appointmentMessages.isAdmin, true),
+              eq(appointmentMessages.isRead, false)
+            )
+          )
+          .limit(1);
+
+        return { hasUnread: unread.length > 0 };
       }),
 
-    getSystemSettings: adminProcedure.query(async () => {
-      const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+    getMessages: protectedProcedure
+      .input(z.object({ appointmentId: z.number() }))
+      .query(async ({ input, ctx }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
 
-      const settings = await db.select().from(systemSettings).limit(1);
-      return settings[0];
-    }),
+        if (ctx.user.role !== "admin") {
+          const appointment = await db.select().from(appointments).where(eq(appointments.id, input.appointmentId)).limit(1);
+          if (appointment.length === 0 || appointment[0].userId !== ctx.user.id) {
+            throw new TRPCError({ code: "FORBIDDEN", message: "Você não tem permissão para ver estas mensagens" });
+          }
+        }
 
-    updateSystemSettings: adminProcedure
+        await db.update(appointmentMessages)
+          .set({ isRead: true })
+          .where(
+            and(
+              eq(appointmentMessages.appointmentId, input.appointmentId),
+              eq(appointmentMessages.isAdmin, ctx.user.role === "admin" ? false : true)
+            )
+          );
+
+        return await db.select()
+          .from(appointmentMessages)
+          .where(eq(appointmentMessages.appointmentId, input.appointmentId))
+          .orderBy(asc(appointmentMessages.createdAt));
+      }),
+
+    sendMessage: protectedProcedure
       .input(z.object({
-        workingHoursStart: z.string(),
-        workingHoursEnd: z.string(),
-        appointmentDurationMinutes: z.number(),
-        monthlyLimitPerUser: z.number(),
-        cancellationBlockingHours: z.number(),
-        minCancellationLeadTimeHours: z.number(),
-        maxAdvancedBookingDays: z.number(),
-        blockingTimeAfterHours: z.string(),
-        institutionName: z.string(),
-        institutionAddress: z.string().optional(),
-        institutionPhone: z.string().optional(),
-        senderEmail: z.string().email(),
-        senderName: z.string(),
-        adminEmails: z.string(),
-        dailyReportTime: z.string(),
-        dailyReportEnabled: z.boolean(),
-        smtpHost: z.string(),
-        smtpPort: z.number(),
-        smtpSecure: z.boolean(),
-        smtpUser: z.string().optional(),
-        smtpPassword: z.string().optional(),
+        appointmentId: z.number(),
+        content: z.string().min(1, "Mensagem não pode ser vazia"),
       }))
       .mutation(async ({ input, ctx }) => {
         const db = await getDb();
         if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
 
-        await db.update(systemSettings).set({
-          ...input,
-          updatedAt: new Date(),
-        });
+        if (ctx.user.role !== "admin") {
+          const appointment = await db.select().from(appointments).where(eq(appointments.id, input.appointmentId)).limit(1);
+          if (appointment.length === 0 || appointment[0].userId !== ctx.user.id) {
+            throw new TRPCError({ code: "FORBIDDEN", message: "Você não tem permissão para enviar mensagens para este agendamento" });
+          }
+        }
 
-        await logAuditAction({
-          userId: ctx.user.id,
-          action: "UPDATE_SYSTEM_SETTINGS",
-          entityType: "system_settings",
-          details: "Configurações do sistema atualizadas",
-          ipAddress: ctx.req.ip,
+        await db.insert(appointmentMessages).values({
+          appointmentId: input.appointmentId,
+          senderId: ctx.user.id,
+          message: input.content,
+          isAdmin: ctx.user.role === "admin",
+          isRead: false,
         });
 
         return { success: true };
       }),
+  }),
 
-    getEmailTemplates: adminProcedure.query(async () => {
-      const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+  appointments: router({
+    create: protectedProcedure
+      .input(z.object({
+        appointmentDate: z.date(),
+        startTime: z.string(),
+        endTime: z.string(),
+        reason: z.string().min(1, "Motivo é obrigatório"),
+        phone: z.string().min(1, "Telefone é obrigatório"),
+        notes: z.string().optional(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        try {
+          const validationResult = await appointmentValidationService.validateAppointment(
+            input.appointmentDate,
+            input.startTime,
+            ctx.user.id
+          );
 
-      return await db.select().from(emailTemplates);
-    }),
+          if (!validationResult.valid) {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: validationResult.message,
+            });
+          }
 
-    getAuditLogs: adminProcedure
-      .input(z.object({ limit: z.number().optional().default(50) }))
+          const appointmentId = await createAppointment({
+            userId: ctx.user.id,
+            appointmentDate: input.appointmentDate,
+            startTime: input.startTime,
+            endTime: input.endTime,
+            reason: input.reason,
+            notes: input.notes,
+          });
+
+          if (input.phone) {
+            await updateUserPhone(ctx.user.id, input.phone);
+          }
+
+          await incrementAppointmentCount(ctx.user.id);
+
+          await emailService.sendAppointmentConfirmation({
+            toEmail: ctx.user.email,
+            userName: ctx.user.name,
+            appointmentDate: input.appointmentDate.toLocaleDateString("pt-BR"),
+            startTime: input.startTime.substring(0, 5),
+            endTime: input.endTime.substring(0, 5),
+            reason: input.reason,
+            appointmentId,
+            userId: ctx.user.id,
+          });
+
+          await logAuditAction({
+            userId: ctx.user.id,
+            action: "CREATE_APPOINTMENT",
+            entityType: "appointment",
+            entityId: appointmentId,
+            details: `Agendamento criado para ${input.appointmentDate.toLocaleDateString("pt-BR")} às ${input.startTime}`,
+            ipAddress: ctx.req.ip,
+          });
+
+          return { success: true, appointmentId };
+        } catch (error) {
+          console.error("[Appointments] Erro ao criar agendamento:", error);
+          if (error instanceof TRPCError) throw error;
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Erro ao criar agendamento" });
+        }
+      }),
+
+    getAvailableSlots: protectedProcedure
+      .input(z.object({ date: z.date() }))
       .query(async ({ input }) => {
+        const result = await appointmentValidationService.getAvailableSlots(input.date);
+        return result;
+      }),
+
+    getPublicBlocks: protectedProcedure
+      .input(z.object({ month: z.number(), year: z.number() }))
+      .query(async ({ input }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const startDate = new Date(input.year, input.month, 1);
+        const endDate = new Date(input.year, input.month + 1, 0, 23, 59, 59);
+
+        const results = await db
+          .select({
+            blockedDate: blockedSlots.blockedDate,
+            blockType: blockedSlots.blockType,
+            reason: blockedSlots.reason,
+          })
+          .from(blockedSlots)
+          .where(
+            and(
+              gte(blockedSlots.blockedDate, startDate),
+              lte(blockedSlots.blockedDate, endDate)
+            )
+          );
+
+        return {
+          blocks: results.map(b => ({
+            day: b.blockedDate.getDate(),
+            blockType: b.blockType,
+            reason: b.reason
+          }))
+        };
+      }),
+
+    getUpcoming: protectedProcedure
+      .query(async ({ ctx }) => {
+        const appointments = await getUpcomingAppointments(ctx.user.id);
+        return {
+          appointments: appointments.map((apt) => ({
+            id: apt.id,
+            date: apt.appointmentDate.toLocaleDateString("pt-BR"),
+            time: apt.startTime.substring(0, 5),
+            reason: apt.reason,
+            status: apt.status,
+          })),
+        };
+      }),
+
+    getHistory: protectedProcedure
+      .input(z.object({ limit: z.number().default(50) }).optional())
+      .query(async ({ input, ctx }) => {
         const db = await getDb();
         if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
 
         const results = await db
           .select({
-            id: auditLogs.id,
-            action: auditLogs.action,
-            entityType: auditLogs.entityType,
-            details: auditLogs.details,
-            createdAt: auditLogs.createdAt,
-            userName: users.name,
+            id: appointments.id,
+            appointmentDate: appointments.appointmentDate,
+            startTime: appointments.startTime,
+            reason: appointments.reason,
+            status: appointments.status,
+            createdAt: appointments.createdAt,
+            cancelledAt: appointments.cancelledAt,
           })
-          .from(auditLogs)
-          .leftJoin(users, eq(auditLogs.userId, users.id))
-          .orderBy(desc(auditLogs.createdAt))
-          .limit(input.limit);
+          .from(appointments)
+          .where(
+            and(
+              eq(appointments.userId, ctx.user.id),
+              ne(appointments.status, "cancelled")
+            )
+          )
+          .orderBy(desc(appointments.appointmentDate))
+          .limit(input?.limit || 50);
 
-        return results.map(log => ({
-          ...log,
-          createdAt: log.createdAt.toLocaleString("pt-BR"),
+        const appointmentsWithUnread = await Promise.all(results.map(async (apt) => {
+          const unread = await db
+            .select({ id: appointmentMessages.id })
+            .from(appointmentMessages)
+            .where(
+              and(
+                eq(appointmentMessages.appointmentId, apt.id),
+                eq(appointmentMessages.isAdmin, true), // Mensagens vindas do admin
+                eq(appointmentMessages.isRead, false)
+              )
+            )
+            .limit(1);
+          
+          const hasMessages = await db
+            .select({ id: appointmentMessages.id })
+            .from(appointmentMessages)
+            .where(eq(appointmentMessages.appointmentId, apt.id))
+            .limit(1);
+
+          return {
+            id: apt.id,
+            date: apt.appointmentDate.toLocaleDateString("pt-BR"),
+            time: apt.startTime,
+            reason: apt.reason,
+            status: apt.status,
+            createdAt: apt.createdAt.toLocaleDateString("pt-BR"),
+            cancelledAt: apt.cancelledAt?.toLocaleDateString("pt-BR"),
+            hasUnreadForAdmin: unread.length > 0, // Reutilizando o nome do campo que o frontend já usa
+            hasMessages: hasMessages.length > 0
+          };
         }));
+
+        return {
+          appointments: appointmentsWithUnread,
+        };
+      }),
+
+    cancel: protectedProcedure
+      .input(z.object({ appointmentId: z.number(), reason: z.string().min(1, "Motivo do cancelamento é obrigatório") }))
+      .mutation(async ({ input, ctx }) => {
+        try {
+          if (ctx.user.role !== "admin") {
+            const validationError = await appointmentValidationService.validateCancellationLeadTime(input.appointmentId);
+            if (validationError) {
+              throw new TRPCError({
+                code: "BAD_REQUEST",
+                message: validationError.message,
+              });
+            }
+          }
+
+          await cancelAppointment(input.appointmentId, input.reason);
+          await updateLastCancellation(ctx.user.id);
+
+          await emailService.sendAppointmentCancellation({
+            toEmail: ctx.user.email,
+            userName: ctx.user.name,
+            appointmentDate: new Date().toLocaleDateString("pt-BR"),
+            startTime: new Date().toLocaleTimeString("pt-BR"),
+            reason: input.reason,
+            appointmentId: input.appointmentId,
+            userId: ctx.user.id,
+          });
+
+          await logAuditAction({
+            userId: ctx.user.id,
+            action: "CANCEL_APPOINTMENT",
+            entityType: "appointment",
+            entityId: input.appointmentId,
+            details: input.reason,
+            ipAddress: ctx.req.ip,
+          });
+
+          return { success: true, message: "Agendamento cancelado com sucesso" };
+        } catch (error) {
+          console.error("[Appointments] Erro ao cancelar agendamento:", error);
+          throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Erro ao cancelar agendamento" });
+        }
       }),
   }),
 });

@@ -4,13 +4,13 @@ import express from "express";
 import { createServer } from "http";
 import net from "net";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { registerOAuthRoutes } from "./oauth";
-import { appRouter } from "../routers";
-import { createContext } from "./context";
-import { cronService } from "../services/cronService";
-import { emailWorker } from "../services/emailWorker";
-import { serveStatic, setupVite } from "./vite";
-import { seedEmailTemplates } from "../db";
+import { registerOAuthRoutes } from "./oauth.js";
+import { appRouter } from "../routers.js";
+import { createContext } from "./context.js";
+import { cronService } from "../services/cronService.js";
+import { emailWorker } from "../services/emailWorker.js";
+import { serveStatic, setupVite } from "./vite.js";
+import { seedEmailTemplates } from "../db.js";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {

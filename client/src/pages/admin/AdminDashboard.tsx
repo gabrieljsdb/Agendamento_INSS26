@@ -12,7 +12,8 @@ import {
   ArrowRight,
   CheckCircle,
   XCircle,
-  Clock
+  Clock,
+  Loader2
 } from "lucide-react";
 import { useLocation } from "wouter";
 
@@ -20,8 +21,18 @@ export default function AdminDashboard() {
   const { user, loading } = useAuth();
   const [, navigate] = useLocation();
 
+  // Criar uma data no formato correto para evitar problemas de timezone
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   // Estatísticas básicas para o dashboard
-  const dailyQuery = trpc.admin.getDailyAppointments.useQuery({ date: new Date() });
+  const dailyQuery = trpc.admin.getDailyAppointments.useQuery(
+    { date: today },
+    {
+      refetchOnWindowFocus: false,
+      refetchOnMount: true,
+    }
+  );
 
   if (loading) return null;
   if (!user || user.role !== 'admin') {
@@ -29,11 +40,13 @@ export default function AdminDashboard() {
     return null;
   }
 
+  // Calcular estatísticas com verificação de dados
+  const appointments = dailyQuery.data?.appointments || [];
   const stats = {
-    total: dailyQuery.data?.appointments.length || 0,
-    confirmed: dailyQuery.data?.appointments.filter(a => a.status === 'confirmed').length || 0,
-    completed: dailyQuery.data?.appointments.filter(a => a.status === 'completed').length || 0,
-    cancelled: dailyQuery.data?.appointments.filter(a => a.status === 'cancelled').length || 0,
+    total: appointments.length,
+    confirmed: appointments.filter(a => a.status === 'confirmed').length,
+    completed: appointments.filter(a => a.status === 'completed').length,
+    cancelled: appointments.filter(a => a.status === 'cancelled').length,
   };
 
   const adminActions = [
@@ -75,57 +88,92 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Total Hoje</p>
-                  <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+              {dailyQuery.isLoading ? (
+                <div className="flex items-center justify-center h-16">
+                  <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
                 </div>
-                <div className="p-2 bg-gray-100 rounded-lg">
-                  <CalendarIcon className="h-6 w-6 text-gray-600" />
+              ) : (
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Total Hoje</p>
+                    <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+                  </div>
+                  <div className="p-2 bg-gray-100 rounded-lg">
+                    <CalendarIcon className="h-6 w-6 text-gray-600" />
+                  </div>
                 </div>
-              </div>
+              )}
             </CardContent>
           </Card>
           <Card>
             <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Confirmados</p>
-                  <p className="text-2xl font-bold text-green-600">{stats.confirmed}</p>
+              {dailyQuery.isLoading ? (
+                <div className="flex items-center justify-center h-16">
+                  <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
                 </div>
-                <div className="p-2 bg-green-50 rounded-lg">
-                  <Clock className="h-6 w-6 text-green-600" />
+              ) : (
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Confirmados</p>
+                    <p className="text-2xl font-bold text-green-600">{stats.confirmed}</p>
+                  </div>
+                  <div className="p-2 bg-green-50 rounded-lg">
+                    <Clock className="h-6 w-6 text-green-600" />
+                  </div>
                 </div>
-              </div>
+              )}
             </CardContent>
           </Card>
           <Card>
             <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Atendidos</p>
-                  <p className="text-2xl font-bold text-blue-600">{stats.completed}</p>
+              {dailyQuery.isLoading ? (
+                <div className="flex items-center justify-center h-16">
+                  <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
                 </div>
-                <div className="p-2 bg-blue-50 rounded-lg">
-                  <CheckCircle className="h-6 w-6 text-blue-600" />
+              ) : (
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Atendidos</p>
+                    <p className="text-2xl font-bold text-blue-600">{stats.completed}</p>
+                  </div>
+                  <div className="p-2 bg-blue-50 rounded-lg">
+                    <CheckCircle className="h-6 w-6 text-blue-600" />
+                  </div>
                 </div>
-              </div>
+              )}
             </CardContent>
           </Card>
           <Card>
             <CardContent className="pt-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Cancelados</p>
-                  <p className="text-2xl font-bold text-red-600">{stats.cancelled}</p>
+              {dailyQuery.isLoading ? (
+                <div className="flex items-center justify-center h-16">
+                  <Loader2 className="h-6 w-6 animate-spin text-gray-400" />
                 </div>
-                <div className="p-2 bg-red-50 rounded-lg">
-                  <XCircle className="h-6 w-6 text-red-600" />
+              ) : (
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-500">Cancelados</p>
+                    <p className="text-2xl font-bold text-red-600">{stats.cancelled}</p>
+                  </div>
+                  <div className="p-2 bg-red-50 rounded-lg">
+                    <XCircle className="h-6 w-6 text-red-600" />
+                  </div>
                 </div>
-              </div>
+              )}
             </CardContent>
           </Card>
         </div>
+
+        {/* Mensagem de erro se houver */}
+        {dailyQuery.isError && (
+          <Card className="bg-red-50 border-red-200">
+            <CardContent className="pt-6">
+              <p className="text-red-600">
+                Erro ao carregar estatísticas. Por favor, tente recarregar a página.
+              </p>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Ações Administrativas */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
