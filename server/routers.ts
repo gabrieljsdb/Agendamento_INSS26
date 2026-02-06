@@ -16,16 +16,9 @@ import {
   getDb,
   updateUserPhone,
   getAppointmentsByDate,
-  createUserForm,
-  getUserForm,
-  getUserFormsByUserId,
-  getAllUserForms,
-  updateUserFormStatus,
-  createFormAttachment,
-  getFormAttachments,
 } from "./db.js";
 import { eq, and, gte, lte, asc, desc, ne, sql } from "drizzle-orm";
-import { users, appointments, blockedSlots, appointmentMessages, emailTemplates, userForms, formAttachments } from "../drizzle/schema.js";
+import { users, appointments, blockedSlots, appointmentMessages, emailTemplates } from "../drizzle/schema.js";
 import { soapAuthService } from "./services/soapAuthService.js";
 import { appointmentValidationService } from "./services/appointmentValidationService.js";
 import { emailService } from "./services/emailService.js";
@@ -81,7 +74,7 @@ export const appRouter = router({
         startTime: z.string(),
         endTime: z.string(),
         reason: z.string(),
-        phone: z.string().min(1, "Telefone é obrigatório"),
+        phone: z.string(),
         notes: z.string().optional(),
       }))
       .mutation(async ({ input, ctx }) => {
@@ -924,97 +917,6 @@ export const appRouter = router({
           ipAddress: ctx.req.ip,
         });
 
-        return { success: true };
-      }),
-  }),
-
-  forms: router({
-    create: protectedProcedure
-      .input(z.object({
-        name: z.string(),
-        cpf: z.string(),
-        email: z.string(),
-        oab: z.string(),
-        phone: z.string().optional(),
-        address: z.string().optional(),
-      }))
-      .mutation(async ({ input, ctx }) => {
-        const formId = await createUserForm({
-          userId: ctx.user.id,
-          ...input,
-          status: "draft",
-        });
-        return { success: true, id: formId };
-      }),
-
-    getMine: protectedProcedure.query(async ({ ctx }) => {
-      return await getUserFormsByUserId(ctx.user.id);
-    }),
-
-    getById: protectedProcedure
-      .input(z.object({ id: z.number() }))
-      .query(async ({ input, ctx }) => {
-        const form = await getUserForm(input.id);
-        if (!form) throw new TRPCError({ code: "NOT_FOUND" });
-        if (form.userId !== ctx.user.id && ctx.user.role !== "admin") {
-          throw new TRPCError({ code: "UNAUTHORIZED" });
-        }
-        const attachments = await getFormAttachments(input.id);
-        return { ...form, attachments };
-      }),
-
-    submit: protectedProcedure
-      .input(z.object({ id: z.number() }))
-      .mutation(async ({ input, ctx }) => {
-        const form = await getUserForm(input.id);
-        if (!form || form.userId !== ctx.user.id) throw new TRPCError({ code: "UNAUTHORIZED" });
-        await updateUserFormStatus(input.id, "submitted");
-        return { success: true };
-      }),
-
-    addAttachment: protectedProcedure
-      .input(z.object({
-        formId: z.number(),
-        fileName: z.string(),
-        fileUrl: z.string(),
-        fileType: z.string(),
-      }))
-      .mutation(async ({ input, ctx }) => {
-        const form = await getUserForm(input.formId);
-        if (!form || form.userId !== ctx.user.id) throw new TRPCError({ code: "UNAUTHORIZED" });
-        await createFormAttachment(input);
-        return { success: true };
-      }),
-
-    // Admin routes
-    getAll: adminProcedure.query(async () => {
-      const db = await getDb();
-      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
-      
-      const results = await db
-        .select({
-          id: userForms.id,
-          name: userForms.name,
-          cpf: userForms.cpf,
-          email: userForms.email,
-          oab: userForms.oab,
-          status: userForms.status,
-          submittedAt: userForms.submittedAt,
-          createdAt: userForms.createdAt,
-        })
-        .from(userForms)
-        .orderBy(desc(userForms.createdAt));
-        
-      return results;
-    }),
-
-    updateStatus: adminProcedure
-      .input(z.object({
-        id: z.number(),
-        status: z.enum(["draft", "submitted", "approved", "rejected"]),
-      }))
-      .mutation(async ({ input }) => {
-        await updateUserFormStatus(input.id, input.status);
         return { success: true };
       }),
   }),
