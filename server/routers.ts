@@ -74,7 +74,7 @@ export const appRouter = router({
         startTime: z.string(),
         endTime: z.string(),
         reason: z.string(),
-        phone: z.string().min(1, "Telefone é obrigatório"),
+        phone: z.string(),
         notes: z.string().optional(),
       }))
       .mutation(async ({ input, ctx }) => {

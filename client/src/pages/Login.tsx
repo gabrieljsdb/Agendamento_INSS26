@@ -54,13 +54,13 @@ export default function Login() {
         {/* Lado Esquerdo - Visual OAB */}
         <div className="md:w-1/2 bg-[#004a80] p-8 flex flex-col items-center justify-center text-white text-center">
           <img 
-            src="https://portal.oab-sc.org.br/site/images/cartao.png" 
+            src="https://portal.oab-sc.org.br/site/images/img-01.png" 
             alt="Cartão OAB" 
             className="w-64 h-auto mb-6 drop-shadow-xl animate-in fade-in zoom-in duration-700"
           />
           <h2 className="text-2xl font-bold mb-2">Sistema de Agendamento</h2>
           <p className="text-blue-100 opacity-80 max-w-xs">
-            Acesso exclusivo para advogados(as) e estagiários(as) regularmente inscritos(as) na OAB/SC.
+            Acesso exclusivo para advogados e estagiários regularmente inscritos na OAB/SC.
           </p>
         </div>
 
