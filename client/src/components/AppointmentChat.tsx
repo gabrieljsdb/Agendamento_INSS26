@@ -16,12 +16,20 @@ export function AppointmentChat({ appointmentId, isAdmin = false }: AppointmentC
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
+  const markAsReadMutation = trpc.messages.markAsRead.useMutation();
+
   const messagesQuery = trpc.messages.getMessages.useQuery(
     { appointmentId },
     { 
       refetchInterval: 3000, // Atualiza a cada 3 segundos
     }
   );
+
+  useEffect(() => {
+    if (messagesQuery.data && messagesQuery.data.length > 0) {
+      markAsReadMutation.mutate({ appointmentId });
+    }
+  }, [appointmentId, messagesQuery.data?.length]);
 
   const sendMessageMutation = trpc.messages.sendMessage.useMutation({
     onSuccess: () => {

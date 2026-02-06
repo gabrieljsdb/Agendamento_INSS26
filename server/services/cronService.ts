@@ -82,8 +82,21 @@ export class CronService {
    * Chamado periodicamente (ex: a cada 15 minutos)
    */
   async checkAndRun() {
+    console.log("[CronService] Executando verificações periódicas...");
+    // 1. Atualiza status de "Não Compareceu" (No Show)
+    try {
+      const { updateNoShowStatus } = await import("../db");
+      await updateNoShowStatus();
+    } catch (err) {
+      console.error("[CronService] Erro ao atualizar status no-show:", err);
+    }
+
+    // 2. Verifica e envia relatório diário
     const settings = await getSystemSettings();
-    if (!settings || !settings.dailyReportEnabled) return;
+    if (!settings || !settings.dailyReportEnabled) {
+      console.log("[CronService] Relatório diário desativado ou configurações não encontradas.");
+      return;
+    }
 
     const now = new Date();
     const currentHourMin = now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", hour12: false });

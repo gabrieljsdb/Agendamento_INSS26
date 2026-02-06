@@ -117,26 +117,60 @@ export const appRouter = router({
       }),
 
     getUpcoming: protectedProcedure.query(async ({ ctx }) => {
-      return await getUpcomingAppointments(ctx.user.id);
+      const results = await getUpcomingAppointments(ctx.user.id);
+      
+      const formattedAppointments = results.map(apt => ({
+        ...apt,
+        date: apt.appointmentDate.toLocaleDateString("pt-BR", { timeZone: "UTC" }),
+        time: apt.startTime ? apt.startTime.substring(0, 5) : "--:--"
+      }));
+
+      return { appointments: formattedAppointments };
     }),
 
     getHistory: protectedProcedure.query(async ({ ctx }) => {
-      return await getUserAppointments(ctx.user.id);
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+      const results = await getUserAppointments(ctx.user.id);
+
+      const appointmentsWithDetails = await Promise.all(results.map(async (apt) => {
+        // Verifica se o agendamento possui QUALQUER mensagem
+        const anyMessage = await db
+          .select({ id: appointmentMessages.id })
+          .from(appointmentMessages)
+          .where(eq(appointmentMessages.appointmentId, apt.id))
+          .limit(1);
+        
+        return {
+          ...apt,
+          hasMessages: anyMessage.length > 0
+        };
+      }));
+
+      return appointmentsWithDetails;
     }),
 
     cancel: protectedProcedure
       .input(z.object({ appointmentId: z.number(), reason: z.string() }))
       .mutation(async ({ input, ctx }) => {
-        const leadTimeError = await appointmentValidationService.validateCancellationLeadTime(input.appointmentId);
-        if (leadTimeError) {
-          throw new TRPCError({
-            code: "BAD_REQUEST",
-            message: leadTimeError.message,
-          });
+        // Se não for admin, valida o tempo de antecedência
+        if (ctx.user.role !== "admin") {
+          const leadTimeError = await appointmentValidationService.validateCancellationLeadTime(input.appointmentId);
+          if (leadTimeError) {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: leadTimeError.message,
+            });
+          }
         }
 
         await cancelAppointment(input.appointmentId, input.reason);
-        await updateLastCancellation(ctx.user.id);
+        
+        // Só atualiza o bloqueio de cancelamento se não for admin
+        if (ctx.user.role !== "admin") {
+          await updateLastCancellation(ctx.user.id);
+        }
 
         await logAuditAction({
           userId: ctx.user.id,
@@ -307,6 +341,90 @@ export const appRouter = router({
     })
   }),
 
+  messages: router({
+    getMessages: protectedProcedure
+      .input(z.object({ appointmentId: z.number() }))
+      .query(async ({ input }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const results = await db
+          .select()
+          .from(appointmentMessages)
+          .where(eq(appointmentMessages.appointmentId, input.appointmentId))
+          .orderBy(asc(appointmentMessages.createdAt));
+
+        return results;
+      }),
+
+    sendMessage: protectedProcedure
+      .input(z.object({
+        appointmentId: z.number(),
+        content: z.string().min(1),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const isAdmin = ctx.user.role === "admin";
+
+        await db.insert(appointmentMessages).values({
+          appointmentId: input.appointmentId,
+          senderId: ctx.user.id,
+          message: input.content,
+          isAdmin,
+          isRead: false,
+        });
+
+        return { success: true };
+      }),
+
+    hasUnreadMessages: protectedProcedure.query(async ({ ctx }) => {
+      const db = await getDb();
+      if (!db) return { hasUnread: false };
+
+      const isAdmin = ctx.user.role === "admin";
+
+      const results = await db
+        .select({ id: appointmentMessages.id })
+        .from(appointmentMessages)
+        .where(
+          and(
+            eq(appointmentMessages.isAdmin, !isAdmin),
+            eq(appointmentMessages.isRead, false),
+            isAdmin 
+              ? sql`1=1` 
+              : eq(appointmentMessages.senderId, ctx.user.id)
+          )
+        )
+        .limit(1);
+
+      return { hasUnread: results.length > 0 };
+    }),
+
+    markAsRead: protectedProcedure
+      .input(z.object({ appointmentId: z.number() }))
+      .mutation(async ({ input, ctx }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        const isAdmin = ctx.user.role === "admin";
+
+        await db
+          .update(appointmentMessages)
+          .set({ isRead: true })
+          .where(
+            and(
+              eq(appointmentMessages.appointmentId, input.appointmentId),
+              eq(appointmentMessages.isAdmin, !isAdmin),
+              eq(appointmentMessages.isRead, false)
+            )
+          );
+
+        return { success: true };
+      }),
+  }),
+
   admin: router({
     getCalendarAppointments: adminProcedure
       .input(z.object({ 
@@ -391,7 +509,8 @@ export const appRouter = router({
           .where(
             and(
               gte(appointments.appointmentDate, startOfDay),
-              lte(appointments.appointmentDate, endOfDay)
+              lte(appointments.appointmentDate, endOfDay),
+              eq(appointments.status, "confirmed")
             )
           )
           .orderBy(asc(appointments.startTime));
@@ -655,11 +774,9 @@ export const appRouter = router({
           .leftJoin(users, eq(appointments.userId, users.id))
           .orderBy(desc(appointments.appointmentDate), desc(appointments.startTime));
 
-        const appointmentsWithUnread = await Promise.all(results.map(async (apt) => {
-          // Só verifica mensagens não lidas se o agendamento estiver confirmado
-          const isConfirmed = apt.status === "confirmed";
-          
-          const unread = isConfirmed ? await db
+        const appointmentsWithDetails = await Promise.all(results.map(async (apt) => {
+          // Verifica se existem mensagens não lidas para o admin (enviadas pelo usuário)
+          const unread = await db
             .select({ id: appointmentMessages.id })
             .from(appointmentMessages)
             .where(
@@ -669,16 +786,24 @@ export const appRouter = router({
                 eq(appointmentMessages.isRead, false)
               )
             )
-            .limit(1) : [];
+            .limit(1);
+          
+          // Verifica se o agendamento possui QUALQUER mensagem (para a aba Histórico)
+          const anyMessage = await db
+            .select({ id: appointmentMessages.id })
+            .from(appointmentMessages)
+            .where(eq(appointmentMessages.appointmentId, apt.id))
+            .limit(1);
           
           return {
             ...apt,
             date: apt.appointmentDate.toLocaleDateString("pt-BR"),
-            hasUnread: unread.length > 0
+            hasUnreadForAdmin: unread.length > 0,
+            hasMessages: anyMessage.length > 0
           };
         }));
 
-        return appointmentsWithUnread;
+        return { appointments: appointmentsWithDetails };
       }),
 
     getSystemSettings: adminProcedure.query(async () => {
@@ -764,6 +889,35 @@ export const appRouter = router({
           ...log,
           createdAt: log.createdAt.toLocaleString("pt-BR"),
         }));
+      }),
+
+    updateStatus: adminProcedure
+      .input(z.object({
+        appointmentId: z.number(),
+        status: z.enum(["pending", "confirmed", "completed", "cancelled", "no_show"]),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const db = await getDb();
+        if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "DB not available" });
+
+        await db
+          .update(appointments)
+          .set({ 
+            status: input.status,
+            updatedAt: new Date()
+          })
+          .where(eq(appointments.id, input.appointmentId));
+
+        await logAuditAction({
+          userId: ctx.user.id,
+          action: "UPDATE_APPOINTMENT_STATUS",
+          entityType: "appointment",
+          entityId: input.appointmentId,
+          details: `Status alterado para: ${input.status}`,
+          ipAddress: ctx.req.ip,
+        });
+
+        return { success: true };
       }),
   }),
 });

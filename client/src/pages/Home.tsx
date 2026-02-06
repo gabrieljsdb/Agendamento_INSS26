@@ -230,8 +230,8 @@ export default function Home() {
             </div>
             <div>
               <h3 className="text-white font-semibold mb-4">Contato</h3>
-              <p className="text-sm">Email: contato@oabsc.org.br</p>
-              <p className="text-sm">Telefone: (48) 3224-1000</p>
+              <p className="text-sm">Email: centraldeatendimento@oab-sc.org.br</p>
+              <p className="text-sm">Telefone: (48) 3239-3500</p>
             </div>
             <div>
               <h3 className="text-white font-semibold mb-4">Endereço</h3>
@@ -241,8 +241,8 @@ export default function Home() {
             <div>
               <h3 className="text-white font-semibold mb-4">Links</h3>
               <ul className="text-sm space-y-1">
-                <li><a href="#" className="hover:text-white">Política de Privacidade</a></li>
-                <li><a href="#" className="hover:text-white">Termos de Uso</a></li>
+                <li><a href="https://oab-sc.org.br/politica-privacidade" target="_blank" rel="noopener noreferrer" className="hover:text-white">Política de Privacidade</a></li>
+                <li><a href="https://oab-sc.org.br/termo-uso" target="_blank" rel="noopener noreferrer" className="hover:text-white">Termos de Uso</a></li>
               </ul>
             </div>
           </div>

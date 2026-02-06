@@ -27,13 +27,29 @@ export default function Messages() {
     );
   }
 
-  const allAppointments = appointmentsQuery.data?.appointments || [];
+  const allAppointments = useMemo(() => {
+    if (user?.role === 'admin') {
+      return appointmentsQuery.data?.appointments || [];
+    }
+    // Para usuários comuns, o retorno é um array direto
+    return (appointmentsQuery.data as any) || [];
+  }, [appointmentsQuery.data, user?.role]);
   
-  // Filtra para a Caixa de Entrada (mensagens não lidas do usuário)
-  const inboxAppointments = allAppointments.filter((apt: any) => apt.hasUnreadForAdmin);
+  // Filtra para a Caixa de Entrada (Confirmados)
+  const inboxAppointments = useMemo(() => {
+    if (user?.role === 'admin') {
+      return allAppointments.filter((apt: any) => apt.status === 'confirmed');
+    }
+    return allAppointments.filter((apt: any) => apt.status === 'confirmed');
+  }, [allAppointments, user?.role]);
   
-  // Filtra para Todas as Conversas (qualquer agendamento que já teve alguma mensagem)
-  const historyAppointments = allAppointments.filter((apt: any) => apt.hasMessages);
+  // Filtra para Finalizados (qualquer agendamento que não esteja confirmado mas tenha mensagens ou status final)
+  const historyAppointments = useMemo(() => {
+    return allAppointments.filter((apt: any) => 
+      ["completed", "cancelled", "no_show"].includes(apt.status) || 
+      (apt.status !== 'confirmed' && apt.hasMessages)
+    );
+  }, [allAppointments]);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -128,39 +144,33 @@ export default function Messages() {
               </CardTitle>
             </CardHeader>
             
-            {user?.role === 'admin' ? (
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
-                <div className="px-4 pt-2">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="inbox" className="text-xs flex items-center gap-2">
-                      <Inbox className="h-3.5 w-3.5" />
-                      Caixa de Entrada
-                      {inboxAppointments.length > 0 && (
-                        <Badge className="ml-1 h-4 w-4 p-0 flex items-center justify-center bg-indigo-600 text-[10px]">
-                          {inboxAppointments.length}
-                        </Badge>
-                      )}
-                    </TabsTrigger>
-                    <TabsTrigger value="all" className="text-xs flex items-center gap-2">
-                      <History className="h-3.5 w-3.5" />
-                      Todas
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
-                <div className="flex-1 overflow-y-auto mt-2">
-                  <TabsContent value="inbox" className="m-0">
-                    {renderAppointmentList(inboxAppointments)}
-                  </TabsContent>
-                  <TabsContent value="all" className="m-0">
-                    {renderAppointmentList(historyAppointments)}
-                  </TabsContent>
-                </div>
-              </Tabs>
-            ) : (
-              <CardContent className="p-0 flex-1 overflow-y-auto">
-                {renderAppointmentList(allAppointments)}
-              </CardContent>
-            )}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
+              <div className="px-4 pt-2">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="inbox" className="text-xs flex items-center gap-2">
+                    <Inbox className="h-3.5 w-3.5" />
+                    Confirmados
+                    {user?.role === 'admin' && inboxAppointments.length > 0 && (
+                      <Badge className="ml-1 h-4 w-4 p-0 flex items-center justify-center bg-indigo-600 text-[10px]">
+                        {inboxAppointments.length}
+                      </Badge>
+                    )}
+                  </TabsTrigger>
+                  <TabsTrigger value="all" className="text-xs flex items-center gap-2">
+                    <History className="h-3.5 w-3.5" />
+                    Finalizados
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+              <div className="flex-1 overflow-y-auto mt-2">
+                <TabsContent value="inbox" className="m-0">
+                  {renderAppointmentList(inboxAppointments)}
+                </TabsContent>
+                <TabsContent value="all" className="m-0">
+                  {renderAppointmentList(historyAppointments)}
+                </TabsContent>
+              </div>
+            </Tabs>
           </Card>
 
           <Card className="md:col-span-2 flex flex-col overflow-hidden">

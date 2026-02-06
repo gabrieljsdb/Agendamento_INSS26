@@ -191,11 +191,9 @@ export async function getUpcomingAppointments(userId: number) {
   const db = await getDb();
   if (!db) return [];
 
-  // Usamos uma data de ontem para garantir que agendamentos de hoje 
-  // apareçam mesmo com pequenas diferenças de fuso horário no servidor
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  yesterday.setHours(0, 0, 0, 0);
+  // Usamos o início do dia de hoje para garantir que agendamentos de hoje apareçam
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
   return await db
     .select()
@@ -203,11 +201,11 @@ export async function getUpcomingAppointments(userId: number) {
     .where(
       and(
         eq(appointments.userId, userId),
-        gte(appointments.appointmentDate, yesterday),
+        gte(appointments.appointmentDate, today),
         eq(appointments.status, "confirmed")
       )
     )
-    .orderBy(asc(appointments.appointmentDate))
+    .orderBy(asc(appointments.appointmentDate), asc(appointments.startTime))
     .limit(10);
 }
 
@@ -573,4 +571,32 @@ export async function seedEmailTemplates() {
       await upsertEmailTemplate(t);
     }
   }
+}
+
+/**
+ * Atualiza agendamentos confirmados para "no_show" se passarem 24 horas da data agendada
+ */
+export async function updateNoShowStatus() {
+  const db = await getDb();
+  if (!db) return { updated: 0 };
+
+  const twentyFourHoursAgo = new Date();
+  twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+
+  const result = await db
+    .update(appointments)
+    .set({ status: "no_show" })
+    .where(
+      and(
+        eq(appointments.status, "confirmed"),
+        lte(appointments.appointmentDate, twentyFourHoursAgo)
+      )
+    );
+
+  const updatedCount = (result as any).affectedRows || 0;
+  if (updatedCount > 0) {
+    console.log(`[Database] ${updatedCount} agendamentos atualizados para 'no_show'.`);
+  }
+  
+  return { updated: updatedCount };
 }

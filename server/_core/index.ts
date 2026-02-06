@@ -68,9 +68,11 @@ async function startServer() {
     console.log(`Server running on http://localhost:${port}/`);
     
     // Inicia a verificação periódica do cron (a cada 1 minuto)
-    setInterval(() => {
+    const runCron = () => {
       cronService.checkAndRun().catch(err => console.error("[Cron] Error:", err));
-    }, 60 * 1000);
+    };
+    runCron(); // Executa imediatamente no início
+    setInterval(runCron, 60 * 1000);
     
     // Inicia o worker de processamento de e-mails (a cada 30 segundos)
     emailWorker.start(30);

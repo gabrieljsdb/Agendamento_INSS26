@@ -11,10 +11,12 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function MyAppointments() {
   const { user } = useAuth();
   const historyQuery = trpc.appointments.getHistory.useQuery({ limit: 50 });
+  const [activeTab, setActiveTab] = useState("confirmed");
   const [cancellingId, setCancellingId] = useState<number | null>(null);
   const [cancellationReason, setCancellationReason] = useState("");
   const [reschedulingId, setReschedulingId] = useState<number | null>(null);
@@ -58,6 +60,71 @@ export default function MyAppointments() {
     return diffMins >= 30;
   };
 
+  const confirmedAppointments = historyQuery.data?.filter((apt: any) => apt.status === "confirmed") || [];
+  const finishedAppointments = historyQuery.data?.filter((apt: any) => ["completed", "cancelled", "no_show"].includes(apt.status)) || [];
+
+  const renderTable = (appointments: any[]) => (
+    <div className="overflow-x-auto">
+      <table className="w-full text-sm text-left">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+          <tr>
+            <th className="px-4 py-3">Data</th>
+            <th className="px-4 py-3">Horário</th>
+            <th className="px-4 py-3">Motivo</th>
+            <th className="px-4 py-3">Status</th>
+            <th className="px-4 py-3">Ações</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200">
+          {appointments.map((apt: any) => (
+            <tr key={apt.id} className="bg-white hover:bg-gray-50">
+              <td className="px-4 py-3 font-medium flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-gray-400" />
+                {new Date(apt.appointmentDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
+              </td>
+              <td className="px-4 py-3">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-gray-400" />
+                  {apt.startTime ? apt.startTime.substring(0, 5) : '--:--'}
+                </div>
+              </td>
+              <td className="px-4 py-3">{apt.reason}</td>
+              <td className="px-4 py-3">{getStatusBadge(apt.status)}</td>
+              <td className="px-4 py-3">
+                <div className="flex gap-2">
+                  {apt.status === "confirmed" && (
+                    <>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-indigo-600 border-indigo-200 hover:bg-indigo-50"
+                        onClick={() => setReschedulingId(apt.id)}
+                        disabled={!canReschedule(apt.createdAt)}
+                        title={!canReschedule(apt.createdAt) ? "Disponível 30 min após o agendamento" : ""}
+                      >
+                        <RefreshCw className="h-4 w-4 mr-1" />
+                        Remarcar
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-red-600 border-red-200 hover:bg-red-50"
+                        onClick={() => setCancellingId(apt.id)}
+                      >
+                        <XCircle className="h-4 w-4 mr-1" />
+                        Cancelar
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -65,86 +132,50 @@ export default function MyAppointments() {
           <h1 className="text-3xl font-bold text-gray-900">Meus Agendamentos</h1>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Histórico de Agendamentos</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {historyQuery.isLoading ? (
-              <div className="flex justify-center py-8">
-                <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
-              </div>
-            ) : historyQuery.data && historyQuery.data.length > 0 ? (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                  <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                    <tr>
-                      <th className="px-4 py-3">Data</th>
-                      <th className="px-4 py-3">Horário</th>
-                      <th className="px-4 py-3">Motivo</th>
-                      <th className="px-4 py-3">Status</th>
-                      <th className="px-4 py-3">Ações</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {/* AQUI ESTÁ A CORREÇÃO PRINCIPAL: removido o .appointments */}
-                    {historyQuery.data.map((apt: any) => (
-                      <tr key={apt.id} className="bg-white hover:bg-gray-50">
-                        <td className="px-4 py-3 font-medium flex items-center gap-2">
-                          <Calendar className="h-4 w-4 text-gray-400" />
-                          {/* CORREÇÃO DO NOME DA PROPRIEDADE E FORMATAÇÃO DA DATA */}
-                          {new Date(apt.appointmentDate).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center gap-2">
-                            <Clock className="h-4 w-4 text-gray-400" />
-                            {/* CORREÇÃO DO NOME DA PROPRIEDADE DO TEMPO (Remove os segundos) */}
-                            {apt.startTime ? apt.startTime.substring(0, 5) : '--:--'}
-                          </div>
-                        </td>
-                        <td className="px-4 py-3">{apt.reason}</td>
-                        <td className="px-4 py-3">{getStatusBadge(apt.status)}</td>
-                        <td className="px-4 py-3">
-                          <div className="flex gap-2">
-                            {apt.status === "confirmed" && (
-                              <>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="text-indigo-600 border-indigo-200 hover:bg-indigo-50"
-                                  onClick={() => setReschedulingId(apt.id)}
-                                  disabled={!canReschedule(apt.createdAt)}
-                                  title={!canReschedule(apt.createdAt) ? "Disponível 30 min após o agendamento" : ""}
-                                >
-                                  <RefreshCw className="h-4 w-4 mr-1" />
-                                  Remarcar
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="text-red-600 border-red-200 hover:bg-red-50"
-                                  onClick={() => setCancellingId(apt.id)}
-                                >
-                                  <XCircle className="h-4 w-4 mr-1" />
-                                  Cancelar
-                                </Button>
-                              </>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div className="text-center py-8 text-gray-500">
-                <AlertCircle className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                <p>Você ainda não possui agendamentos.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full max-w-md grid-cols-2 mb-4">
+            <TabsTrigger value="confirmed">Confirmados</TabsTrigger>
+            <TabsTrigger value="finished">Finalizados</TabsTrigger>
+          </TabsList>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                {activeTab === "confirmed" ? "Agendamentos Confirmados" : "Agendamentos Finalizados"}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {historyQuery.isLoading ? (
+                <div className="flex justify-center py-8">
+                  <Loader2 className="h-8 w-8 animate-spin text-indigo-600" />
+                </div>
+              ) : (
+                <>
+                  <TabsContent value="confirmed" className="m-0">
+                    {confirmedAppointments.length > 0 ? (
+                      renderTable(confirmedAppointments)
+                    ) : (
+                      <div className="text-center py-8 text-gray-500">
+                        <AlertCircle className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                        <p>Você não possui agendamentos confirmados.</p>
+                      </div>
+                    )}
+                  </TabsContent>
+                  <TabsContent value="finished" className="m-0">
+                    {finishedAppointments.length > 0 ? (
+                      renderTable(finishedAppointments)
+                    ) : (
+                      <div className="text-center py-8 text-gray-500">
+                        <AlertCircle className="h-12 w-12 mx-auto mb-3 text-gray-300" />
+                        <p>Você não possui agendamentos finalizados ou cancelados.</p>
+                      </div>
+                    )}
+                  </TabsContent>
+                </>
+              )}
+            </CardContent>
+          </Card>
+        </Tabs>
       </div>
 
       {/* Dialog de Confirmação de Cancelamento */}
