@@ -60,7 +60,7 @@ export default function Login() {
           />
           <h2 className="text-2xl font-bold mb-2">Sistema de Agendamento</h2>
           <p className="text-blue-100 opacity-80 max-w-xs">
-            Acesso exclusivo para advogados e estagiários regularmente inscritos na OAB/SC.
+            Acesso exclusivo para advogados(as) e estagiários(as) regularmente inscritos(as) na OAB/SC.
           </p>
         </div>
 

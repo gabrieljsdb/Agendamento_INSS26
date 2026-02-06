@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/sidebar";
 import { getLoginUrl } from "@/const";
 import { useIsMobile } from "@/hooks/useMobile";
-import { LayoutDashboard, LogOut, PanelLeft, Users, CalendarDays, ClipboardList, ShieldCheck, Lock, Mail, MessageSquare } from "lucide-react";
+import { LayoutDashboard, LogOut, PanelLeft, Users, CalendarDays, ClipboardList, ShieldCheck, Lock, Mail, MessageSquare, FileText } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
@@ -29,12 +29,14 @@ import { Button } from "./ui/button";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Painel Principal", path: "/dashboard" },
+  { icon: FileText, label: "Preencher Formulário", path: "/forms/new" },
   { icon: CalendarDays, label: "Meus Agendamentos", path: "/my-appointments" },
   { icon: MessageSquare, label: "Mensagens", path: "/messages" },
 ];
 
 const adminMenuItems = [
   { icon: LayoutDashboard, label: "Painel Principal", path: "/admin" },
+  { icon: FileText, label: "Gestão de Formulários", path: "/admin/forms" },
   { icon: CalendarDays, label: "Calendário", path: "/admin/calendar" },
   { icon: ClipboardList, label: "Atendimentos do Dia", path: "/admin/daily" },
   { icon: MessageSquare, label: "Mensagens", path: "/messages" },
@@ -198,7 +200,7 @@ function DashboardLayoutContent({
               {user?.role !== 'admin' && (
                 <>
                   <div className="px-3 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                    Área do Advogado
+                    Área do(a) Advogado(a)
                   </div>
                   {menuItems.map(item => {
                     const isActive = location === item.path;
@@ -264,7 +266,7 @@ function DashboardLayoutContent({
                       {user?.name || "-"}
                     </p>
                     <p className="text-[10px] text-gray-500 truncate mt-1">
-                      {user?.role === 'admin' ? 'Administrador' : 'Advogado'}
+                      {user?.role === 'admin' ? 'Administrador' : 'Advogado(a)'}
                     </p>
                   </div>
                 </button>
