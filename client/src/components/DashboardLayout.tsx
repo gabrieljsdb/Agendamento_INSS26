@@ -198,7 +198,7 @@ function DashboardLayoutContent({
               {user?.role !== 'admin' && (
                 <>
                   <div className="px-3 py-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                    Área do Advogado
+                    Área do(a) Advogado(a)
                   </div>
                   {menuItems.map(item => {
                     const isActive = location === item.path;
@@ -264,7 +264,7 @@ function DashboardLayoutContent({
                       {user?.name || "-"}
                     </p>
                     <p className="text-[10px] text-gray-500 truncate mt-1">
-                      {user?.role === 'admin' ? 'Administrador' : 'Advogado'}
+                      {user?.role === 'admin' ? 'Administrador' : 'Advogado(a)'}
                     </p>
                   </div>
                 </button>

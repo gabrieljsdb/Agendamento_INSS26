@@ -427,7 +427,7 @@ export default function Dashboard() {
 
             {/* Telefone */}
             <div className="space-y-2">
-              <Label htmlFor="phone">Telefone de Contato</Label>
+              <Label htmlFor="phone">Telefone de Contato <span className="text-red-500">*</span></Label>
               <Input 
                 id="phone"
                 placeholder="(00) 00000-0000" 
